@@ -1,11 +1,12 @@
-const webpack = require('webpack');
-const path = require('path');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const HtmlWebpackPluginConfig = new HtmlWebpackPlugin({
   template: './src/index.html',
   filename: 'index.html',
   inject: 'body'
-})
+});
+const path = require('path');
+const webpack = require('webpack');
 
 const APP_DIR = path.resolve(__dirname, '../src');
 
@@ -27,7 +28,6 @@ var config = {
       },
       {
         test: /\.(css?)/,
-        include: APP_DIR,
         use: [
           'style-loader',
           { loader: 'css-loader', options: { importLoaders: 1 } }
@@ -43,11 +43,31 @@ var config = {
         }, {
           loader: "sass-loader" // compiles Sass to CSS 
         }]
+      },
+      {
+        test: /\.(png|jpg|gif|eot|ttf|woff|woff2)$/,
+        loader: 'url-loader',
+        options: {
+          limit: 10000
+        }
       }
     ]
   },
   plugins: [
     HtmlWebpackPluginConfig,
+    new CopyWebpackPlugin([
+      {
+        context: 'src',
+        from: {
+          glob: 'assets/**/*',
+          dot: true
+        },
+        to: '',
+      },
+    ], {
+        ignore: ['.gitkeep'],
+        debug: 'warning'
+      }),
   ],
 };
 
