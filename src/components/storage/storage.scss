@@ -1,15 +1,106 @@
-$SorrellBrown: #c4a97e;
-$Black: #000;
 $Anakiwa: #9ed8ff;
+$Black: #000;
 $Bombay: #AFB3B6;
+$CornflowerBlue: #6195ED;
+$SorrellBrown: #c4a97e;
+$White: #ffffff;
 
 .storage {
-  background-color: $Anakiwa;
+  background-color: $CornflowerBlue;
+  .container {
+    max-width: 95%;
+  }
+}
+
+.itemOverlay {
+  padding: 10px;
 }
 
 .item {
-  border: 2px solid $Bombay;
-  border-radius: 5px;
-  padding: 10px;
+  background-color: $Anakiwa;
+  border-radius: 10px;
+  border: 20px solid $White;
   min-height: 200px;
+  padding: 10px;
+}
+
+.heading {
+  display: flex;
+
+  span:first-child {
+    text-align: left;
+  }
+  span:last-child {
+    font-size: 0.6em;
+    text-align: right;
+  }
+}
+
+.content {
+  display: flex;
+
+  > * {
+    background-color: rgba(255,255,255,0.2);
+    background-clip: content-box;
+    margin-bottom: 5px;
+  }
+
+  div {
+    min-width:50px;
+    min-height:10px;
+  }
+
+  .quantity {
+    .selected{
+      // background-color: rgb(166, 226, 110);
+    }
+    .row {
+      display: flex;
+      margin-bottom: 2px;
+
+    }
+
+    &-list {
+      margin: 0;
+      list-style: none;
+      text-align: center;
+      -webkit-padding-start: 0;
+
+      li{
+        margin-bottom: 2px;
+      }
+    }
+
+    &-value {
+      background-color: rgba(255, 255, 255, 1);
+      background-clip: content-box;
+    }
+
+    &-input {
+      background-clip: content-box;
+      border: none;
+      text-align: center;
+    }
+  }
+
+  .buttons {
+    &-row {
+      padding: 0px;
+
+      .btn {
+        margin: 2px;
+      }
+    }
+  }
+}
+
+.option-buttons {
+  display: flex;
+  padding-top: 10px;
+
+  .btn {
+    margin-left: 10px;
+    margin-right: 10px;
+    margin-bottom: 5px;
+  }
 }

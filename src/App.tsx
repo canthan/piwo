@@ -1,7 +1,6 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import * as ReactSVG from 'react-svg';
-// import { Component } from 'react';
 import { Storage } from './components/storage/storage';
 import './App.scss';
 
