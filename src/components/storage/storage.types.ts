@@ -20,6 +20,13 @@ export interface I_Quantity {
   key: number;
 }
 
+export interface I_QuantityStorage {
+  stashKey: number; 
+  stash: I_Quantity; 
+  onQuantityChange: any;
+  onQuantitySelection: any;
+}
+
 export interface I_Bottles {
   b033?: number; 
   b040?: number;
@@ -36,6 +43,7 @@ export interface I_Header {
 export interface I_Buttons {
   increase: number[];
   decrease: number[];
+  onButtonClick: object;
 }
 
 export interface I_Options {

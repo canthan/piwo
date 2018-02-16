@@ -53,6 +53,7 @@ $White: #ffffff;
   .quantity {
     .selected{
       // background-color: rgb(166, 226, 110);
+      border: 2px solid black;
     }
     .row {
       display: flex;
@@ -96,11 +97,13 @@ $White: #ffffff;
 
 .option-buttons {
   display: flex;
+  flex-wrap: wrap;
   padding-top: 10px;
 
   .btn {
     margin-left: 10px;
     margin-right: 10px;
     margin-bottom: 5px;
+    min-width: 70px;
   }
 }

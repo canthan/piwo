@@ -12,7 +12,6 @@ export class Storage extends React.Component<{}, { stashes: I_Item[] }> {
 
     this.state = { stashes: StorageMock };
     console.log('Storage init');
-    console.log(StorageMock);
   };
 
   renderItem(item, index) {
@@ -22,7 +21,6 @@ export class Storage extends React.Component<{}, { stashes: I_Item[] }> {
   }
 
   render() {
-    console.log(this.state)
     return (
       <div className="storage">
         <div className="container">

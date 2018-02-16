@@ -1,7 +1,7 @@
 import * as React from 'react';
-import { I_Quantity, I_Bottles } from './storage.types';
+import { I_Quantity, I_Bottles, I_QuantityStorage } from './storage.types';
 
-export class Quantity extends React.Component<{ stashes: I_Quantity[], onQuantityChange }, { /* stashes: I_Quantity[] */ }> {
+export class Quantity extends React.Component<{ stashes: I_Quantity[], onQuantityChange, onQuantitySelection }, {}> {
   constructor(props) {
     super(props);
   }
@@ -9,11 +9,14 @@ export class Quantity extends React.Component<{ stashes: I_Quantity[], onQuantit
   render() {
     return (
       <div className="col-md-6  col-xs-12 quantity">
-        {/* <QuantityHeader {...this.state.stashes[0].items} /> */}
         <QuantityHeader {...this.props.stashes[0].items} />
-        {/* {this.state.stashes.map((stash, index) => { */}
         {this.props.stashes.map((stash, index) => {
-          return (<QuantityStorage key={index} stash={stash} onQuantityChange={this.props.onQuantityChange} stashKey={index} />
+          return (<QuantityStorage 
+            key={index} 
+            stash={stash}
+            stashKey={index} 
+            onQuantityChange={this.props.onQuantityChange} 
+            onQuantitySelection={this.props.onQuantitySelection} />
           )
         })}
       </div>
@@ -40,14 +43,23 @@ function DecodeVolume(volume: string) {
   return Number(volume.slice(1)) / 100;
 }
 
-class QuantityStorage extends React.Component<{stashKey:number, stash: I_Quantity, onQuantityChange}, {}/* I_Quantity */> {
+class QuantityStorage extends React.Component< I_QuantityStorage, {}> {
   constructor(props) {
     super(props);
-    // this.state = props;
+  }
+
+  onQuantitySelection = (e, name, stashKey) => {
+    const node = e.target.parentNode.parentNode;
+    const elements2 = node.getElementsByClassName('quantity-input');
+    for (let i = 0; i < elements2.length; i++) {
+      elements2.item(i).classList.remove('selected');
+    }
+    e.target.classList.add('selected');
+    this.props.onQuantitySelection(e, name, stashKey);
   }
   
-  changeValue = (name, stashKey) => {
-    this.props.onQuantityChange(name, stashKey);
+  onQuantityChange = (name, stashKey, target) => {
+    this.props.onQuantityChange(name, stashKey, target);
   }
 
   render() {    
@@ -66,28 +78,13 @@ class QuantityStorage extends React.Component<{stashKey:number, stash: I_Quantit
                   type="text"
                   name={name}
                   value={item}
-                  onClick={selectQuantity}
-                  onChange={(index) => this.changeValue(name, this.props.stashKey)} />
+                  onClick={(e) => this.onQuantitySelection(e, name, this.props.stashKey)}
+                  onChange={(e) => this.onQuantityChange(name, this.props.stashKey, e.target)} />
               )
             })}
       </div>
     )
   }
 }
-
-function selectQuantity(e/* : React.SyntheticEvent<HTMLElement> */) {
-  const node = e.target.parentNode.parentNode;
-  const elements2 = node.getElementsByClassName('quantity-input');
-  for (let i = 0; i < elements2.length; i++) {
-    elements2.item(i).classList.remove('selected');
-  }
-  console.log(e.target.attributes);
-  console.log(e.target.properties);
-  console.log(e.target.itemValue);
-  console.log(e.target.parentElement);
-  console.log("clicked");
-  e.target.classList.add('selected');
-
-}
-  
+ 
 export default Quantity;

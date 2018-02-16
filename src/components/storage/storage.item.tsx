@@ -7,23 +7,42 @@ import { Buttons } from './storage.buttons';
 import { Options } from './storage.options';
 import { I_Item, I_Quantity } from './storage.types';
 
-export class Item extends React.Component<{ item: I_Item }, { stashes: I_Quantity[] }> {
+export class Item extends React.Component<{ item: I_Item }, { stashes: I_Quantity[], selected: any }> {
 
   constructor(props) {
     super(props);
     this.state = {
-      stashes: props.item.stashes
+      stashes: props.item.stashes,
+      selected: undefined
     };
   }
 
-  handleQuantityChange = (name, stashKey) => {
-    console.log(this.state);
-    const newState: {stashes:I_Quantity[] } = this.state;
-    newState.stashes[stashKey].items[name]++
+  onQuantityChange = (name, stashKey, target, amount = 0) => {
+    const newState: { stashes: I_Quantity[] } = this.state;
+    newState.stashes[stashKey].items[name] = Number(target.value) + amount;
     this.setState({
       ...newState
     })
   }
+
+  onQuantitySelection = (e, name, stashKey) => {
+    console.log(e.target);
+    this.setState({
+      selected: {
+        target: e.target,
+        name: name,
+        stashKey: stashKey
+      }
+    })
+  }
+
+  onButtonClick = (quantity) => {
+    this.isInputSelected() ?
+      this.onQuantityChange(this.state.selected.name, this.state.selected.stashKey, this.state.selected.target, quantity) :
+      alert('Please select input');
+  }
+
+  isInputSelected = () => { return this.state.selected ? true : false; }
 
   render() {
     return (
@@ -38,16 +57,15 @@ export class Item extends React.Component<{ item: I_Item }, { stashes: I_Quantit
               litres={this.props.item.quantity_l}
               crates={this.props.item.quantity_c}
               bottles={this.props.item.quantity_b} />
-            {/* <Quantity
-              quantity={this.props.item.stashes}
-            /> */}
             <Quantity
               stashes={this.state.stashes}
-              onQuantityChange={this.handleQuantityChange}
+              onQuantityChange={this.onQuantityChange}
+              onQuantitySelection={this.onQuantitySelection}
             />
             <Buttons
               increase={[1, 3, 5]}
-              decrease={[1, 3, 5]}
+              decrease={[-1, -3, -5]}
+              onButtonClick={this.onButtonClick}
             />
           </section>
           <Options
