@@ -1,15 +1,15 @@
 {
-  "storage": [
+  "batches": [
     {
-      "number": "1",
-      "name": "Item_1",
-      "date": "2018.01.02",
-      "quantity_l": "32",
-      "quantity_b": "35",
-      "quantity_c": "1,5",
+      "batch_number": "1",
+      "batch_name": "Item_1",
+      "bottled_on": "2018.01.02",
+      "quantity_litres": "32",
+      "quantity_bottles": "35",
+      "quantity_crates": "1,5",
       "stashes": [
         {
-          "name": "Storage 1",
+          "stash_name": "Storage 1",
           "items": {
             "b050": "30",
             "b040": "2",
@@ -17,7 +17,7 @@
           }
         },
         {
-          "name": "Storage 2",
+          "stash_name": "Storage 2",
           "items": {
             "b050": "30",
             "b040": "2",
@@ -27,15 +27,15 @@
       ]
     },
     {
-      "number": "2",
-      "name": "Item_2",
-      "date": "2018.01.10",
-      "quantity_l": "25",
-      "quantity_b": "40",
-      "quantity_c": "10",
+      "batch_number": "2",
+      "batch_name": "Item_2",
+      "bottled_on": "2018.01.10",
+      "quantity_litres": "25",
+      "quantity_bottles": "40",
+      "quantity_crates": "10",
       "stashes": [
         {
-          "name": "Storage 1",
+          "stash_name": "Storage 1",
           "items": {
             "b050": "30",
             "b040": "2",
@@ -43,7 +43,7 @@
           }
         },
         {
-          "name": "Storage 2",
+          "stash_name": "Storage 2",
           "items": {
             "b050": "30",
             "b040": "2",
@@ -53,15 +53,15 @@
       ]
     },
     {
-      "number": "3",
-      "name": "Item_3",
-      "date": "2018.01.24",
-      "quantity_l": "32",
-      "quantity_b": "35",
-      "quantity_c": "1,5",
+      "batch_number": "3",
+      "batch_name": "Item_3",
+      "bottled_on": "2018.01.24",
+      "quantity_litres": "32",
+      "quantity_bottles": "35",
+      "quantity_crates": "1,5",
       "stashes": [
         {
-          "name": "Storage 1",
+          "stash_name": "Storage 1",
           "items": {
             "b050": "30",
             "b040": "2",
@@ -69,7 +69,7 @@
           }
         },
         {
-          "name": "Storage 2",
+          "stash_name": "Storage 2",
           "items": {
             "b050": "30",
             "b040": "2",
@@ -79,15 +79,15 @@
       ]
     },
     {
-      "number": "4",
-      "name": "Item_4",
-      "date": "2017.12.10",
-      "quantity_l": "32",
-      "quantity_b": "35",
-      "quantity_c": "1,5",
+      "batch_number": "4",
+      "batch_name": "Item_4",
+      "bottled_on": "2017.12.10",
+      "quantity_litres": "32",
+      "quantity_bottles": "35",
+      "quantity_crates": "1,5",
       "stashes": [
         {
-          "name": "Storage 1",
+          "stash_name": "Storage 1",
           "items": {
             "b050": "30",
             "b040": "2",
@@ -95,7 +95,7 @@
           }
         },
         {
-          "name": "Storage 2",
+          "stash_name": "Storage 2",
           "items": {
             "b050": "30",
             "b040": "2",
@@ -105,15 +105,15 @@
       ]
     },
     {
-      "number": "5",
-      "name": "Item_5",
-      "date": "2017.04.10",
-      "quantity_l": "10",
-      "quantity_b": "10",
-      "quantity_c": "1,5",
+      "batch_number": "5",
+      "batch_name": "Item_5",
+      "bottled_on": "2017.04.10",
+      "quantity_litres": "10",
+      "quantity_bottles": "10",
+      "quantity_crates": "1,5",
       "stashes": [
         {
-          "name": "Storage 4",
+          "stash_name": "Storage 4",
           "items": {
             "b050": "30",
             "b040": "0",
@@ -121,7 +121,7 @@
           }
         },
         {
-          "name": "Storage 5",
+          "stash_name": "Storage 5",
           "items": {
             "b050": "30",
             "b040": "2",
@@ -131,15 +131,15 @@
       ]
     },
     {
-      "number": "6",
-      "name": "Item_6",
-      "date": "2017.11.10",
-      "quantity_l": "20",
-      "quantity_b": "26",
-      "quantity_c": "1",
+      "batch_number": "6",
+      "batch_name": "Item_6",
+      "bottled_on": "2017.11.10",
+      "quantity_litres": "20",
+      "quantity_bottles": "26",
+      "quantity_crates": "1",
       "stashes": [
         {
-          "name": "Storage 1",
+          "stash_name": "Storage 1",
           "items": {
             "b050": "30",
             "b040": "2",
@@ -147,7 +147,7 @@
           }
         },
         {
-          "name": "Storage 2",
+          "stash_name": "Storage 2",
           "items": {
             "b050": "30",
             "b040": "2",

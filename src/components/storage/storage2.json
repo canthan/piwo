@@ -1,0 +1,104 @@
+{
+  "user_id": 1,
+  "username": "Canthan",
+  "firstname": "Andrzej",
+  "surname": "Globisz",
+  "password": "canthan12",
+  "email": "andrzej.globisz@gmail.com",
+  "registration_date": "2018-02-28T23:00:00.000Z",
+  "batches": [
+    {
+      "batch_number": 2,
+      "batch_name": "Item_2",
+      "bottled_on": "2017-12-21T23:00:00.000Z",
+      "quantity_litres": 100,
+      "quantity_bottles": 200,
+      "quantity_crates": 666,
+      "stashes": [
+        {
+          "batch_number": 2,
+          "stash_name": "Piwnica",
+          "items": {
+            "b050": 10,
+            "b040": 2,
+            "b033": 1
+          }
+        },
+        {
+          "batch_number": 2,
+          "stash_name": "Dom",
+          "items": {
+            "b050": 3,
+            "b040": 2,
+            "b033": null
+          }
+        }
+      ]
+    },
+    {
+      "batch_number": 4,
+      "batch_name": "Item_4",
+      "bottled_on": "2018-01-01T23:00:00.000Z",
+      "quantity_litres": 15,
+      "quantity_bottles": 30,
+      "quantity_crates": 1.5,
+      "stashes": [
+        {
+          "batch_number": 4,
+          "stash_name": "Piwnica",
+          "items": {
+            "b050": 20,
+            "b040": 2,
+            "b033": 3
+          }
+        },
+        {
+          "batch_number": 4,
+          "stash_name": "Dom",
+          "items": {
+            "b050": 5,
+            "b040": 2,
+            "b033": 1
+          }
+        }
+      ]
+    },
+    {
+      "batch_number": 5,
+      "batch_name": "Item_5",
+      "bottled_on": "2018-01-15T23:00:00.000Z",
+      "quantity_litres": 16,
+      "quantity_bottles": 32,
+      "quantity_crates": 1.6,
+      "stashes": [
+        {
+          "batch_number": 5,
+          "stash_name": "Piwnica",
+          "items": {
+            "b050": 25,
+            "b040": 2,
+            "b033": 1
+          }
+        }
+      ]
+    },
+    {
+      "batch_number": 6,
+      "batch_name": "Item_6",
+      "bottled_on": "2018-02-01T23:00:00.000Z",
+      "quantity_litres": 10,
+      "quantity_bottles": 20,
+      "quantity_crates": 1,
+      "stashes": []
+    },
+    {
+      "batch_number": 60,
+      "batch_name": "Item_60",
+      "bottled_on": "2018-02-01T23:00:00.000Z",
+      "quantity_litres": 10,
+      "quantity_bottles": 20,
+      "quantity_crates": 1,
+      "stashes": []
+    }
+  ]
+}
