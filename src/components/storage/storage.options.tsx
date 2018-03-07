@@ -1,20 +1,21 @@
 import * as React from 'react';
-import { I_Options } from './storage.types';
+import { IOptions } from './storage.types';
 
-export function Options(props: I_Options) {
+export function Options(props: IOptions) {
+
   return (
-      <div className="col-12 option-buttons justify-content-center">
-        {props.buttons.map((button, index) => {
-          return <OptionsButton key={index} role={button} />
-        })}
-      </div>
+    <div className='col-12 option-buttons justify-content-center'>
+      {props.buttons.map((button, index) => {
+        const role = button.replace(' ', '');
+        return <OptionsButton key={index} role={button} onButtonClick={props.functions[role]} />;
+      })}
+    </div>
   );
 }
 
 function OptionsButton(props) {
   return (
-      <button className="btn btn-light">{props.role}</button>
-  )
+    <button className='btn btn-light' onClick={() => props.onButtonClick()}>{props.role}</button>
+  );
 }
-
 export default Options;

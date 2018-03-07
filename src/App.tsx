@@ -7,20 +7,20 @@ import './App.scss';
 export default class App extends React.Component<{}, {}> {
 
   constructor(props) {
-    super(props)
+    super(props);
     this.state = {
       loaded: true
-    }
+    };
   }
   render() {
     return (
-      <div className="App">
-        <header className="App-header">
+      <div className='App'>
+        <header className='App-header'>
           <ReactSVG
-            path="./assets/img/logo.svg"
-            className="logo-svg"
+            path='./assets/img/logo.svg'
+            className='logo-svg'
           />
-          <h1 className="App-title">Storage app</h1>
+          <h1 className='App-title'>Storage app</h1>
         </header>
         <Storage />
       </div>
@@ -28,4 +28,3 @@ export default class App extends React.Component<{}, {}> {
   }
 }
 
-// export default App;

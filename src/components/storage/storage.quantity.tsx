@@ -1,39 +1,41 @@
 import * as React from 'react';
-import { I_Quantity, I_Bottles, I_QuantityStorage } from './storage.types';
+import { IQuantity, IBottles, IQuantityStorage } from './storage.types';
 
-export class Quantity extends React.Component<{ stashes: I_Quantity[], onQuantityChange, onQuantitySelection }, {}> {
+export class Quantity extends React.Component<{ stashes: IQuantity[], onQuantityChange, onQuantitySelection }, {}> {
   constructor(props) {
     super(props);
   }
 
   render() {
     return (
-      <div className="col-md-6  col-xs-12 quantity">
-        <QuantityHeader {...this.props.stashes[0].items} />
+      <div className='col-md-6  col-xs-12 quantity'>
+        {this.props.stashes.length > 0 &&
+          <QuantityHeader {...this.props.stashes[0].items} />
+        }
         {this.props.stashes.map((stash, index) => {
-          return (<QuantityStorage 
-            key={index} 
+          return (<QuantityStorage
+            key={index}
             stash={stash}
-            stashKey={index} 
-            onQuantityChange={this.props.onQuantityChange} 
+            stashKey={index}
+            onQuantityChange={this.props.onQuantityChange}
             onQuantitySelection={this.props.onQuantitySelection} />
-          )
+          );
         })}
       </div>
-    )
-  }
+    );
+}
 }
 
-function QuantityHeader(props: I_Bottles) {
+function QuantityHeader(props: IBottles) {
   return (
-    <div className="row">
-      <div className="col-4"></div>
+    <div className='row'>
+      <div className='col-4'></div>
       {
         Object.keys(props)
           .map((item, index) => {
             return (
-              <div className="col-2" key={index}>{DecodeVolume(item)}</div>
-            )
+              <div className='col-2' key={index}>{DecodeVolume(item)}</div>
+            );
           })}
     </div>
   );
@@ -43,7 +45,7 @@ function DecodeVolume(volume: string) {
   return Number(volume.slice(1)) / 100;
 }
 
-class QuantityStorage extends React.Component< I_QuantityStorage, {}> {
+class QuantityStorage extends React.Component<IQuantityStorage, {}> {
   constructor(props) {
     super(props);
   }
@@ -57,34 +59,33 @@ class QuantityStorage extends React.Component< I_QuantityStorage, {}> {
     e.target.classList.add('selected');
     this.props.onQuantitySelection(e, name, stashKey);
   }
-  
+
   onQuantityChange = (name, stashKey, target) => {
     this.props.onQuantityChange(name, stashKey, target);
   }
 
-  render() {    
+  render() {
     return (
-      <div className="row">
-        <div className="col-4">{this.props.stash.name}</div>
+      <div className='row'>
+        <div className='col-4'>{this.props.stash.stash_name}</div>
         {
           Object.values(this.props.stash.items)
             .map((item, index) => {
-              // const name = Object.keys(this.state.items)[index];
               const name = Object.keys(this.props.stash.items)[index];
               return (
                 <input
-                  className="col-2 form-control quantity-input"
+                  className='col-2 form-control quantity-input'
                   key={index}
-                  type="text"
+                  type='text'
                   name={name}
-                  value={item}
+                  value={item ? item : 0}
                   onClick={(e) => this.onQuantitySelection(e, name, this.props.stashKey)}
                   onChange={(e) => this.onQuantityChange(name, this.props.stashKey, e.target)} />
-              )
+              );
             })}
       </div>
-    )
+    );
   }
 }
- 
+
 export default Quantity;

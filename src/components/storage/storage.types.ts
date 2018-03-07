@@ -1,53 +1,81 @@
-export interface I_Item {
-  number: number;
-  name: string;
-  date: string;
-  quantity_l: number;
-  quantity_b: number;
-  quantity_c: number;
-  stashes: I_Quantity[];
+export interface IBatch {
+  batch_number: number;
+  batch_name: string;
+  bottled_on: string;
+  quantity_litres: number;
+  quantity_bottles: number;
+  quantity_crates: number;
+  stashes: IQuantity[];
 }
 
-export interface I_OverallQuantity {
-  bottles: number;
-  crates: number;
-  litres: number;
+export interface IOverallQuantity {
+  quantity_bottles: number;
+  quantity_crates: number;
+  quantity_litres: number;
 }
 
-export interface I_Quantity {
-  name: string;
-  items: I_Bottles;
-  key: number;
+// export interface IQuantity {
+//   batch_number: number;
+//   stash_id?: number;
+//   stash_name: string;
+//   items?: IBottles;
+//   key?: number;
+// }
+
+export class IQuantity {
+  constructor(stash_name, batch_number, items = {}) {
+    this.items = new IBottles();
+    this.batch_number = batch_number;
+    this.stash_name = stash_name;
+  }
+  batch_number: number;
+  stash_id?: number;
+  stash_name: string;
+  items: IBottles;
+  key?: number;
 }
 
-export interface I_QuantityStorage {
-  stashKey: number; 
-  stash: I_Quantity; 
+export interface IQuantityStorage {
+  stashKey: number;
+  stash: IQuantity;
   onQuantityChange: any;
   onQuantitySelection: any;
 }
 
-export interface I_Bottles {
-  b033?: number; 
-  b040?: number;
-  b050?: number;
-  b066?: number;
+export class IBottles {
+  constructor(b033 = 0, b040 = 0, b050 = 0) {
+    this.b033 = b033;
+    this.b040 = b040;
+    this.b050 = b050;
+  }
+  [bottleSize: string]: number;
+}
+// export interface IBottles {
+//   [bottleSize: string]: number;
+//   b033?: number;
+//   b040?: number;
+//   b050?: number;
+//   b066?: number;
+// }
+
+export interface IHeader {
+  bottled_on: string;
+  batch_number: number;
+  batch_name: string;
 }
 
-export interface I_Header {
-  date: string;
-  number: number;
-  style: string;
-}
-
-export interface I_Buttons {
+export interface IButtons {
   increase: number[];
   decrease: number[];
   onButtonClick: object;
 }
 
-export interface I_Options {
+export interface IOptions {
   buttons: string[];
+  functions: {
+    [buttonFunction: string]: object;
+  };
+  // onSaveClick: object;
 }
 
-export default I_Item;
+export default IBatch;

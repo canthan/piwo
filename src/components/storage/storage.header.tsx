@@ -1,12 +1,12 @@
 import * as React from 'react';
-import { I_Header } from './storage.types';
+import { IHeader } from './storage.types';
 
-export function Header(props: I_Header) {
+export function Header(props: IHeader) {
   return (
-    <h3 className="heading">
-      <span className="col-3">#{props.number}</span>
-      <span className="col-6">{props.style}</span>
-      <span className="col-3">{props.date}</span>
+    <h3 className='heading'>
+      <span className='col-3'>#{props.batch_number}</span>
+      <span className='col-6'>{props.batch_name}</span>
+      <span className='col-3'>{props.bottled_on}</span>
     </h3>
   );
 }
