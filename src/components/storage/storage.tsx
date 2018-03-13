@@ -1,62 +1,104 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import axios from 'axios';
-import './storage.scss';
-import { Item } from './storage.item';
+
+import { Item } from './item/storage.item';
+import { EmptyItem } from './empty_item/storage.item.empty';
+import { StorageSummary } from './summary/storage.summary';
 import { CommonStorageService } from './common.service';
+import { StorageHttpService } from './storage.http.service';
+import { CBatch } from './storage.types';
 
-import { IBatch } from './storage.types';
+import './storage.scss';
 
-export class Storage extends React.Component<{}, { batches: IBatch[] }> {
+export class Storage extends React.Component<{ user_id: number }, { batches: CBatch[] }> {
   public storageData;
   public commonService: CommonStorageService = new CommonStorageService();
+  public httpService: StorageHttpService = new StorageHttpService();
   constructor(props) {
     super(props);
-
 
     this.state = {
       batches: []
     };
   }
 
-  componentDidMount() {
-    this.getStorageData()
-      .then((response) => {
-        this.storageData = response.data.data;
-        this.storageData.batches = this.commonService.formatDateForDisplay(this.storageData.batches);
-        this.commonService.calculateQuantities(this.storageData.batches);
-        this.setState({ batches: this.storageData.batches });
-      })
-      .catch((error) => {
-        console.error(error);
-      });
+  componentWillReceiveProps(newProps) {
+    this.httpService.getStorageData(newProps.user_id)
+    .then((response) => {
+      this.storageData = response.data.data;
+      console.log(this.storageData);
+      this.storageData.batches = this.commonService.formatDateForDisplay(this.storageData.batches);
+      this.commonService.calculateQuantities(this.storageData.batches);
+      this.setState({ batches: this.storageData.batches });
+    })
+    .catch((error) => {
+      console.error(error);
+    });
   }
 
-  async getStorageData() {
-    try {
-      return await axios.get('http://localhost:1337/api/v1.0/user_data/1');
-    }
-    catch (error) {
-      console.error(error);
-    }
+  getSummary(storageData) {
+
+  }
+
+  renderStorageSummary() {
+    return (
+      <StorageSummary
+
+      />
+    );
   }
 
   renderItem(item, index) {
     return (
-      <Item item={item} key={index} />
+      <Item item={item} key={index} afterBatchWasDeleted={this.afterBatchWasDeleted} user_id={this.props.user_id} />
     );
+  }
+
+  renderEmptyItem() {
+    return (
+      <EmptyItem
+        afterBatchWasAdded={this.afterBatchWasAdded} user_id={this.props.user_id}/>
+    );
+  }
+
+  afterBatchWasAdded = (newBatch) => {
+    const newState = this.state;
+    newState.batches.push(newBatch);
+    this.setState(newState);
+  }
+
+  afterBatchWasDeleted = (deletedBatchId) => {
+    const newState = JSON.parse(JSON.stringify(this.state));
+    const deletedBatchIndex = this.getDeletedBatchIndex(newState.batches, deletedBatchId);
+    newState.batches.splice(deletedBatchIndex, 1);
+    this.setState(newState);
+  }
+
+  getDeletedBatchIndex = (batches, deletedBatchId) => {
+    let deletedBatchIndex;
+    batches.forEach((batch, index) => {
+      if (batch.batch_id === deletedBatchId) { deletedBatchIndex = index; }
+    });
+    return deletedBatchIndex;
   }
 
   render() {
     return (
-      <div className='storage'>
-        <div className='container'>
-          <div className='row'>
-            {this.state.batches.map((item, index) => {
-              return this.renderItem(item, index);
-            })}
+      <div>
+        {this.renderStorageSummary()}
+
+        <div className='storage' >
+          <div className='container'>
+            <div className='row'>
+              {this.state.batches.map((item, index) => {
+                return this.renderItem(item, index);
+              })}
+              {
+                this.renderEmptyItem()
+              }
+            </div>
           </div>
-        </div>
+        </div >
       </div>
     );
   }
