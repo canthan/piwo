@@ -1,11 +1,44 @@
-export interface IBatch {
-  batch_number: number;
+export class CBatch {
+  constructor(bottled_on = '', batch_id = 0, batch_name = '', litres = 0, bottles = 0, crates = 0) {
+    this.batch_id = batch_id;
+    this.batch_name = batch_name;
+    this.bottled_on = bottled_on;
+    this.quantity_litres = litres;
+    this.quantity_bottles = bottles;
+    this.quantity_crates = crates;
+    this.stashes = [];
+  }
+  batch_id?: number;
   batch_name: string;
   bottled_on: string;
   quantity_litres: number;
   quantity_bottles: number;
   quantity_crates: number;
-  stashes: IQuantity[];
+  stashes: CStash[];
+}
+
+export class CEmptyBatch {
+  constructor(bottled_on = '', batch_id = 0, batch_name = '') {
+    this.batch_id = batch_id;
+    this.batch_name = batch_name;
+    this.bottled_on = bottled_on;
+  }
+  batch_id: number;
+  batch_name: string;
+  bottled_on: string;
+}
+
+export class CStash {
+  constructor(stash_name, batch_id, items = {}) {
+    this.items = new IBottles();
+    this.batch_id = batch_id;
+    this.stash_name = stash_name;
+  }
+  batch_id: number;
+  stash_id?: number;
+  stash_name: string;
+  items: IBottles;
+  key?: number;
 }
 
 export interface IOverallQuantity {
@@ -14,30 +47,9 @@ export interface IOverallQuantity {
   quantity_litres: number;
 }
 
-// export interface IQuantity {
-//   batch_number: number;
-//   stash_id?: number;
-//   stash_name: string;
-//   items?: IBottles;
-//   key?: number;
-// }
-
-export class IQuantity {
-  constructor(stash_name, batch_number, items = {}) {
-    this.items = new IBottles();
-    this.batch_number = batch_number;
-    this.stash_name = stash_name;
-  }
-  batch_number: number;
-  stash_id?: number;
-  stash_name: string;
-  items: IBottles;
-  key?: number;
-}
-
 export interface IQuantityStorage {
   stashKey: number;
-  stash: IQuantity;
+  stash: CStash;
   onQuantityChange: any;
   onQuantitySelection: any;
 }
@@ -50,24 +62,17 @@ export class IBottles {
   }
   [bottleSize: string]: number;
 }
-// export interface IBottles {
-//   [bottleSize: string]: number;
-//   b033?: number;
-//   b040?: number;
-//   b050?: number;
-//   b066?: number;
-// }
 
 export interface IHeader {
   bottled_on: string;
-  batch_number: number;
+  batch_id: number;
   batch_name: string;
 }
 
 export interface IButtons {
   increase: number[];
   decrease: number[];
-  onButtonClick: object;
+  onQuantityChangeButton: object;
 }
 
 export interface IOptions {
@@ -75,7 +80,6 @@ export interface IOptions {
   functions: {
     [buttonFunction: string]: object;
   };
-  // onSaveClick: object;
 }
 
-export default IBatch;
+export default CBatch;
