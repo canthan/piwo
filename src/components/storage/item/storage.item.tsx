@@ -1,16 +1,18 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import axios from 'axios';
+
 import { Header } from './storage.header';
 import { OverallQuantity } from './storage.overall.quantity';
-import { Quantity } from './storage.quantity';
+import { Stashes } from './storage.stashes';
 import { Buttons } from './storage.buttons';
 import { Options } from './storage.options';
-import { IBatch, IQuantity } from './storage.types';
-import { CommonStorageService } from './common.service';
+import { CBatch, CStash } from '../storage.types';
+import { CommonStorageService } from '../common.service';
+import { StorageHttpService } from '../storage.http.service';
 
-export class Item extends React.Component<{ item: IBatch }, { stashes: IQuantity[], selected: any }> {
+export class Item extends React.Component<{ item: CBatch, afterBatchWasDeleted, user_id: number }, { stashes: CStash[], selected: any }> {
   public commonService: CommonStorageService = new CommonStorageService();
+  public httpService: StorageHttpService = new StorageHttpService();
   constructor(props) {
     super(props);
     this.state = {
@@ -19,8 +21,14 @@ export class Item extends React.Component<{ item: IBatch }, { stashes: IQuantity
     };
   }
 
+  componentWillReceiveProps(nextProps) {
+    this.setState({
+      stashes: nextProps.item.stashes
+    });
+  }
+
   onQuantityChange = (type, stashKey, target, amount = 0) => {
-    const newState: { stashes: IQuantity[] } = this.state;
+    const newState: { stashes: CStash[] } = this.state;
     newState.stashes[stashKey].items[type] = Number(target.value) + amount;
     this.setState({
       ...newState
@@ -37,74 +45,54 @@ export class Item extends React.Component<{ item: IBatch }, { stashes: IQuantity
     });
   }
 
-  onButtonClick = (quantity) => {
+  onQuantityChangeButton = (quantity) => {
     this.isInputSelected() ?
       this.onQuantityChange(this.state.selected.name, this.state.selected.stashKey, this.state.selected.target, quantity) :
       alert('Please select input');
   }
 
-  onEditClick = () => {
-    console.log(this, 'Edit');
+  onAddStorageClick = () => {
+    let newStorageName = prompt('Enter new storage name');
+    const newState: { stashes: CStash[] } = this.state;
+    if (newStorageName) {
+      const newStash = new CStash(newStorageName, this.props.item.batch_id);
+      newStash['stash_user_id'] = this.props.user_id;
+      this.httpService.addStash(newStash, this.props.user_id, this.props.item.batch_id)
+        .then((response) => {
+          const responseStash = response.data.data[0];
+          newState.stashes.push(responseStash);
+          this.setState(newState);
+        });
+    }
   }
 
-  onSaveClick = () => {
-    this.updateStashes()
+  onDeleteClick = () => {
+    confirm(`Are you sure that Batch no.${this.props.item.batch_id} - ${this.props.item.batch_name} should be deleted?`);
+    this.httpService.deleteBatch(this.props.user_id, this.props.item.batch_id)
       .then((response) => {
-        console.log(response);
+        this.props.afterBatchWasDeleted(this.props.item.batch_id);
       })
       .catch((error) => {
         console.error(error);
       });
   }
 
-  onDeleteClick = () => {
-    console.log(this, 'Delete');
+  onEditClick = () => {
+    console.log(this, 'Edit');
   }
 
   onModeClick = () => {
     console.log(this, 'Mode');
   }
 
-  onAddStorageClick = () => {
-    console.log(this.state);
-    console.log(this.props);
+  onSaveClick = () => {
+    this.httpService.updateStashes(this.state.stashes, this.props.user_id, this.props.item.batch_id)
+      .then((response) => {
 
-    let newStorageName = prompt('Enter new storage name');
-    const newState: { stashes: IQuantity[] } = this.state;
-    // const newState = JSON.parse(JSON.stringify(this.state));
-    if (newStorageName) {
-      const newStash = new IQuantity(newStorageName, this.props.item.batch_number);
-      newStash['stashes_user_id'] = 1; // hardcoded to be chagned later;
-      console.log(newStash);
-      this.addStash(newStash);
-      newState.stashes.push(newStash);
-    }
-    console.log(newState);
-    this.setState(newState);
-  }
-
-  async addStash(newStash) {
-    try {
-      return await axios.post(
-        `http://localhost:1337/api/v1.0/stashes/1/${this.props.item.batch_number}`,
-        this.commonService.flattenItemsForRequest([newStash])
-      );
-    }
-    catch (error) {
-      console.error(error);
-    }
-  }
-
-  async updateStashes() {
-    try {
-      return await axios.put(
-        `http://localhost:1337/api/v1.0/stashes/1/${this.props.item.batch_number}`,
-        this.commonService.flattenItemsForRequest(this.state.stashes)
-      ); // hardcode user no. 1
-    }
-    catch (error) {
-      console.error(error);
-    }
+      })
+      .catch((error) => {
+        console.error(error);
+      });
   }
 
   isInputSelected = () => { return this.state.selected ? true : false; };
@@ -115,14 +103,14 @@ export class Item extends React.Component<{ item: IBatch }, { stashes: IQuantity
         <div className='item'>
           <Header
             batch_name={this.props.item.batch_name}
-            batch_number={this.props.item.batch_number}
+            batch_id={this.props.item.batch_id}
             bottled_on={this.props.item.bottled_on} />
           <section className='content row'>
             <OverallQuantity
               quantity_litres={this.props.item.quantity_litres}
               quantity_bottles={this.props.item.quantity_bottles}
               quantity_crates={this.props.item.quantity_crates} />
-            <Quantity
+            <Stashes
               stashes={this.state.stashes}
               onQuantityChange={this.onQuantityChange}
               onQuantitySelection={this.onQuantitySelection}
@@ -130,7 +118,7 @@ export class Item extends React.Component<{ item: IBatch }, { stashes: IQuantity
             <Buttons
               increase={[1, 3, 5]}
               decrease={[-1, -3, -5]}
-              onButtonClick={this.onButtonClick}
+              onQuantityChangeButton={this.onQuantityChangeButton}
             />
           </section>
           <Options

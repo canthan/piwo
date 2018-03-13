@@ -1,7 +1,7 @@
 import * as React from 'react';
-import { IQuantity, IBottles, IQuantityStorage } from './storage.types';
+import { CStash, IBottles, IQuantityStorage } from '../storage.types';
 
-export class Quantity extends React.Component<{ stashes: IQuantity[], onQuantityChange, onQuantitySelection }, {}> {
+export class Stashes extends React.Component<{ stashes: CStash[], onQuantityChange, onQuantitySelection }, {}> {
   constructor(props) {
     super(props);
   }
@@ -52,9 +52,9 @@ class QuantityStorage extends React.Component<IQuantityStorage, {}> {
 
   onQuantitySelection = (e, name, stashKey) => {
     const node = e.target.parentNode.parentNode;
-    const elements2 = node.getElementsByClassName('quantity-input');
-    for (let i = 0; i < elements2.length; i++) {
-      elements2.item(i).classList.remove('selected');
+    const elements = node.getElementsByClassName('quantity-input');
+    for (let i = 0; i < elements.length; i++) {
+      elements.item(i).classList.remove('selected');
     }
     e.target.classList.add('selected');
     this.props.onQuantitySelection(e, name, stashKey);
@@ -88,4 +88,4 @@ class QuantityStorage extends React.Component<IQuantityStorage, {}> {
   }
 }
 
-export default Quantity;
+export default Stashes;

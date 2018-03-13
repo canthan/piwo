@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { IOverallQuantity} from './storage.types';
+import { IOverallQuantity} from '../storage.types';
 
 export function OverallQuantity(props: IOverallQuantity) {
   return (

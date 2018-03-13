@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { IButtons } from './storage.types';
+import { IButtons } from '../storage.types';
 
 export class Buttons extends React.Component<IButtons, {}> {
 
@@ -12,12 +12,12 @@ export class Buttons extends React.Component<IButtons, {}> {
       <div className='col-md-4 col-xs-12 buttons'>
         <div className='container buttons-row align-items-center'>
           {this.props.increase.map((value, index) => {
-            return <IncreaseButton key={index} value={value} onButtonClick={this.props.onButtonClick} />;
+            return <IncreaseButton key={index} value={value} onQuantityChangeButton={this.props.onQuantityChangeButton} />;
           })}
         </div>
         <div className='container buttons-row align-items-center'>
           {this.props.decrease.map((value, index) => {
-            return <DecreaseButton key={index} value={value} onButtonClick={this.props.onButtonClick} />;
+            return <DecreaseButton key={index} value={value} onQuantityChangeButton={this.props.onQuantityChangeButton} />;
           })}
         </div>
       </div>
@@ -27,7 +27,7 @@ export class Buttons extends React.Component<IButtons, {}> {
 
 function IncreaseButton(props) {
   return (
-    <button className='btn btn-success' onClick={() => props.onButtonClick(props.value)}>
+    <button className='btn btn-success' onClick={() => props.onQuantityChangeButton(props.value)}>
       +{props.value}
     </button>
   );
@@ -35,16 +35,10 @@ function IncreaseButton(props) {
 
 function DecreaseButton(props) {
   return (
-    <button className='btn btn-danger' onClick={() => props.onButtonClick(props.value)}>
+    <button className='btn btn-danger' onClick={() => props.onQuantityChangeButton(props.value)}>
       {props.value}
     </button>
   );
 }
-
-function selectQuantity(e) {
-  console.log(e);
-  console.log('clicked');
-}
-
 
 export default Buttons;
