@@ -1,13 +1,22 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
+import { Provider } from 'react-redux';
+import { store } from './store/index';
 import './index.css';
 import 'bootstrap/dist/css/bootstrap.css';
 import App from './App';
-// import registerServiceWorker from './registerServiceWorker';
+
 const rootEl = document.getElementById('root');
 
+// ReactDOM.render(
+//     <App />,
+//   rootEl
+// );
+
 ReactDOM.render(
-  <App />,
+  <Provider store={store}>
+   <App />
+  </Provider>,
   rootEl
 );
 

@@ -1,7 +1,7 @@
 import * as React from 'react';
-import { CStash, IBottles, IQuantityStorage } from '../storage.types';
+import { Stash, Bottles, QuantityStorage } from '../storage.types';
 
-export class Stashes extends React.Component<{ stashes: CStash[], onQuantityChange, onQuantitySelection }, {}> {
+export class StashesComponent extends React.Component<{ stashes: Stash[], onQuantityChange, onQuantitySelection }, {}> {
   constructor(props) {
     super(props);
   }
@@ -10,10 +10,10 @@ export class Stashes extends React.Component<{ stashes: CStash[], onQuantityChan
     return (
       <div className='col-md-6  col-xs-12 quantity'>
         {this.props.stashes.length > 0 &&
-          <QuantityHeader {...this.props.stashes[0].items} />
+          <QuantityHeaderComponent {...this.props.stashes[0].items} />
         }
         {this.props.stashes.map((stash, index) => {
-          return (<QuantityStorage
+          return (<QuantityStorageComponent
             key={index}
             stash={stash}
             stashKey={index}
@@ -26,7 +26,7 @@ export class Stashes extends React.Component<{ stashes: CStash[], onQuantityChan
 }
 }
 
-function QuantityHeader(props: IBottles) {
+function QuantityHeaderComponent(props: Bottles) {
   return (
     <div className='row'>
       <div className='col-4'></div>
@@ -45,7 +45,7 @@ function DecodeVolume(volume: string) {
   return Number(volume.slice(1)) / 100;
 }
 
-class QuantityStorage extends React.Component<IQuantityStorage, {}> {
+class QuantityStorageComponent extends React.Component<QuantityStorage, {}> {
   constructor(props) {
     super(props);
   }
@@ -88,4 +88,4 @@ class QuantityStorage extends React.Component<IQuantityStorage, {}> {
   }
 }
 
-export default Stashes;
+export default StashesComponent;

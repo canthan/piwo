@@ -2,7 +2,7 @@ import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import { IStorageSummaryProps } from './storage.summary.types';
 
-function StorageSummaryLine(props: IStorageSummaryProps) {
+function StorageSummaryLineComponent(props: IStorageSummaryProps) {
 
   return (
     <div className='container summary'>
@@ -20,4 +20,4 @@ function StorageSummaryLine(props: IStorageSummaryProps) {
   );
 }
 
-export default StorageSummaryLine;
+export default StorageSummaryLineComponent;

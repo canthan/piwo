@@ -1,4 +1,4 @@
-import { CStash, CEmptyBatch } from './storage.types';
+import { Stash, EmptyBatch } from './storage.types';
 import { CommonStorageService } from './common.service';
 import axios from 'axios';
 
@@ -15,7 +15,7 @@ export class StorageHttpService {
     }
   }
 
-  public async addStash(newStash: CStash, user_id: number, batch_id: number) {
+  public async addStash(newStash: Stash, user_id: number, batch_id: number) {
     try {
       return await axios.post(
         `http://localhost:1337/api/v1.0/stashes/${user_id}/${batch_id}`,
@@ -27,7 +27,7 @@ export class StorageHttpService {
     }
   }
 
-  public async updateStashes(stashes: CStash[], user_id: number, batch_id: number) {
+  public async updateStashes(stashes: Stash[], user_id: number, batch_id: number) {
     try {
       return await axios.put(
         `http://localhost:1337/api/v1.0/stashes/${user_id}/${batch_id}`,
@@ -48,7 +48,7 @@ export class StorageHttpService {
     }
   }
 
-  public async addBatch(newBatch: CEmptyBatch, user_id: number) {
+  public async addBatch(newBatch: EmptyBatch, user_id: number) {
     try {
       return await axios.post(
         `http://localhost:1337/api/v1.0/batches/${user_id}`,

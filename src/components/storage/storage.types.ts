@@ -1,4 +1,13 @@
-export class CBatch {
+export interface StorageState {
+  batches: Batch[];
+}
+
+export interface ItemState {
+  stashes: Stash[];
+  selected: any;
+}
+
+export class Batch {
   constructor(bottled_on = '', batch_id = 0, batch_name = '', litres = 0, bottles = 0, crates = 0) {
     this.batch_id = batch_id;
     this.batch_name = batch_name;
@@ -14,10 +23,10 @@ export class CBatch {
   quantity_litres: number;
   quantity_bottles: number;
   quantity_crates: number;
-  stashes: CStash[];
+  stashes: Stash[];
 }
 
-export class CEmptyBatch {
+export class EmptyBatch {
   constructor(bottled_on = '', batch_id = 0, batch_name = '') {
     this.batch_id = batch_id;
     this.batch_name = batch_name;
@@ -28,33 +37,33 @@ export class CEmptyBatch {
   bottled_on: string;
 }
 
-export class CStash {
+export class Stash {
   constructor(stash_name, batch_id, items = {}) {
-    this.items = new IBottles();
+    this.items = new Bottles();
     this.batch_id = batch_id;
     this.stash_name = stash_name;
   }
   batch_id: number;
   stash_id?: number;
   stash_name: string;
-  items: IBottles;
+  items: Bottles;
   key?: number;
 }
 
-export interface IOverallQuantity {
+export interface OverallQuantity {
   quantity_bottles: number;
   quantity_crates: number;
   quantity_litres: number;
 }
 
-export interface IQuantityStorage {
+export interface QuantityStorage {
   stashKey: number;
-  stash: CStash;
+  stash: Stash;
   onQuantityChange: any;
   onQuantitySelection: any;
 }
 
-export class IBottles {
+export class Bottles {
   constructor(b033 = 0, b040 = 0, b050 = 0) {
     this.b033 = b033;
     this.b040 = b040;
@@ -63,23 +72,23 @@ export class IBottles {
   [bottleSize: string]: number;
 }
 
-export interface IHeader {
+export interface Header {
   bottled_on: string;
   batch_id: number;
   batch_name: string;
 }
 
-export interface IButtons {
+export interface Buttons {
   increase: number[];
   decrease: number[];
   onQuantityChangeButton: object;
 }
 
-export interface IOptions {
+export interface Options {
   buttons: string[];
   functions: {
     [buttonFunction: string]: object;
   };
 }
 
-export default CBatch;
+export default Batch;

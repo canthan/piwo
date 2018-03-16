@@ -1,7 +1,7 @@
 import * as React from 'react';
-import { IOptions } from '../storage.types';
+import { Options } from '../storage.types';
 
-export function Options(props: IOptions) {
+export function OptionsComponent(props: Options) {
 
   return (
     <div className='col-12 option-buttons justify-content-center'>

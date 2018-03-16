@@ -1,4 +1,4 @@
-export interface IAppState {
+export interface AppState {
   user: {
     user_id: number,
     username: string,
@@ -10,11 +10,11 @@ export interface IAppState {
   loggedIn: boolean;
 }
 
-export interface IUser {
+export interface User {
   email: string;
   firstname: string;
   password: string;
-  registration_dat1e: string;
+  registration_date: string;
   surname: string;
   user_id: number;
   username: string;

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 
-function StorageSummaryHeader(props) {
+function StorageSummaryHeaderComponent(props) {
   const headers = [
     'Storage name',
     'Overall litres',
@@ -23,4 +23,4 @@ function StorageSummaryHeader(props) {
   );
 }
 
-export default StorageSummaryHeader;
+export default StorageSummaryHeaderComponent;

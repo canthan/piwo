@@ -1,16 +1,16 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 
-import { Header } from './storage.header';
-import { OverallQuantity } from './storage.overall.quantity';
-import { Stashes } from './storage.stashes';
-import { Buttons } from './storage.buttons';
-import { Options } from './storage.options';
-import { CBatch, CStash } from '../storage.types';
+import { HeaderComponent } from './storage.header';
+import { OverallQuantityComponent } from './storage.overall.quantity';
+import { StashesComponent } from './storage.stashes';
+import { ButtonsComponent } from './storage.buttons';
+import { OptionsComponent } from './storage.options';
+import { Batch, Stash } from '../storage.types';
 import { CommonStorageService } from '../common.service';
 import { StorageHttpService } from '../storage.http.service';
 
-export class Item extends React.Component<{ item: CBatch, afterBatchWasDeleted, user_id: number }, { stashes: CStash[], selected: any }> {
+export class ItemComponent extends React.Component<{ item: Batch, afterBatchWasDeleted, user_id: number }, { stashes: Stash[], selected: any }> {
   public commonService: CommonStorageService = new CommonStorageService();
   public httpService: StorageHttpService = new StorageHttpService();
   constructor(props) {
@@ -28,7 +28,7 @@ export class Item extends React.Component<{ item: CBatch, afterBatchWasDeleted, 
   }
 
   onQuantityChange = (type, stashKey, target, amount = 0) => {
-    const newState: { stashes: CStash[] } = this.state;
+    const newState: { stashes: Stash[] } = this.state;
     newState.stashes[stashKey].items[type] = Number(target.value) + amount;
     this.setState({
       ...newState
@@ -53,9 +53,9 @@ export class Item extends React.Component<{ item: CBatch, afterBatchWasDeleted, 
 
   onAddStorageClick = () => {
     let newStorageName = prompt('Enter new storage name');
-    const newState: { stashes: CStash[] } = this.state;
+    const newState: { stashes: Stash[] } = this.state;
     if (newStorageName) {
-      const newStash = new CStash(newStorageName, this.props.item.batch_id);
+      const newStash = new Stash(newStorageName, this.props.item.batch_id);
       newStash['stash_user_id'] = this.props.user_id;
       this.httpService.addStash(newStash, this.props.user_id, this.props.item.batch_id)
         .then((response) => {
@@ -101,27 +101,27 @@ export class Item extends React.Component<{ item: CBatch, afterBatchWasDeleted, 
     return (
       <div className='col-xl-6 col-xs-12 itemOverlay'>
         <div className='item'>
-          <Header
+          <HeaderComponent
             batch_name={this.props.item.batch_name}
             batch_id={this.props.item.batch_id}
             bottled_on={this.props.item.bottled_on} />
           <section className='content row'>
-            <OverallQuantity
+            <OverallQuantityComponent
               quantity_litres={this.props.item.quantity_litres}
               quantity_bottles={this.props.item.quantity_bottles}
               quantity_crates={this.props.item.quantity_crates} />
-            <Stashes
+            <StashesComponent
               stashes={this.state.stashes}
               onQuantityChange={this.onQuantityChange}
               onQuantitySelection={this.onQuantitySelection}
             />
-            <Buttons
+            <ButtonsComponent
               increase={[1, 3, 5]}
               decrease={[-1, -3, -5]}
               onQuantityChangeButton={this.onQuantityChangeButton}
             />
           </section>
-          <Options
+          <OptionsComponent
             buttons={['Edit', 'Save', 'Delete', 'Mode', 'Add Storage']}
             functions={{
               Edit: this.onEditClick,

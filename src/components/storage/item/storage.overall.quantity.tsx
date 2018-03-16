@@ -1,7 +1,7 @@
 import * as React from 'react';
-import { IOverallQuantity} from '../storage.types';
+import { OverallQuantity} from '../storage.types';
 
-export function OverallQuantity(props: IOverallQuantity) {
+export function OverallQuantityComponent(props: OverallQuantity) {
   return (
     <div className='col-md-2 col-xs-12 quantity'>
       <ul className='quantity-list'>

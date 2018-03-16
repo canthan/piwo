@@ -1,10 +1,10 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import { IStorageSummary, IStorageSummaryProps } from './storage.summary.types';
-import StorageSummaryHeader from './storage.summary.header';
+import StorageSummaryHeaderComponent from './storage.summary.header';
 
 // export class StorageSummary extends React.Component<IStorageSummary, IStorageSummaryProps> {
-export class StorageSummary extends React.Component<{}, {}> {
+export class StorageSummaryComponent extends React.Component<{}, {}> {
 
   constructor(props) {
     super(props);
@@ -15,10 +15,10 @@ export class StorageSummary extends React.Component<{}, {}> {
 
   render() {
     return (
-      <StorageSummaryHeader />
+      <StorageSummaryHeaderComponent />
     );
   }
 
 }
 
-export default StorageSummary;
+export default StorageSummaryComponent;

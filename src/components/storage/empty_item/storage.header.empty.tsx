@@ -1,7 +1,7 @@
 import * as React from 'react';
-import { IHeader } from '../storage.types';
+import { Header } from '../storage.types';
 
-export class EmptyHeader extends React.Component<{ onInputChange }, {}> {
+export class EmptyHeaderComponent extends React.Component<{ onInputChange }, {}> {
 
   constructor(props) {
     super(props);
@@ -36,4 +36,4 @@ export class EmptyHeader extends React.Component<{ onInputChange }, {}> {
   }
 }
 
-export default EmptyHeader;
+export default EmptyHeaderComponent;

@@ -1,15 +1,15 @@
-import { CBatch, CEmptyBatch } from './storage.types';
+import { Batch, EmptyBatch } from './storage.types';
 
 export class CommonStorageService {
 
-  public formatDateForDisplay(batchesArray: CBatch[]): CBatch[] {
+  public formatDateForDisplay(batchesArray: Batch[]): Batch[] {
     batchesArray.forEach((batch, index) => {
       batchesArray[index].bottled_on = batch.bottled_on.slice(0, batch.bottled_on.indexOf('T'));
     });
     return batchesArray;
   }
 
-  public calculateQuantities(batchesArray: CBatch[]) {
+  public calculateQuantities(batchesArray: Batch[]) {
     batchesArray.forEach((batch) => {
       const { quantity_litres: litres, quantity_bottles: bottles, quantity_crates: crates } = this.iterateThroughBatch(batch);
       batch.quantity_litres = litres;
@@ -18,7 +18,7 @@ export class CommonStorageService {
     });
   }
 
-  private iterateThroughBatch(batch: CBatch) {
+  private iterateThroughBatch(batch: Batch) {
     let q_litres = 0, q_bottles = 0, q_crates = 0;
     batch.stashes.forEach((stash) => {
       Object.keys(stash.items).forEach((bottle) => {

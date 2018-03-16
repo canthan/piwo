@@ -1,7 +1,7 @@
 import * as React from 'react';
-import { IHeader } from '../storage.types';
+import { Header } from '../storage.types';
 
-export function Header(props: IHeader) {
+export function HeaderComponent(props: Header) {
   return (
     <h3 className='heading'>
       <span className='col-3'>#{props.batch_id}</span>
@@ -11,4 +11,4 @@ export function Header(props: IHeader) {
   );
 }
 
-export default Header;
+export default HeaderComponent;

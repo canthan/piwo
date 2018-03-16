@@ -1,12 +1,12 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import * as ReactSVG from 'react-svg';
-import { Storage } from './components/storage/storage';
-import { IAppState, IUser } from './app.types';
+import { StorageComponent } from './components/storage/storage';
+import { AppState, User } from './types/app.types';
 import axios, { AxiosResponse } from 'axios';
 import './App.scss';
 
-export default class App extends React.Component<{}, IAppState> {
+export default class App extends React.Component<{}, AppState> {
 
   constructor(props) {
     super(props);
@@ -27,7 +27,7 @@ export default class App extends React.Component<{}, IAppState> {
     // const userId = prompt('Select user id (temporary solution)');
     const userId = 1;
     this.getUserData(userId)
-      .then((response: AxiosResponse<{ data: IUser }>) => {
+      .then((response: AxiosResponse<{ data: User }>) => {
         this.setState({
           loaded: true,
           loggedIn: true,
@@ -64,7 +64,7 @@ export default class App extends React.Component<{}, IAppState> {
           />
           <h1 className='App-title'>Storage app</h1>
         </header>
-        <Storage
+        <StorageComponent
           user_id={this.state.user.user_id}
         />
       </div>

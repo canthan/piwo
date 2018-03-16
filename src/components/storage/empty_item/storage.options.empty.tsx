@@ -1,7 +1,7 @@
 import * as React from 'react';
-import { IOptions } from '../storage.types';
+import { Options } from '../storage.types';
 
-export function EmptyOptions(props: IOptions) {
+export function EmptyOptionsComponent(props: Options) {
 
   return (
     <div className='col-12 empty-option-buttons justify-content-center'>
@@ -19,4 +19,4 @@ function OptionsButton(props) {
   );
 }
 
-export default EmptyOptions;
+export default EmptyOptionsComponent;

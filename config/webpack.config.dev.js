@@ -6,7 +6,7 @@ module.exports = merge(baseConfig, {
   devtool: 'source-map',
   devServer: {
     inline: true,
-    port: 3000,
+    port: 4000,
   },
   plugins: [
     new webpack.EnvironmentPlugin({

@@ -1,7 +1,7 @@
 import * as React from 'react';
-import { IButtons } from '../storage.types';
+import { Buttons } from '../storage.types';
 
-export class Buttons extends React.Component<IButtons, {}> {
+export class ButtonsComponent extends React.Component<Buttons, {}> {
 
   constructor(props) {
     super(props);
@@ -41,4 +41,4 @@ function DecreaseButton(props) {
   );
 }
 
-export default Buttons;
+export default ButtonsComponent;

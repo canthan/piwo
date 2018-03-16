@@ -1,16 +1,16 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 
-import { Item } from './item/storage.item';
-import { EmptyItem } from './empty_item/storage.item.empty';
-import { StorageSummary } from './summary/storage.summary';
+import { ItemComponent } from './item/storage.item';
+import { EmptyItemComponent } from './empty_item/storage.item.empty';
+import { StorageSummaryComponent } from './summary/storage.summary';
 import { CommonStorageService } from './common.service';
 import { StorageHttpService } from './storage.http.service';
-import { CBatch } from './storage.types';
+import { Batch } from './storage.types';
 
 import './storage.scss';
 
-export class Storage extends React.Component<{ user_id: number }, { batches: CBatch[] }> {
+export class StorageComponent extends React.Component<{ user_id: number }, { batches: Batch[] }> {
   public storageData;
   public commonService: CommonStorageService = new CommonStorageService();
   public httpService: StorageHttpService = new StorageHttpService();
@@ -42,7 +42,7 @@ export class Storage extends React.Component<{ user_id: number }, { batches: CBa
 
   renderStorageSummary() {
     return (
-      <StorageSummary
+      <StorageSummaryComponent
 
       />
     );
@@ -50,13 +50,13 @@ export class Storage extends React.Component<{ user_id: number }, { batches: CBa
 
   renderItem(item, index) {
     return (
-      <Item item={item} key={index} afterBatchWasDeleted={this.afterBatchWasDeleted} user_id={this.props.user_id} />
+      <ItemComponent item={item} key={index} afterBatchWasDeleted={this.afterBatchWasDeleted} user_id={this.props.user_id} />
     );
   }
 
   renderEmptyItem() {
     return (
-      <EmptyItem
+      <EmptyItemComponent
         afterBatchWasAdded={this.afterBatchWasAdded} user_id={this.props.user_id}/>
     );
   }
