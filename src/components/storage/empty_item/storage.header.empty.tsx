@@ -1,7 +1,11 @@
 import * as React from 'react';
 import { Header } from '../storage.types';
 
-export class EmptyHeaderComponent extends React.Component<{ onInputChange }, {}> {
+interface Props {
+  onInputChange;
+}
+
+export class EmptyHeaderComponent extends React.Component<Props, {}> {
 
   constructor(props) {
     super(props);

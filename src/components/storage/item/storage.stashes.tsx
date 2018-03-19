@@ -1,7 +1,13 @@
 import * as React from 'react';
 import { Stash, Bottles, QuantityStorage } from '../storage.types';
 
-export class StashesComponent extends React.Component<{ stashes: Stash[], onQuantityChange, onQuantitySelection }, {}> {
+interface Props {
+  stashes: Stash[];
+  onQuantityChange;
+  onQuantitySelection;
+}
+
+export class StashesComponent extends React.Component<Props, {}> {
   constructor(props) {
     super(props);
   }

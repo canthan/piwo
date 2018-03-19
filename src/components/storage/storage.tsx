@@ -10,7 +10,15 @@ import { Batch } from './storage.types';
 
 import './storage.scss';
 
-export class StorageComponent extends React.Component<{ user_id: number }, { batches: Batch[] }> {
+interface Props {
+  user_id: number;
+}
+
+interface State {
+  batches: Batch[];
+}
+
+export class StorageComponent extends React.Component<Props, State> {
   public storageData;
   public commonService: CommonStorageService = new CommonStorageService();
   public httpService: StorageHttpService = new StorageHttpService();

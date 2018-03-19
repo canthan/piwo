@@ -10,7 +10,18 @@ import { Batch, Stash } from '../storage.types';
 import { CommonStorageService } from '../common.service';
 import { StorageHttpService } from '../storage.http.service';
 
-export class ItemComponent extends React.Component<{ item: Batch, afterBatchWasDeleted, user_id: number }, { stashes: Stash[], selected: any }> {
+interface Props {
+  item: Batch;
+  user_id: number;
+  afterBatchWasDeleted;
+}
+
+interface State {
+  stashes: Stash[];
+  selected: any;
+}
+
+export class ItemComponent extends React.Component<Props, State> {
   public commonService: CommonStorageService = new CommonStorageService();
   public httpService: StorageHttpService = new StorageHttpService();
   constructor(props) {
