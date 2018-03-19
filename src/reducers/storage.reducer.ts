@@ -3,10 +3,7 @@ import { AnyAction } from 'redux';
 import initialAppState from './initialState';
 import { StorageActionTypes } from './../constants/actionTypes';
 
-export function storageReducer(
-  state: StorageState = initialAppState.storage,
-  action: AnyAction
-) {
+export function storageReducer( state: StorageState = initialAppState.storage, action: AnyAction) {
   const { payload } = action;
   switch (action.type) {
     case StorageActionTypes.GET_USER_STORAGE_SUCCESS:
@@ -14,6 +11,8 @@ export function storageReducer(
         ...state,
         batches: [...action.batches],
       };
+    default:
+      return state;
   }
 }
 
