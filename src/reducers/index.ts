@@ -7,7 +7,7 @@ import { itemReducer } from './item.reducer';
 const rootReducer = combineReducers<AppStateInterface>({
   app: appReducer,
   storage: storageReducer,
-  item: itemReducer,
+  emptyBatch: itemReducer,
 });
 
 export default rootReducer;

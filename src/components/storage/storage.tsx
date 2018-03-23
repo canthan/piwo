@@ -1,48 +1,59 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
+import { connect } from 'react-redux';
 
 import { ItemComponent } from './item/storage.item';
 import { EmptyItemComponent } from './empty_item/storage.item.empty';
 import { StorageSummaryComponent } from './summary/storage.summary';
 import { CommonStorageService } from './common.service';
-import { StorageHttpService } from './storage.http.service';
-import { Batch } from './storage.types';
+// import { StorageHttpService } from './storage.http.service';
+import { Batch, StorageState } from './storage.types';
+
 
 import './storage.scss';
+import { getBatchesData, GetBatchesData } from '../../actions/storage.actions';
+import { AppStateInterface } from '../../reducers/initialState';
 
 interface Props {
   user_id: number;
-}
-
-interface State {
   batches: Batch[];
+  getBatchesData(data): GetBatchesData;
 }
 
-export class StorageComponent extends React.Component<Props, State> {
-  public storageData;
-  public commonService: CommonStorageService = new CommonStorageService();
-  public httpService: StorageHttpService = new StorageHttpService();
-  constructor(props) {
-    super(props);
+export class StorageComponent extends React.Component<any , StorageState> {
+  // public storageData;
+  // public commonService: CommonStorageService = new CommonStorageService();
+  // public httpService: StorageHttpService = new StorageHttpService();
+  // constructor(props) {
+  //   super(props);
+  // }
 
-    this.state = {
-      batches: []
-    };
-  }
+  getBatchesData = (data): GetBatchesData => this.props.getBatchesData(data);
 
-  componentWillReceiveProps(newProps) {
-    this.httpService.getStorageData(newProps.user_id)
-    .then((response) => {
-      this.storageData = response.data.data;
-      console.log(this.storageData);
-      this.storageData.batches = this.commonService.formatDateForDisplay(this.storageData.batches);
-      this.commonService.calculateQuantities(this.storageData.batches);
-      this.setState({ batches: this.storageData.batches });
-    })
-    .catch((error) => {
-      console.error(error);
-    });
-  }
+  // componentWillMount() {
+  //   console.log(this.props);
+  //   console.log(this.state);
+  // }
+
+  // componentDidMount(): void {
+    // const userId = prompt('Select user id (temporary solution)');
+    // this.getBatchesData();
+  // }
+
+  // componentWillReceiveProps(newProps) {
+    // console.log('componentWillReceiveProps', newProps);
+  //   this.httpService.getStorageData(newProps.user_id)
+  //   .then((response) => {
+  //     this.storageData = response.data.data;
+  //     console.log(this.storageData);
+  //     this.storageData.batches = this.commonService.formatDateForDisplay(this.storageData.batches);
+  //     this.commonService.calculateQuantities(this.storageData.batches);
+  //     this.setState({ batches: this.storageData.batches });
+  //   })
+  //   .catch((error) => {
+  //     console.error(error);
+  //   });
+  // }
 
   getSummary(storageData) {
 
@@ -98,7 +109,7 @@ export class StorageComponent extends React.Component<Props, State> {
         <div className='storage' >
           <div className='container'>
             <div className='row'>
-              {this.state.batches.map((item, index) => {
+              {this.props.batches.map((item, index) => {
                 return this.renderItem(item, index);
               })}
               {
@@ -118,4 +129,10 @@ export class Label extends React.Component<{}, {}> { }
 
 export class Text extends React.Component<{}, {}> { }
 
-export default Storage;
+const mapStateToProps = (state: AppStateInterface) => {
+  return {
+    batches: state.storage
+  };
+};
+
+export default connect(mapStateToProps, { getBatchesData })(StorageComponent);

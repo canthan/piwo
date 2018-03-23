@@ -1,3 +1,10 @@
+import { Batch, Stash, StorageState, ItemState } from './../components/storage/storage.types';
+export interface State {
+  app: AppState;
+  storage: StorageState;
+  item: ItemState;
+}
+
 export interface AppState {
   user: {
     user_id: number,

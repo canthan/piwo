@@ -1,10 +1,10 @@
-import { ItemState, StorageState } from './../components/storage/storage.types';
+import { StorageState, EmptyBatch } from './../components/storage/storage.types';
 import { AppState } from './../types/app.types';
 
 export interface AppStateInterface {
   app: AppState;
   storage: StorageState;
-  item: ItemState;
+  emptyBatch: EmptyBatch;
 }
 
 const initialAppState: AppStateInterface = {
@@ -22,10 +22,7 @@ const initialAppState: AppStateInterface = {
   storage: {
     batches: [],
   },
-  item: {
-    stashes: [],
-    selected: undefined,
-  }
+  emptyBatch: new EmptyBatch()
 };
 
 export default initialAppState;

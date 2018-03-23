@@ -7,7 +7,12 @@ import { EmptyHeaderComponent } from './storage.header.empty';
 import { EmptyOptionsComponent } from './storage.options.empty';
 import { EmptyBatch, Batch } from '../storage.types';
 
-export class EmptyItemComponent extends React.Component<{ afterBatchWasAdded, user_id: number }, EmptyBatch> {
+interface Props {
+  afterBatchWasAdded;
+  user_id: number;
+}
+
+export class EmptyItemComponent extends React.Component<Props, EmptyBatch> {
   public commonService: CommonStorageService = new CommonStorageService();
   public httpService: StorageHttpService = new StorageHttpService();
   constructor(props) {
