@@ -11,7 +11,11 @@ export function storageReducer(
   const commonStorageService: CommonStorageService = new CommonStorageService();
   const { payload } = action;
   switch (action.type) {
-
+    case StorageActionTypes.GET_USER_STORAGE_REQUEST:
+    case StorageActionTypes.ADD_BATCH_REQUEST:
+      return {
+        ...state
+      };
     case StorageActionTypes.GET_USER_STORAGE_SUCCESS:
       const batches = commonStorageService.formatDateForDisplay(action.data);
       commonStorageService.calculateQuantities(batches);
@@ -21,16 +25,16 @@ export function storageReducer(
       };
 
     case StorageActionTypes.ADD_BATCH_SUCCESS:
-    console.log(action.data);
       return {
         ...state,
-        batches: [...action.data],
+        batches: [...action.data]
       };
 
+    case StorageActionTypes.GET_USER_STORAGE_FAILURE:
     case StorageActionTypes.ADD_BATCH_FAILURE:
       return {
         ...state,
-        error: action.error,
+        error: action.error
       };
 
     default:

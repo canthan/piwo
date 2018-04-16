@@ -1,7 +1,7 @@
 {
   "batches": [
     {
-      "batch_number": "1",
+      "batch_id": "1",
       "batch_name": "Item_1",
       "bottled_on": "2018.01.02",
       "quantity_litres": "32",
@@ -27,7 +27,7 @@
       ]
     },
     {
-      "batch_number": "2",
+      "batch_id": "2",
       "batch_name": "Item_2",
       "bottled_on": "2018.01.10",
       "quantity_litres": "25",
@@ -53,7 +53,7 @@
       ]
     },
     {
-      "batch_number": "3",
+      "batch_id": "3",
       "batch_name": "Item_3",
       "bottled_on": "2018.01.24",
       "quantity_litres": "32",
@@ -79,7 +79,7 @@
       ]
     },
     {
-      "batch_number": "4",
+      "batch_id": "4",
       "batch_name": "Item_4",
       "bottled_on": "2017.12.10",
       "quantity_litres": "32",
@@ -105,7 +105,7 @@
       ]
     },
     {
-      "batch_number": "5",
+      "batch_id": "5",
       "batch_name": "Item_5",
       "bottled_on": "2017.04.10",
       "quantity_litres": "10",
@@ -131,7 +131,7 @@
       ]
     },
     {
-      "batch_number": "6",
+      "batch_id": "6",
       "batch_name": "Item_6",
       "bottled_on": "2017.11.10",
       "quantity_litres": "20",
