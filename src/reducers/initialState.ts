@@ -1,13 +1,13 @@
 import { StorageState, EmptyBatch } from './../components/storage/storage.types';
 import { AppState } from './../types/app.types';
 
-export interface AppStateInterface {
+export interface OverallAppState {
   app: AppState;
   storage: StorageState;
   emptyBatch: EmptyBatch;
 }
 
-const initialAppState: AppStateInterface = {
+const initialAppState: OverallAppState = {
   app: {
     loaded: true,
     loggedIn: false,

@@ -1,22 +1,37 @@
-import { GetBatchesData, getBatchesDataSuccess } from './actions/storage.actions';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import * as ReactSVG from 'react-svg';
 import { connect } from 'react-redux';
-import { StorageComponent } from './components/storage/storage';
-import { AppState, User, State } from './types/app.types';
-import { getUserData, GetUserData } from './actions/app.actions';
 import axios, { AxiosResponse } from 'axios';
+
+import StorageComponent from './components/storage/storage';
+
+import { AppState, User, AsyncAction } from './types/app.types';
+import {
+  StorageState,
+  Batch,
+  ItemState,
+  EmptyBatch
+} from './components/storage/storage.types';
+import { getUserDataAsync } from './actions/app.actions';
+import { OverallAppState } from './reducers/initialState';
+
 import './App.scss';
-import { StorageState, Batch } from './components/storage/storage.types';
-import { AppStateInterface } from './reducers/initialState';
 
 interface Props {
-  getUserData(user_id): GetUserData;
+  app: AppState;
   batches: Batch[];
+  emptyBatch: EmptyBatch;
+  getUserDataAsync(user_id: number): AsyncAction;
 }
 
-export class App extends React.Component<Props, State> {
+// export interface State {
+//   app: AppState;
+//   storage: StorageState;
+//   item: ItemState;
+// }
+
+export class App extends React.Component<Props> {
 
   componentDidMount(): void {
     // const userId = prompt('Select user id (temporary solution)');
@@ -24,33 +39,29 @@ export class App extends React.Component<Props, State> {
     this.getUserData(userId);
   }
 
-  getUserData = (user_id): GetUserData => this.props.getUserData(user_id);
+  getUserData = (user_id: number): AsyncAction =>
+    this.props.getUserDataAsync(user_id);
 
   render() {
     return (
-      <div className='App'>
-        <header className='App-header'>
-          <ReactSVG
-            path='./assets/img/logo.svg'
-            className='logo-svg'
-          />
-          <h1 className='App-title'>Storage app</h1>
+      <div className="App">
+        <header className="App-header">
+          <ReactSVG path="./assets/img/logo.svg" className="logo-svg" />
+          <h1 className="App-title">Storage app</h1>
         </header>
-        {<StorageComponent
-          user_id = {1}
-          batches = {this.props.batches}
-        />}
+        {/* <StorageComponent user_id={1} batches={this.props.batches}/> */}
+        <StorageComponent user_id={1}/>
       </div>
     );
   }
 }
 
-const mapStateToProps = (state: AppStateInterface) => ({
+const mapStateToProps = (state: OverallAppState) => ({
   app: {
-    ...state.app,
+    ...state.app
   },
   batches: state.storage.batches,
-  stashes: state.emptyBatch,
+  emptyBatch: state.emptyBatch
 });
 
-export default connect(mapStateToProps, { getUserData })(App);
+export default connect(mapStateToProps, { getUserDataAsync })(App);

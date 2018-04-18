@@ -1,7 +1,14 @@
 import * as React from 'react';
 import { Options } from '../storage.types';
 
-export function OptionsComponent(props: Options) {
+export interface Props {
+  buttons: string[];
+  functions: {
+    [buttonFunction: string]: object;
+  };
+}
+
+export function OptionsComponent(props: Props) {
 
   return (
     <div className='col-12 option-buttons justify-content-center'>
@@ -18,4 +25,5 @@ function OptionsButton(props) {
     <button className='btn btn-light' onClick={() => props.onButtonClick()}>{props.role}</button>
   );
 }
-export default Options;
+
+export default OptionsComponent;

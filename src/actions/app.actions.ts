@@ -1,14 +1,11 @@
 import { Batch } from './../components/storage/storage.types';
-import { AppStateInterface } from './../reducers/initialState';
 import Axios, { AxiosError, AxiosResponse } from 'axios';
 import { Dispatch } from 'react-redux';
 import { AnyAction } from 'redux';
 import { ThunkAction } from 'redux-thunk';
 import { AppActionTypes, StorageActionTypes } from './../constants/actionTypes';
 import { AppState, User } from './../types/app.types';
-import { getBatchesData } from './storage.actions';
-
-export type GetUserData = ThunkAction<void, AppStateInterface, null>;
+import { getBatchesDataAsync } from './storage.actions';
 
 function getUserDataRequest(): AnyAction {
   return {
@@ -32,14 +29,14 @@ function getUserDataFailure(): AnyAction {
   };
 }
 
-export function getUserData(user_id: number) {
+export function getUserDataAsync(user_id: number) {
   return (dispatch: Dispatch<AnyAction>) => {
     dispatch(getUserDataRequest());
     Axios.get(`http://localhost:1337/api/v1.0/user_data/${user_id}`)
       .then((response: AxiosResponse<any>) => {
         console.log(response);
         dispatch(getUserDataSuccess(response.data.data));
-        dispatch(getBatchesData(response.data.data.batches));
+        // dispatch(getBatchesDataAsync(response.data.data.batches));
       })
       .catch((error: AxiosError) => {
         dispatch(getUserDataFailure());

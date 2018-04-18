@@ -7,7 +7,7 @@ interface Props {
   onQuantitySelection;
 }
 
-export class StashesComponent extends React.Component<Props, {}> {
+export class StashesComponent extends React.Component<Props> {
   constructor(props) {
     super(props);
   }

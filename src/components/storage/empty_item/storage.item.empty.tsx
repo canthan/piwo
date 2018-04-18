@@ -27,8 +27,10 @@ export class EmptyItemComponent extends React.Component<Props, EmptyBatch> {
   onAddNewBatchClick = () => {
     const newBatch = this.state;
     newBatch['batch_user_id'] = this.props.user_id;
+    // console.log(newBatch)
     this.httpService.addBatch(newBatch, this.props.user_id)
       .then((response) => {
+        // console.log(response)
         let newBatch = Object.assign(new Batch(), response.data.data);
         newBatch = this.commonService.formatDateForDisplay([newBatch])[0];
         this.props.afterBatchWasAdded(newBatch);
@@ -43,7 +45,8 @@ export class EmptyItemComponent extends React.Component<Props, EmptyBatch> {
       <div className='col-xl-6 col-xs-12 itemOverlay'>
         <div className='item'>
           <EmptyHeaderComponent
-            onInputChange={this.onInputChange} />
+            onInputChange={this.onInputChange}
+            {...this.state} />
           <EmptyOptionsComponent
             buttons={['Add new batch']}
             functions={{

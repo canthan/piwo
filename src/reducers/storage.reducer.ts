@@ -13,9 +13,11 @@ export function storageReducer(
   switch (action.type) {
     case StorageActionTypes.GET_USER_STORAGE_REQUEST:
     case StorageActionTypes.ADD_BATCH_REQUEST:
+    case StorageActionTypes.DELETE_BATCH_REQUEST:
       return {
         ...state
       };
+
     case StorageActionTypes.GET_USER_STORAGE_SUCCESS:
       const batches = commonStorageService.formatDateForDisplay(action.data);
       commonStorageService.calculateQuantities(batches);
@@ -30,8 +32,15 @@ export function storageReducer(
         batches: [...action.data]
       };
 
+    case StorageActionTypes.DELETE_BATCH_SUCCESS:
+      return {
+        ...state,
+        batches: state.batches.filter(batch => batch.batch_id !== action.data.batch_id)
+      };
+
     case StorageActionTypes.GET_USER_STORAGE_FAILURE:
     case StorageActionTypes.ADD_BATCH_FAILURE:
+    case StorageActionTypes.DELETE_BATCH_FAILURE:
       return {
         ...state,
         error: action.error

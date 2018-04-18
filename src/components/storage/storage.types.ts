@@ -27,7 +27,7 @@ export class Batch {
 }
 
 export class EmptyBatch {
-  constructor(bottled_on = '', batch_id = 0, batch_name = '') {
+  constructor(bottled_on = '2018-04-03', batch_id = 1, batch_name = 'aaa') {
     this.batch_id = batch_id;
     this.batch_name = batch_name;
     this.bottled_on = bottled_on;
@@ -70,12 +70,6 @@ export class Bottles {
     this.b050 = b050;
   }
   [bottleSize: string]: number;
-}
-
-export interface Header {
-  bottled_on: string;
-  batch_id: number;
-  batch_name: string;
 }
 
 export interface Buttons {

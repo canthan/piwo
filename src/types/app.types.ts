@@ -1,9 +1,5 @@
+import { ThunkAction } from 'redux-thunk';
 import { Batch, Stash, StorageState, ItemState } from './../components/storage/storage.types';
-export interface State {
-  app: AppState;
-  storage: StorageState;
-  item: ItemState;
-}
 
 export interface AppState {
   user: {
@@ -26,3 +22,5 @@ export interface User {
   user_id: number;
   username: string;
 }
+
+export type AsyncAction = ThunkAction<Promise<void>, AppState, null>;
