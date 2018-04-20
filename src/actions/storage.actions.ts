@@ -1,3 +1,4 @@
+import { CommonStorageService } from './../components/storage/common.service';
 import Axios, { AxiosResponse, AxiosError } from 'axios';
 import { User, AsyncAction } from './../types/app.types';
 import { Dispatch } from 'react-redux';
@@ -13,8 +14,10 @@ export function getBatchesDataRequest(): AnyAction {
   };
 }
 export function getBatchesDataSuccess(data: Batch[]): AnyAction {
+  const batches = CommonStorageService.formatDateForDisplay(data);
+  CommonStorageService.calculateQuantities(batches);
   return {
-    data,
+    batches,
     type: StorageActionTypes.GET_USER_STORAGE_SUCCESS
   };
 }
@@ -31,9 +34,9 @@ export function addBatchRequest(): AnyAction {
   };
 }
 
-export function addBatchSuccess(newBatch: Batch[]): AnyAction {
+export function addBatchSuccess(batches: Batch[]): AnyAction {
   return {
-    data: newBatch,
+    batches,
     type: StorageActionTypes.ADD_BATCH_SUCCESS
   };
 }
@@ -53,7 +56,7 @@ export function deleteBatchRequest(): AnyAction {
 
 export function deleteBatchSuccess(deletedBatch: Batch): AnyAction {
   return {
-    data: deletedBatch,
+    batch: deletedBatch,
     type: StorageActionTypes.DELETE_BATCH_SUCCESS
   };
 }
@@ -65,11 +68,6 @@ export function deleteBatchFailure(): AnyAction {
   };
 }
 
-// export function getBatchesData(data: Batch[]) {
-//   return (dispatch: Dispatch<AnyAction>) => {
-//     dispatch(getBatchesDataSuccess(data));
-//   };
-// }
 export function getBatchesDataAsync(user_id: number) {
 
   console.log('getBatchesDataAsync')
@@ -87,26 +85,30 @@ export function getBatchesDataAsync(user_id: number) {
 }
 
 export function deleteBatchAsync(user_id: number, batch_id: number): AsyncAction {
+  
+  console.log('deleteBatchAsync')
   return async (dispatch: Dispatch<AnyAction>) => {
     dispatch(deleteBatchRequest());
     try {
       const response = await Axios.delete(
         `http://localhost:1337/api/v1.0/batches/${user_id}/${batch_id}`
       );
-      dispatch(deleteBatchSuccess(response.data));
+      console.log(response);
+      dispatch(deleteBatchSuccess(response.data.data));
     } catch (error) {
       dispatch(deleteBatchFailure());
     }
   };
 }
 
-export function addbatch(newBatch: EmptyBatch, user_id: number) {
-  return (dispatch: Dispatch<AnyAction>) => {
+export function addBatchAsync(user_id: number, newBatch: EmptyBatch) {
+  return (dispatch: Dispatch<AnyAction>, getState) => {
+    const batches = getState().storage.batches;
     dispatch(addBatchRequest());
     Axios.post(`http://localhost:1337/api/v1.0/batches/${user_id}`, newBatch)
       .then((response: AxiosResponse<any>) => {
-        console.log(response);
-        dispatch(addBatchSuccess(response.data.data));
+        batches.push(response.data.data);
+        dispatch(addBatchSuccess(batches));
       })
       .catch((error: AxiosError) => {
         dispatch(addBatchFailure());

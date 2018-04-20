@@ -25,7 +25,6 @@ interface State {
 }
 
 export class ItemComponent extends React.Component<Props, State> {
-  public commonService: CommonStorageService = new CommonStorageService();
   public httpService: StorageHttpService = new StorageHttpService();
   constructor(props) {
     super(props);
@@ -94,17 +93,6 @@ export class ItemComponent extends React.Component<Props, State> {
     );
     this.props.deleteBatch(this.props.user_id, this.props.item.batch_id);
   }
-  // onDeleteClick = () => {
-  //   confirm(`Are you sure that Batch no.${this.props.item.batch_id} - ${this.props.item.batch_name} should be deleted?`);
-  //   this.httpService.deleteBatch(this.props.user_id, this.props.item.batch_id)
-  //     .then((response) => {
-  //       console.log(response)
-  //       this.props.afterBatchWasDeleted(this.props.item.batch_id);
-  //     })
-  //     .catch((error) => {
-  //       console.error(error);
-  //     });
-  // }
 
   onEditClick = () => {
     console.log(this, 'Edit');

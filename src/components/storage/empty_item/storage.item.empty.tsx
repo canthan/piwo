@@ -5,15 +5,15 @@ import { StorageHttpService } from '../storage.http.service';
 import { CommonStorageService } from '../common.service';
 import { EmptyHeaderComponent } from './storage.header.empty';
 import { EmptyOptionsComponent } from './storage.options.empty';
+
 import { EmptyBatch, Batch } from '../storage.types';
+import { AsyncAction } from '../../../types/app.types';
 
 interface Props {
-  afterBatchWasAdded;
-  user_id: number;
+  addBatch(newBatch: EmptyBatch): AsyncAction;
 }
 
 export class EmptyItemComponent extends React.Component<Props, EmptyBatch> {
-  public commonService: CommonStorageService = new CommonStorageService();
   public httpService: StorageHttpService = new StorageHttpService();
   constructor(props) {
     super(props);
@@ -26,18 +26,7 @@ export class EmptyItemComponent extends React.Component<Props, EmptyBatch> {
 
   onAddNewBatchClick = () => {
     const newBatch = this.state;
-    newBatch['batch_user_id'] = this.props.user_id;
-    // console.log(newBatch)
-    this.httpService.addBatch(newBatch, this.props.user_id)
-      .then((response) => {
-        // console.log(response)
-        let newBatch = Object.assign(new Batch(), response.data.data);
-        newBatch = this.commonService.formatDateForDisplay([newBatch])[0];
-        this.props.afterBatchWasAdded(newBatch);
-      })
-      .catch((error) => {
-        console.error(error);
-      });
+    this.props.addBatch(newBatch);
   }
 
   render() {
