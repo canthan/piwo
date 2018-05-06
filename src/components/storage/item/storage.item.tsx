@@ -67,7 +67,7 @@ export class ItemComponent extends React.Component<{ item: Batch, afterBatchWasD
   }
 
   onDeleteClick = () => {
-    confirm(`Are you sure that Batch no.${this.props.item.batch_id} - ${this.props.item.batch_name} should be deleted?`);
+    confirm(`Are you sure that Batch no.${this.props.item.batch_number} - ${this.props.item.batch_name} should be deleted?`);
     this.httpService.deleteBatch(this.props.user_id, this.props.item.batch_id)
       .then((response) => {
         this.props.afterBatchWasDeleted(this.props.item.batch_id);
@@ -103,7 +103,7 @@ export class ItemComponent extends React.Component<{ item: Batch, afterBatchWasD
         <div className='item'>
           <HeaderComponent
             batch_name={this.props.item.batch_name}
-            batch_id={this.props.item.batch_id}
+            batch_number={this.props.item.batch_number}
             bottled_on={this.props.item.bottled_on} />
           <section className='content row'>
             <OverallQuantityComponent

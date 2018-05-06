@@ -7,7 +7,7 @@ export class EmptyHeaderComponent extends React.Component<{ onInputChange }, {}>
     super(props);
     this.state = {
       batch_name: '',
-      batch_id: 0,
+      batch_number: '0',
       bottled_on: ''
     };
   }
@@ -23,7 +23,7 @@ export class EmptyHeaderComponent extends React.Component<{ onInputChange }, {}>
     return (
       <div className='empty-heading'>
         <div className='col-3'>
-          <input type='text' name='batch_id' placeholder='#Number*' className='empty-heading__input' onChange={this.handleChange}></input>
+          <input type='text' name='batch_number' placeholder='#Number*' className='empty-heading__input' onChange={this.handleChange}></input>
         </div>
         <div className='col-6'>
           <input type='text' name='batch_name' placeholder='Batch Name*' className='empty-heading__input' onChange={this.handleChange}></input>

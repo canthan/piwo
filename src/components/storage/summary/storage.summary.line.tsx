@@ -1,8 +1,8 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import { IStorageSummaryProps } from './storage.summary.types';
+import { StorageSummaryProps } from './storage.summary.types';
 
-function StorageSummaryLineComponent(props: IStorageSummaryProps) {
+function StorageSummaryLineComponent(props: StorageSummaryProps) {
 
   return (
     <div className='container summary'>

@@ -43,7 +43,7 @@ export class StorageComponent extends React.Component<{ user_id: number }, { bat
   renderStorageSummary() {
     return (
       <StorageSummaryComponent
-
+        batches={this.state.batches}
       />
     );
   }

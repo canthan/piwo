@@ -8,8 +8,9 @@ export interface ItemState {
 }
 
 export class Batch {
-  constructor(bottled_on = '', batch_id = 0, batch_name = '', litres = 0, bottles = 0, crates = 0) {
+  constructor(bottled_on = '', batch_id = 0, batch_number = '0', batch_name = '', litres = 0, bottles = 0, crates = 0) {
     this.batch_id = batch_id;
+    this.batch_number = batch_number;
     this.batch_name = batch_name;
     this.bottled_on = bottled_on;
     this.quantity_litres = litres;
@@ -18,6 +19,7 @@ export class Batch {
     this.stashes = [];
   }
   batch_id?: number;
+  batch_number?: string;
   batch_name: string;
   bottled_on: string;
   quantity_litres: number;
@@ -27,12 +29,12 @@ export class Batch {
 }
 
 export class EmptyBatch {
-  constructor(bottled_on = '', batch_id = 0, batch_name = '') {
-    this.batch_id = batch_id;
+  constructor(bottled_on = '', batch_number = '0', batch_name = '') {
+    this.batch_number = batch_number;
     this.batch_name = batch_name;
     this.bottled_on = bottled_on;
   }
-  batch_id: number;
+  batch_number: string;
   batch_name: string;
   bottled_on: string;
 }
@@ -74,7 +76,7 @@ export class Bottles {
 
 export interface Header {
   bottled_on: string;
-  batch_id: number;
+  batch_number: string;
   batch_name: string;
 }
 

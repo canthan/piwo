@@ -1,4 +1,4 @@
-export interface IStorageSummary {
+export interface StorageSummary {
   stashName: string;
   quantity_crates: {
     overall: number,
@@ -7,7 +7,7 @@ export interface IStorageSummary {
   };
 }
 
-export interface IStorageSummaryProps {
+export interface StorageSummaryProps {
   stashName: string;
   litres_overall: number;
   litres_in_05: number;
