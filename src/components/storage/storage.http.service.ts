@@ -19,7 +19,7 @@ export class StorageHttpService {
     try {
       return await axios.post(
         `http://localhost:1337/api/v1.0/stashes/${user_id}/${batch_id}`,
-        this.commonService.flattenItemsForRequest([newStash])
+        CommonStorageService.flattenItemsForRequest([newStash])
       );
     }
     catch (error) {
@@ -31,7 +31,7 @@ export class StorageHttpService {
     try {
       return await axios.put(
         `http://localhost:1337/api/v1.0/stashes/${user_id}/${batch_id}`,
-        this.commonService.flattenItemsForRequest(stashes)
+        CommonStorageService.flattenItemsForRequest(stashes)
       );
     }
     catch (error) {

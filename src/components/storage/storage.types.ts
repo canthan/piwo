@@ -18,6 +18,7 @@ export class Batch {
     this.stashes = [];
   }
   batch_id?: number;
+  batch_number?: string;
   batch_name: string;
   bottled_on: string;
   quantity_litres: number;
@@ -27,12 +28,12 @@ export class Batch {
 }
 
 export class EmptyBatch {
-  constructor(bottled_on = '2018-04-03', batch_id = 1, batch_name = 'aaa') {
-    this.batch_id = batch_id;
+  constructor(bottled_on = '2018-04-03', batch_number = '1', batch_name = 'aaa') {
+    this.batch_number = batch_number;
     this.batch_name = batch_name;
     this.bottled_on = bottled_on;
   }
-  batch_id: number;
+  batch_number: string;
   batch_name: string;
   bottled_on: string;
 }

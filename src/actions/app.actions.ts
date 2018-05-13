@@ -26,9 +26,9 @@ function getUserDataSuccess(data: User): AnyAction {
   };
 }
 
-function getUserDataFailure(): AnyAction {
+function getUserDataFailure(error: AxiosError): AnyAction {
   return {
-    error: true,
+    error,
     type: AppActionTypes.GET_USER_DATA_FAILURE
   };
 }
@@ -43,16 +43,15 @@ function getBatchesFromUserData(batches: Batch[]) {
 }
 
 export function getUserDataAsync(user_id: number) {
-  return (dispatch: Dispatch<AnyAction>) => {
+  return async (dispatch: Dispatch<AnyAction>) => {
     dispatch(getUserDataRequest());
-    Axios.get(`http://localhost:1337/api/v1.0/user_data/${user_id}`)
-      .then((response: AxiosResponse<any>) => {
-        console.log(response);
-        dispatch(getUserDataSuccess(response.data.data));
-        dispatch(getBatchesFromUserData(response.data.data.batches));
-      })
-      .catch((error: AxiosError) => {
-        dispatch(getUserDataFailure());
-      });
+    try {
+      const response: AxiosResponse<any> = await Axios.get(`http://localhost:1337/api/v1.0/user_data/${user_id}`);
+      const userData = response.data.data;
+      dispatch(getUserDataSuccess(userData));
+      dispatch(getBatchesFromUserData(userData.batches));
+    } catch (error) {
+      dispatch(getUserDataFailure(error));
+    }
   };
 }

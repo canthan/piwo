@@ -12,12 +12,17 @@ export function storageReducer(
   const { payload } = action;
   switch (action.type) {
     case StorageActionTypes.ADD_BATCH_REQUEST:
+    case StorageActionTypes.ADD_STASH_REQUEST:
     case StorageActionTypes.DELETE_BATCH_REQUEST:
     case StorageActionTypes.GET_USER_STORAGE_REQUEST:
       return {
         ...state
       };
     case StorageActionTypes.ADD_BATCH_SUCCESS:
+      return {
+        ...state,
+        batches: [...state.batches, action.newBatch],
+      }
     case StorageActionTypes.GET_USER_STORAGE_SUCCESS:
     case AppActionTypes.GET_BATCHES_FROM_USER_DATA:
       return {
@@ -29,11 +34,12 @@ export function storageReducer(
       return {
         ...state,
         batches: state.batches.filter(
-          batch => batch.batch_id !== action.batch.batch_id
+          batch => batch.batch_id !== action.batch_id
         )
       };
 
     case StorageActionTypes.ADD_BATCH_FAILURE:
+    case StorageActionTypes.ADD_STASH_FAILURE:
     case StorageActionTypes.DELETE_BATCH_FAILURE:
     case StorageActionTypes.GET_USER_STORAGE_FAILURE:
       return {
@@ -45,3 +51,5 @@ export function storageReducer(
       return state;
   }
 }
+
+export default storageReducer;

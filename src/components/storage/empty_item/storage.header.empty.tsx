@@ -8,10 +8,10 @@ interface PropsAction {
 type Props = PropsAction & EmptyBatch;
 
 export class EmptyHeaderComponent extends React.Component<Props> {
-  // constructor(props) {
-    // super(props);
-    // this.state = new EmptyBatch();
-  // }
+  constructor(props) {
+    super(props);
+    this.state = new EmptyBatch();
+  }
 
   handleChange = e => {
     const changedValue = { [e.target.name]: e.target.value };
@@ -27,8 +27,8 @@ export class EmptyHeaderComponent extends React.Component<Props> {
         <div className='col-3'>
           <input
             type='text'
-            name='batch_id'
-            value={this.props.batch_id}
+            name='batch_number'
+            value={this.props.batch_number}
             placeholder='#Number*'
             // placeholder={this.state.batch_id.toString()}
             className='empty-heading__input'

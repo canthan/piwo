@@ -6,11 +6,11 @@ import { AnyAction } from 'redux';
 import { ThunkAction } from 'redux-thunk';
 
 import { StorageActionTypes } from './../constants/actionTypes';
-import { Batch, EmptyBatch } from './../components/storage/storage.types';
+import { Batch, EmptyBatch, Stash } from './../components/storage/storage.types';
 
 export function getBatchesDataRequest(): AnyAction {
   return {
-    type: StorageActionTypes.GET_USER_STORAGE_REQUEST
+    type: StorageActionTypes.GET_USER_STORAGE_REQUEST,
   };
 }
 export function getBatchesDataSuccess(data: Batch[]): AnyAction {
@@ -18,59 +18,77 @@ export function getBatchesDataSuccess(data: Batch[]): AnyAction {
   CommonStorageService.calculateQuantities(batches);
   return {
     batches,
-    type: StorageActionTypes.GET_USER_STORAGE_SUCCESS
+    type: StorageActionTypes.GET_USER_STORAGE_SUCCESS,
   };
 }
 export function getBatchesDataFailure(): AnyAction {
   return {
     error: true,
-    type: StorageActionTypes.GET_USER_STORAGE_FAILURE
+    type: StorageActionTypes.GET_USER_STORAGE_FAILURE,
   };
 }
 
 export function addBatchRequest(): AnyAction {
   return {
-    type: StorageActionTypes.ADD_BATCH_REQUEST
+    type: StorageActionTypes.ADD_BATCH_REQUEST,
   };
 }
 
-export function addBatchSuccess(batches: Batch[]): AnyAction {
+export function addBatchSuccess(newBatch: Batch): AnyAction {
   return {
-    batches,
-    type: StorageActionTypes.ADD_BATCH_SUCCESS
+    newBatch,
+    type: StorageActionTypes.ADD_BATCH_SUCCESS,
   };
 }
 
-export function addBatchFailure(): AnyAction {
+export function addBatchFailure(error: AxiosError): AnyAction {
   return {
-    error: true,
-    type: StorageActionTypes.ADD_BATCH_FAILURE
+    error,
+    type: StorageActionTypes.ADD_BATCH_FAILURE,
+  };
+}
+
+export function addStashRequest(): AnyAction {
+  return {
+    type: StorageActionTypes.ADD_STASH_REQUEST,
+  };
+}
+
+export function addStashSuccess(newStash: Stash): AnyAction {
+  return {
+    newStash,
+    type: StorageActionTypes.ADD_STASH_SUCCESS,
+  };
+}
+
+export function addStashFailure(error: AxiosError): AnyAction {
+  return {
+    error,
+    type: StorageActionTypes.ADD_STASH_FAILURE,
   };
 }
 
 export function deleteBatchRequest(): AnyAction {
   return {
-    type: StorageActionTypes.DELETE_BATCH_REQUEST
+    type: StorageActionTypes.DELETE_BATCH_REQUEST,
   };
 }
 
-export function deleteBatchSuccess(deletedBatch: Batch): AnyAction {
+export function deleteBatchSuccess(batch_id: number): AnyAction {
   return {
-    batch: deletedBatch,
-    type: StorageActionTypes.DELETE_BATCH_SUCCESS
+    batch_id,
+    type: StorageActionTypes.DELETE_BATCH_SUCCESS,
   };
 }
 
-export function deleteBatchFailure(): AnyAction {
+export function deleteBatchFailure(error: AxiosError): AnyAction {
   return {
-    error: true,
-    type: StorageActionTypes.DELETE_BATCH_FAILURE
+    error,
+    type: StorageActionTypes.DELETE_BATCH_FAILURE,
   };
 }
 
 export function getBatchesDataAsync(user_id: number) {
-
-  console.log('getBatchesDataAsync')
   return async (dispatch: Dispatch<AnyAction>) => {
     dispatch(getBatchesDataRequest());
     try {
@@ -85,34 +103,54 @@ export function getBatchesDataAsync(user_id: number) {
 }
 
 export function deleteBatchAsync(user_id: number, batch_id: number): AsyncAction {
-  
-  console.log('deleteBatchAsync')
   return async (dispatch: Dispatch<AnyAction>) => {
     dispatch(deleteBatchRequest());
     try {
       const response = await Axios.delete(
         `http://localhost:1337/api/v1.0/batches/${user_id}/${batch_id}`
       );
-      console.log(response);
-      dispatch(deleteBatchSuccess(response.data.data));
+      const deletedBatch = response.data.data.batches.find(batch => batch.batch_id = batch_id);
+      console.log(deletedBatch);
+      dispatch(deleteBatchSuccess(deletedBatch.batch_id));
     } catch (error) {
-      dispatch(deleteBatchFailure());
+      dispatch(deleteBatchFailure(error));
     }
   };
 }
 
 export function addBatchAsync(user_id: number, newBatch: EmptyBatch) {
-  return (dispatch: Dispatch<AnyAction>, getState) => {
-    const batches = getState().storage.batches;
+  return async (dispatch: Dispatch<AnyAction>) => {
     dispatch(addBatchRequest());
-    Axios.post(`http://localhost:1337/api/v1.0/batches/${user_id}`, newBatch)
-      .then((response: AxiosResponse<any>) => {
-        batches.push(response.data.data);
-        dispatch(addBatchSuccess(batches));
-      })
-      .catch((error: AxiosError) => {
-        dispatch(addBatchFailure());
-      });
+    try {
+      const response: AxiosResponse<any> = await Axios.post(
+        `http://localhost:1337/api/v1.0/batches/${user_id}`, newBatch);
+      const newBatchResponse: Batch = response.data.data;
+      console.log(newBatchResponse)
+      dispatch(addBatchSuccess(newBatchResponse));
+    }
+    catch (error) {
+      dispatch(addBatchFailure(error));
+    }
   };
 }
 
+export function addStashAsync(user_id: number, batch_id: number, newStash: Stash) {
+  return async (dispatch: Dispatch<AnyAction>) => {
+    dispatch(addStashRequest());
+    try {
+      console.log(user_id, batch_id, newStash)
+
+      const response: AxiosResponse<any> = await Axios.post(
+        `http://localhost:1337/api/v1.0/stashes/${user_id}/${batch_id}`,
+        CommonStorageService.flattenItemsForRequest([newStash])
+      );
+      console.log(response)
+      const newStashResponse: Stash = {...response.data};
+      console.log(newStashResponse)
+      dispatch(addStashSuccess(newStashResponse));
+    }
+    catch (error) {
+      dispatch(addStashFailure(error));
+    }
+  };
+}

@@ -47,7 +47,7 @@ export class CommonStorageService {
       false;
   }
 
-  public flattenItemsForRequest(stashes) {
+  public static flattenItemsForRequest(stashes) {
     const flattened = [];
     const inputStashes = JSON.parse(JSON.stringify(stashes));
     inputStashes.forEach((stash) => {
