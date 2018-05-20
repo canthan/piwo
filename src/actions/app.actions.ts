@@ -37,7 +37,7 @@ function getBatchesFromUserData(batches: Batch[]) {
   batches = CommonStorageService.formatDateForDisplay(batches);
   CommonStorageService.calculateQuantities(batches);
   return {
-    batches: batches,
+    batches,
     type: AppActionTypes.GET_BATCHES_FROM_USER_DATA
   };
 }

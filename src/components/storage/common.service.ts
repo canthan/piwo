@@ -1,4 +1,4 @@
-import { Batch, EmptyBatch } from './storage.types';
+import { Batch, EmptyBatch, Stash } from './storage.types';
 
 export class CommonStorageService {
 
@@ -9,8 +9,8 @@ export class CommonStorageService {
     return batchesArray;
   }
 
-  public static calculateQuantities(batchesArray: Batch[]) {
-    batchesArray.forEach((batch) => {
+  public static calculateQuantities(batches: Batch[]) {
+    batches.forEach((batch) => {
       const { quantity_litres: litres, quantity_bottles: bottles, quantity_crates: crates } = this.iterateThroughBatch(batch);
       batch.quantity_litres = litres;
       batch.quantity_bottles = bottles;
@@ -58,6 +58,26 @@ export class CommonStorageService {
       flattened.push(stash);
     });
     return { stashes: flattened };
+  }
+
+  public static addStashesToBatch(batches: Batch[], stash: Stash) {
+    batches.forEach((batch) => {
+      if (batch.batch_id === stash.batch_id) {
+        batch.stashes.push(stash);
+        return;
+      }
+    });
+    return batches;
+  }
+
+  public static updateStashesinBatch(batches: Batch[], stashes: Stash[]) {
+    batches.forEach((batch) => {
+      if (batch.batch_id === stashes[0].batch_id) {
+        batch.stashes = stashes
+        return;
+      }
+    });
+    return batches;
   }
 }
 

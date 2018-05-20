@@ -18,6 +18,7 @@ interface Props {
   user_id: number;
   deleteBatch(user_id: number, batch_id: number): AsyncAction;
   addStash(batch_id: number, newStash: Stash): AsyncAction;
+  updateStashes(batch_id: number, stashes: Stash[]): AsyncAction;
 }
 
 interface State {
@@ -77,23 +78,15 @@ export class ItemComponent extends React.Component<Props, State> {
       const newStash = new Stash(newStorageName, this.props.item.batch_id);
       newStash['stash_user_id'] = this.props.user_id;
       this.props.addStash(this.props.item.batch_id, newStash);
-      // this.httpService
-      //   .addStash(newStash, this.props.user_id, this.props.item.batch_id)
-      //   .then(response => {
-      //     const responseStash = response.data.data[0];
-      //     newState.stashes.push(responseStash);
-      //     this.setState(newState);
-      //   });
     }
   }
 
   onDeleteClick = () => {
-    confirm(
-      `Are you sure that Batch no.${this.props.item.batch_id} - ${
+    if (confirm(
+      `Are you sure that Batch no.${this.props.item.batch_number} - ${
         this.props.item.batch_name
       } should be deleted?`
-    );
-    this.props.deleteBatch(this.props.user_id, this.props.item.batch_id);
+    )) this.props.deleteBatch(this.props.user_id, this.props.item.batch_id);
   }
 
   onEditClick = () => {
@@ -105,16 +98,10 @@ export class ItemComponent extends React.Component<Props, State> {
   }
 
   onSaveClick = () => {
-    this.httpService
-      .updateStashes(
-        this.state.stashes,
-        this.props.user_id,
-        this.props.item.batch_id
-      )
-      .then(response => {})
-      .catch(error => {
-        console.error(error);
-      });
+    this.props.updateStashes(
+      this.props.item.batch_id,
+      this.state.stashes,
+    );
   }
 
   isInputSelected = () => {
