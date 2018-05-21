@@ -79,6 +79,10 @@ export class CommonStorageService {
     });
     return batches;
   }
+
+  public static getStashesFromBatch(batches: Batch[], batch_id: number): Stash[] {
+    return batches.find(batch => batch.batch_id === batch_id).stashes;
+  }
 }
 
 export default CommonStorageService;

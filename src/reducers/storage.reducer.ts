@@ -1,4 +1,4 @@
-import { StorageState } from './../components/storage/storage.types';
+import { StorageState, Batch } from './../components/storage/storage.types';
 import { AnyAction } from 'redux';
 import initialAppState from './initialState';
 import { StorageActionTypes, AppActionTypes } from './../constants/actionTypes';
@@ -12,9 +12,10 @@ export function storageReducer(
   const { payload } = action;
   switch (action.type) {
     case StorageActionTypes.ADD_BATCH_REQUEST:
+    case StorageActionTypes.DELETE_BATCH_REQUEST:
+    case StorageActionTypes.EDIT_BATCH_DATA_REQUEST:
     case StorageActionTypes.ADD_STASH_REQUEST:
     case StorageActionTypes.UPDATE_STASHES_REQUEST:
-    case StorageActionTypes.DELETE_BATCH_REQUEST:
     case StorageActionTypes.GET_USER_STORAGE_REQUEST:
       return {
         ...state
@@ -23,6 +24,13 @@ export function storageReducer(
       return {
         ...state,
         batches: [...state.batches, action.newBatch],
+      }
+    case StorageActionTypes.EDIT_BATCH_DATA_SUCCESS:
+      const editedBatch: Batch = action.batch;
+      editedBatch.stashes = CommonStorageService.getStashesFromBatch([...state.batches], editedBatch.batch_id);
+      return {
+        ...state,
+        batches: [...state.batches.filter(batch => batch.batch_id !== editedBatch.batch_id), editedBatch],
       }
     case StorageActionTypes.ADD_STASH_SUCCESS:
       return {
@@ -50,8 +58,10 @@ export function storageReducer(
       };
 
     case StorageActionTypes.ADD_BATCH_FAILURE:
-    case StorageActionTypes.ADD_STASH_FAILURE:
     case StorageActionTypes.DELETE_BATCH_FAILURE:
+    case StorageActionTypes.EDIT_BATCH_DATA_FAILURE:
+    case StorageActionTypes.ADD_STASH_FAILURE:
+    case StorageActionTypes.UPDATE_STASHES_FAILURE:
     case StorageActionTypes.GET_USER_STORAGE_FAILURE:
       return {
         ...state,
