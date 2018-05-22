@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Buttons } from '../storage.types';
+import { Buttons } from '../../storage.types';
 
 export class ButtonsComponent extends React.Component<Buttons, {}> {
 
@@ -27,7 +27,7 @@ export class ButtonsComponent extends React.Component<Buttons, {}> {
 
 function IncreaseButton(props) {
   return (
-    <button className='btn btn-success' onClick={() => props.onQuantityChangeButton(props.value)}>
+    <button className='btn btn__plus' onClick={() => props.onQuantityChangeButton(props.value)}>
       +{props.value}
     </button>
   );
@@ -35,7 +35,7 @@ function IncreaseButton(props) {
 
 function DecreaseButton(props) {
   return (
-    <button className='btn btn-danger' onClick={() => props.onQuantityChangeButton(props.value)}>
+    <button className='btn btn__minus' onClick={() => props.onQuantityChangeButton(props.value)}>
       {props.value}
     </button>
   );

@@ -1,4 +1,5 @@
 import * as React from 'react';
+import './Header.scss';
 
 export interface Props {
   bottled_on: string;
@@ -18,7 +19,9 @@ export function HeaderComponent(props: Props) {
       <span className="col-6">{props.batch_name}</span>
       <div className="col-3 heading__dates">
         <span>bottled: {props.bottled_on}</span>
-        <span>{getDaysFromMiliseconds(age)} days, {getWeeksFromMiliseconds(age)} weeks</span>
+        <span>
+          {getDaysFromMiliseconds(age)} days ({getWeeksFromMiliseconds(age)} weeks)
+        </span>
       </div>
     </h3>
   );

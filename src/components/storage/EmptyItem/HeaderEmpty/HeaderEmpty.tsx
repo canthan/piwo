@@ -1,5 +1,7 @@
 import * as React from 'react';
-import { EmptyBatch } from '../storage.types';
+import { EmptyBatch } from '../../storage.types';
+
+import './HeaderEmpty.scss';
 
 interface PropsAction {
   onInputChange;

@@ -2,16 +2,18 @@ import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import { AnyAction } from 'redux';
 
-import { HeaderComponent } from './storage.header';
-import { EmptyHeaderComponent } from '../empty_item/storage.header.empty';
-import { OverallQuantityComponent } from './storage.overall.quantity';
-import { StashesComponent } from './storage.stashes';
-import { ButtonsComponent } from './storage.buttons';
-import { OptionsComponent } from './storage.options';
-import { Batch, Stash, EmptyBatch } from '../storage.types';
-import { CommonStorageService } from '../common.service';
+import { HeaderComponent } from './Header/Header';
+import { EmptyHeaderComponent } from './../EmptyItem/HeaderEmpty/HeaderEmpty';
+import { OverallQuantityComponent } from './OverallQuantity/OverallQuantity';
+import { StashesComponent } from './Stashes/Stashes';
+import { ButtonsComponent } from './Buttons/Buttons';
+import { OptionsComponent } from './Options/Options';
+import { Batch, Stash, EmptyBatch } from './../storage.types';
+import { CommonStorageService } from './../common.service';
 
-import { AsyncAction } from '../../../types/app.types';
+import { AsyncAction } from './../../../types/app.types';
+
+import './StorageItem.scss';
 
 interface Props {
   item: Batch;
@@ -39,7 +41,7 @@ export class ItemComponent extends React.Component<Props, State> {
     editedBatchData: {
       batch_name: this.props.item.batch_name,
       batch_number: this.props.item.batch_number,
-      bottled_on: this.props.item.bottled_on,
+      bottled_on: this.props.item.bottled_on
     }
   };
 
@@ -117,7 +119,10 @@ export class ItemComponent extends React.Component<Props, State> {
 
   onEditClick = () => {
     if (this.state.edited) {
-      this.props.editBatchData(this.props.item.batch_id, this.state.editedBatchData);
+      this.props.editBatchData(
+        this.props.item.batch_id,
+        this.state.editedBatchData
+      );
       this.setState({
         edited: false
       });
@@ -132,60 +137,62 @@ export class ItemComponent extends React.Component<Props, State> {
     this.setState({
       editedBatchData: {
         ...this.state.editedBatchData,
-        ...changedValue,
+        ...changedValue
       }
     });
   };
 
   render() {
     return (
-      <div className="col-xl-6 col-xs-12 itemOverlay">
-        <div className="item">
-          {this.state.edited ? (
-            <EmptyHeaderComponent
-              batch_name={this.state.editedBatchData.batch_name}
-              batch_number={this.state.editedBatchData.batch_number}
-              bottled_on={this.state.editedBatchData.bottled_on}
-              onInputChange={this.onInputChange}
+      <div className="col-xl-6 col-xs-12">
+        <div className="itemOverlay">
+          <div className="item">
+            {this.state.edited ? (
+              <EmptyHeaderComponent
+                batch_name={this.state.editedBatchData.batch_name}
+                batch_number={this.state.editedBatchData.batch_number}
+                bottled_on={this.state.editedBatchData.bottled_on}
+                onInputChange={this.onInputChange}
+              />
+            ) : (
+              <HeaderComponent
+                batch_name={this.props.item.batch_name}
+                batch_number={this.props.item.batch_number}
+                bottled_on={this.props.item.bottled_on}
+              />
+            )}
+            <section className="content row">
+              <OverallQuantityComponent
+                quantity_litres={this.props.item.quantity_litres}
+                quantity_bottles={this.props.item.quantity_bottles}
+                quantity_crates={this.props.item.quantity_crates}
+              />
+              <StashesComponent
+                stashes={this.state.stashes}
+                modified={!this.state.modified}
+                onQuantityChange={this.onQuantityChange}
+                onQuantitySelection={this.onQuantitySelection}
+              />
+              <ButtonsComponent
+                increase={[1, 3, 5]}
+                decrease={[-1, -3, -5]}
+                onQuantityChangeButton={this.onQuantityChangeButton}
+              />
+            </section>
+            <OptionsComponent
+              buttons={['Edit', 'Save', 'Delete', 'Mode', 'Add Storage']}
+              functions={{
+                Edit: this.onEditClick,
+                Save: this.onSaveClick,
+                Delete: this.onDeleteClick,
+                Mode: this.onModeClick,
+                AddStorage: this.onAddStorageClick
+              }}
+              active={{
+                Save: !this.state.modified
+              }}
             />
-          ) : (
-            <HeaderComponent
-              batch_name={this.props.item.batch_name}
-              batch_number={this.props.item.batch_number}
-              bottled_on={this.props.item.bottled_on}
-            />
-          )}
-          <section className="content row">
-            <OverallQuantityComponent
-              quantity_litres={this.props.item.quantity_litres}
-              quantity_bottles={this.props.item.quantity_bottles}
-              quantity_crates={this.props.item.quantity_crates}
-            />
-            <StashesComponent
-              stashes={this.state.stashes}
-              modified={!this.state.modified}
-              onQuantityChange={this.onQuantityChange}
-              onQuantitySelection={this.onQuantitySelection}
-            />
-            <ButtonsComponent
-              increase={[1, 3, 5]}
-              decrease={[-1, -3, -5]}
-              onQuantityChangeButton={this.onQuantityChangeButton}
-            />
-          </section>
-          <OptionsComponent
-            buttons={['Edit', 'Save', 'Delete', 'Mode', 'Add Storage']}
-            functions={{
-              Edit: this.onEditClick,
-              Save: this.onSaveClick,
-              Delete: this.onDeleteClick,
-              Mode: this.onModeClick,
-              AddStorage: this.onAddStorageClick
-            }}
-            active={{
-              Save: !this.state.modified
-            }}
-          />
+          </div>
         </div>
       </div>
     );

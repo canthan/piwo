@@ -1,7 +1,7 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import { IStorageSummary, IStorageSummaryProps } from './storage.summary.types';
-import StorageSummaryHeaderComponent from './storage.summary.header';
+import { IStorageSummary, IStorageSummaryProps } from './summary.types';
+import StorageSummaryHeaderComponent from './SummaryHeader/SummaryHeader';
 
 // export class StorageSummary extends React.Component<IStorageSummary, IStorageSummaryProps> {
 export class StorageSummaryComponent extends React.Component<{}, {}> {

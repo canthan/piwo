@@ -1,5 +1,7 @@
 import * as React from 'react';
-import { Options } from '../storage.types';
+import { Options } from '../../storage.types';
+
+import './Options.scss';
 
 export interface Props {
   buttons: string[];
@@ -25,7 +27,7 @@ export function OptionsComponent(props: Props) {
 
 function OptionsButton(props) {
   return (
-    <button className='btn btn-light' onClick={() => props.onButtonClick()}  disabled={props.disabled}>{props.role}</button>
+    <button className='btn btn__options' onClick={() => props.onButtonClick()}  disabled={props.disabled}>{props.role}</button>
   );
 }
 

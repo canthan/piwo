@@ -3,9 +3,9 @@ import * as ReactDOM from 'react-dom';
 import { connect, dispatch } from 'react-redux';
 import { AnyAction } from 'redux';
 
-import { ItemComponent } from './item/storage.item';
-import { EmptyItemComponent } from './empty_item/storage.item.empty';
-import { StorageSummaryComponent } from './summary/storage.summary';
+import { ItemComponent } from './StorageItem/StorageItem';
+import { EmptyItemComponent } from './EmptyItem/EmptyItem';
+import { StorageSummaryComponent } from './Summary/Summary';
 import { CommonStorageService } from './common.service';
 
 import {
@@ -21,7 +21,7 @@ import { AsyncAction } from '../../types/app.types';
 
 import { Batch, StorageState, EmptyBatch, Stash } from './storage.types';
 
-import './storage.scss';
+import './Storage.scss';
 
 interface MappedProps {
   user_id: number;

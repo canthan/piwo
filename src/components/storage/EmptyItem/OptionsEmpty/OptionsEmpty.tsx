@@ -1,5 +1,7 @@
 import * as React from 'react';
-import { Options } from '../storage.types';
+import { Options } from '../../storage.types';
+
+import './OptionsEmpty.scss';
 
 export function EmptyOptionsComponent(props: Options) {
 
@@ -15,7 +17,7 @@ export function EmptyOptionsComponent(props: Options) {
 
 function OptionsButton(props) {
   return (
-    <button className='btn btn-primary btn-extra-lg btn-lg' onClick={() => props.onButtonClick()}>{props.role}</button>
+    <button className='btn btn__new_batch btn-extra-lg btn-lg' onClick={() => props.onButtonClick()}>{props.role}</button>
   );
 }
 
