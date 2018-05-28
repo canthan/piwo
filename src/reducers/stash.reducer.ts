@@ -2,7 +2,6 @@ import { StorageState } from './../components/storage/storage.types';
 import { ItemState, EmptyBatch } from './../components/storage/storage.types';
 import { AnyAction } from 'redux';
 import initialAppState from './initialState';
-import { ItemActionTypes } from './../constants/actionTypes';
 
 export function stashReducer(
   state: StorageState = initialAppState.storage,

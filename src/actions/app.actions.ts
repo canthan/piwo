@@ -3,46 +3,47 @@ import { Dispatch } from 'react-redux';
 import { AnyAction } from 'redux';
 import { ThunkAction } from 'redux-thunk';
 
-import { AppActionTypes, StorageActionTypes } from './../constants/actionTypes';
 import { Batch } from './../components/storage/storage.types';
 import { AppState, User } from './../types/app.types';
 
+import {
+  GET_USER_DATA_REQUEST,
+  GET_USER_DATA_SUCCESS,
+  GET_USER_DATA_FAILURE,
+  GET_BATCHES_FROM_USER_DATA,
+} from './../constants/app.action.types';
 import { getBatchesDataAsync } from './storage.actions';
 
 import { CommonStorageService } from './../components/storage/common.service';
 
-function getUserDataRequest(): AnyAction {
-  return {
-    type: AppActionTypes.GET_USER_DATA_REQUEST
-  };
-}
+export const getUserDataRequest = (): AnyAction => ({
+  type: GET_USER_DATA_REQUEST
+});
 
-function getUserDataSuccess(data: User): AnyAction {
-  return {
-    data,
+export const getUserDataSuccess = (userData: User): AnyAction => ({
+  payload: {
+    userData,
     loaded: true,
     loggedIn: true,
-    type: AppActionTypes.GET_USER_DATA_SUCCESS
-  };
-}
+  },
+  type: GET_USER_DATA_SUCCESS
+});
 
-function getUserDataFailure(error: AxiosError): AnyAction {
-  return {
-    error,
-    type: AppActionTypes.GET_USER_DATA_FAILURE
-  };
-}
+export const getUserDataFailure = (error): AnyAction => ({
+  payload: error,
+  type: GET_USER_DATA_FAILURE
+});
 
-function getBatchesFromUserData(batches: Batch[]) {
+export const getBatchesFromUserData = (batches: Batch[]) => {
   batches = CommonStorageService.formatDateForDisplay(batches);
   CommonStorageService.calculateQuantities(batches);
   return {
-    batches,
-    type: AppActionTypes.GET_BATCHES_FROM_USER_DATA
+    payload: { batches },
+    type: GET_BATCHES_FROM_USER_DATA
   };
-}
+};
 
-export function getUserDataAsync(user_id: number) {
+export const getUserDataAsync = (user_id: number) => {
   return async (dispatch: Dispatch<AnyAction>) => {
     dispatch(getUserDataRequest());
     try {
@@ -54,4 +55,4 @@ export function getUserDataAsync(user_id: number) {
       dispatch(getUserDataFailure(error));
     }
   };
-}
+};

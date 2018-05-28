@@ -1,12 +1,7 @@
-import { combineReducers } from 'redux';
-import { OverallAppState } from './initialState';
 import { appReducer } from './app.reducer';
 import { storageReducer } from './storage.reducer';
-// import { stashReducer } from './stash.reducer';
+import { reduceReducers } from './utils';
 
-const rootReducer = combineReducers<OverallAppState>({
-  app: appReducer,
-  storage: storageReducer,
-});
+const rootReducer = reduceReducers(storageReducer, appReducer);
 
 export default rootReducer;

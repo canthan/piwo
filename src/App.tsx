@@ -25,16 +25,9 @@ interface Props {
   getUserDataAsync(user_id: number): AsyncAction;
 }
 
-// export interface State {
-//   app: AppState;
-//   storage: StorageState;
-//   item: ItemState;
-// }
-
 export class App extends React.Component<Props> {
 
   componentDidMount(): void {
-    // const userId = prompt('Select user id (temporary solution)');
     const userId = 1;
     this.getUserData(userId);
   }
@@ -46,11 +39,11 @@ export class App extends React.Component<Props> {
     return (
       <div className="App">
         <header className="App-header">
-          <ReactSVG path="./assets/img/logo.svg" className="logo-svg" />
+          {/* <ReactSVG path="./assets/img/logo.svg" className="logo-svg" /> */}
           <h1 className="App-title">Storage app</h1>
         </header>
         {/* <StorageComponent user_id={1} batches={this.props.batches}/> */}
-        <StorageComponent user_id={1}/>
+        <StorageComponent user_id={1} />
       </div>
     );
   }

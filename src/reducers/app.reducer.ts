@@ -1,39 +1,52 @@
 import { AnyAction } from 'redux';
-import initialAppState from './initialState';
-import { AppActionTypes } from './../constants/actionTypes';
+import {
+  GET_USER_DATA_REQUEST,
+  GET_USER_DATA_SUCCESS,
+  GET_USER_DATA_FAILURE,
+} from './../constants/app.action.types';
 import { AppState, User } from './../types/app.types';
+import { createConditionalSliceReducer } from './utils';
 
-export function appReducer(
-  state: AppState = initialAppState.app,
-  action: AnyAction
-) {
-  switch (action.type) {
-    case AppActionTypes.GET_USER_DATA_REQUEST:
-      return {
-        ...state
-      };
-      case AppActionTypes.GET_USER_DATA_SUCCESS:
-      const { user_id, username, firstname, surname, email } = action.data;
-      return {
-        ...state,
-        loaded: action.loaded,
-        loggedIn: action.loggedIn,
-        user: {
-          user_id: user_id,
-          username: username,
-          firstname: firstname,
-          surname: surname,
-          email: email
-        }
-      };
-      case AppActionTypes.GET_USER_DATA_FAILURE:
-        return {
-          ...state,
-          error: action.error,
-        };
-    default:
-      return state;
-  }
+const initialAppState = {
+  app: {
+    loaded: true,
+    loggedIn: false,
+    user: {
+      user_id: 0,
+      username: '',
+      firstname: '',
+      surname: '',
+      email: '',
+    }
+  },
 }
 
-export default appReducer;
+const appReducerMapping = () => ({
+  [GET_USER_DATA_REQUEST]: state => ({ ...state }),
+  [GET_USER_DATA_SUCCESS]: (state, { userData, loaded, loggedIn }) => ({
+    ...state,
+    ...{
+      loaded: loaded,
+      loggedIn: loggedIn,
+      user: {
+        user_id: userData.user_id,
+        username: userData.username,
+        firstname: userData.firstname,
+        surname: userData.surname,
+        email: userData.email
+      }
+    }
+  }),
+  [GET_USER_DATA_FAILURE]: (state, payload) => ({
+    ...state,
+    ...{ error: payload }
+  }),
+
+});
+
+
+export const appReducer = createConditionalSliceReducer(
+  'app',
+  appReducerMapping(),
+  initialAppState,
+);

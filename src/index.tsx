@@ -8,11 +8,6 @@ import App from './App';
 
 const rootEl = document.getElementById('root');
 
-// ReactDOM.render(
-//     <App />,
-//   rootEl
-// );
-
 ReactDOM.render(
   <Provider store={store}>
    <App />

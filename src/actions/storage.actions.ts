@@ -1,140 +1,131 @@
-import { CommonStorageService } from './../components/storage/common.service';
-import Axios, { AxiosResponse, AxiosError } from 'axios';
-import { User, AsyncAction } from './../types/app.types';
-import { Dispatch } from 'react-redux';
 import { AnyAction } from 'redux';
-import { ThunkAction } from 'redux-thunk';
+import { Dispatch, ThunkAction } from 'react-redux';
+import Axios, { AxiosResponse, AxiosError } from 'axios';
 
-import { StorageActionTypes } from './../constants/actionTypes';
+import { CommonStorageService } from './../components/storage/common.service';
+
+import { User, AsyncAction } from './../types/app.types';
 import {
   Batch,
   EmptyBatch,
   Stash
 } from './../components/storage/storage.types';
 
-export function getBatchesDataRequest(): AnyAction {
-  return {
-    type: StorageActionTypes.GET_USER_STORAGE_REQUEST
-  };
-}
-export function getBatchesDataSuccess(data: Batch[]): AnyAction {
+import {
+  GET_USER_STORAGE_REQUEST,
+  GET_USER_STORAGE_SUCCESS,
+  GET_USER_STORAGE_FAILURE,
+  ADD_BATCH_REQUEST,
+  ADD_BATCH_SUCCESS,
+  ADD_BATCH_FAILURE,
+  ADD_STASH_REQUEST,
+  ADD_STASH_SUCCESS,
+  ADD_STASH_FAILURE,
+  EDIT_BATCH_DATA_REQUEST,
+  EDIT_BATCH_DATA_SUCCESS,
+  EDIT_BATCH_DATA_FAILURE,
+  UPDATE_STASHES_REQUEST,
+  UPDATE_STASHES_SUCCESS,
+  UPDATE_STASHES_FAILURE,
+  DELETE_BATCH_REQUEST,
+  DELETE_BATCH_SUCCESS,
+  DELETE_BATCH_FAILURE,
+} from './../constants/storage.actions.types';
+
+export const getBatchesDataRequest = (): AnyAction => ({
+  type: GET_USER_STORAGE_REQUEST,
+});
+
+export const getBatchesDataSuccess = (data: Batch[]): AnyAction => {
   const batches = CommonStorageService.formatDateForDisplay(data);
   CommonStorageService.calculateQuantities(batches);
   return {
-    batches,
-    type: StorageActionTypes.GET_USER_STORAGE_SUCCESS
+    payload: batches,
+    type: GET_USER_STORAGE_SUCCESS
   };
 }
-export function getBatchesDataFailure(): AnyAction {
-  return {
-    error: true,
-    type: StorageActionTypes.GET_USER_STORAGE_FAILURE
-  };
-}
+export const getBatchesDataFailure = (error): AnyAction => ({
+  payload: error,
+  type: GET_USER_STORAGE_FAILURE
+});
 
-export function addBatchRequest(): AnyAction {
-  return {
-    type: StorageActionTypes.ADD_BATCH_REQUEST
-  };
-}
+export const addBatchRequest = (): AnyAction => ({
+  type: ADD_BATCH_REQUEST
+});
 
-export function addBatchSuccess(newBatch: Batch): AnyAction {
+export const addBatchSuccess = (newBatch: Batch): AnyAction => {
   newBatch = CommonStorageService.formatDateForDisplay([newBatch])[0];
   return {
-    newBatch,
-    type: StorageActionTypes.ADD_BATCH_SUCCESS
+    payload: { newBatch },
+    type: ADD_BATCH_SUCCESS
   };
-}
+};
 
-export function addBatchFailure(error: AxiosError): AnyAction {
+export const addBatchFailure = (error: AxiosError): AnyAction => ({
+  payload: error,
+  type: ADD_BATCH_FAILURE
+});
+
+export const addStashRequest = (): AnyAction => ({
+  type: ADD_STASH_REQUEST
+});
+
+export const addStashSuccess = (newStash: Stash): AnyAction => ({
+  payload: { newStash },
+  type: ADD_STASH_SUCCESS
+});
+
+export const addStashFailure = (error: AxiosError): AnyAction => ({
+  payload: error,
+  type: ADD_STASH_FAILURE
+});
+
+export const editBatchDataRequest = (): AnyAction => ({
+  type: EDIT_BATCH_DATA_REQUEST
+});
+
+export const editBatchDataSuccess = (editedBatch: Batch): AnyAction => {
+  editedBatch = CommonStorageService.formatDateForDisplay([editedBatch])[0];
   return {
-    error,
-    type: StorageActionTypes.ADD_BATCH_FAILURE
+    payload: { editedBatch },
+    type: EDIT_BATCH_DATA_SUCCESS
   };
-}
+};
 
-export function addStashRequest(): AnyAction {
-  return {
-    type: StorageActionTypes.ADD_STASH_REQUEST
-  };
-}
+export const editBatchDataFailure = (error: AxiosError): AnyAction => ({
+  payload: error,
+  type: EDIT_BATCH_DATA_FAILURE
+});
 
-export function addStashSuccess(newStash: Stash): AnyAction {
-  return {
-    stash: newStash,
-    type: StorageActionTypes.ADD_STASH_SUCCESS
-  };
-}
+export const updateStashesRequest = (): AnyAction => ({
+  type: UPDATE_STASHES_REQUEST
+});
 
-export function addStashFailure(error: AxiosError): AnyAction {
-  return {
-    error,
-    type: StorageActionTypes.ADD_STASH_FAILURE
-  };
-}
+export const updateStashesSuccess = (updatedStashes: Stash[]): AnyAction => ({
+  payload: { updatedStashes },
+  type: UPDATE_STASHES_SUCCESS
+});
 
-export function editBatchDataRequest(): AnyAction {
-  return {
-    type: StorageActionTypes.EDIT_BATCH_DATA_REQUEST
-  };
-}
+export const updateStashesFailure = (error: AxiosError): AnyAction => ({
+  payload: error,
+  type: UPDATE_STASHES_FAILURE
+});
 
-export function editBatchDataSuccess(batch: Batch): AnyAction {
-  batch = CommonStorageService.formatDateForDisplay([batch])[0];
-  return {
-    batch,
-    type: StorageActionTypes.EDIT_BATCH_DATA_SUCCESS
-  };
-}
+export const deleteBatchRequest = (): AnyAction => ({
+  type: DELETE_BATCH_REQUEST
+});
 
-export function editBatchDataFailure(error: AxiosError): AnyAction {
-  return {
-    error,
-    type: StorageActionTypes.EDIT_BATCH_DATA_FAILURE
-  };
-}
+export const deleteBatchSuccess = (batch_id: number): AnyAction => ({
+  payload: { batch_id },
+  type: DELETE_BATCH_SUCCESS
+});
 
-export function updateStashesRequest(): AnyAction {
-  return {
-    type: StorageActionTypes.UPDATE_STASHES_REQUEST
-  };
-}
+export const deleteBatchFailure = (error: AxiosError): AnyAction => ({
+  payload: error,
+  type: DELETE_BATCH_FAILURE
+});
 
-export function updateStashesSuccess(updatedStashes: Stash[]): AnyAction {
-  return {
-    stashes: updatedStashes,
-    type: StorageActionTypes.UPDATE_STASHES_SUCCESS
-  };
-}
-
-export function updateStashesFailure(error: AxiosError): AnyAction {
-  return {
-    error,
-    type: StorageActionTypes.UPDATE_STASHES_FAILURE
-  };
-}
-
-export function deleteBatchRequest(): AnyAction {
-  return {
-    type: StorageActionTypes.DELETE_BATCH_REQUEST
-  };
-}
-
-export function deleteBatchSuccess(batch_id: number): AnyAction {
-  return {
-    batch_id,
-    type: StorageActionTypes.DELETE_BATCH_SUCCESS
-  };
-}
-
-export function deleteBatchFailure(error: AxiosError): AnyAction {
-  return {
-    error,
-    type: StorageActionTypes.DELETE_BATCH_FAILURE
-  };
-}
-
-export function getBatchesDataAsync(user_id: number) {
+export const getBatchesDataAsync = (user_id: number) => {
   return async (dispatch: Dispatch<AnyAction>) => {
     dispatch(getBatchesDataRequest());
     try {
@@ -143,15 +134,15 @@ export function getBatchesDataAsync(user_id: number) {
       );
       dispatch(getBatchesDataSuccess(response.data));
     } catch (error) {
-      dispatch(getBatchesDataFailure());
+      dispatch(getBatchesDataFailure(error));
     }
   };
 }
 
-export function deleteBatchAsync(
+export const deleteBatchAsync = (
   user_id: number,
   batch_id: number
-): AsyncAction {
+): AsyncAction => {
   return async (dispatch: Dispatch<AnyAction>) => {
     dispatch(deleteBatchRequest());
     try {
@@ -168,7 +159,7 @@ export function deleteBatchAsync(
   };
 }
 
-export function addBatchAsync(user_id: number, newBatch: EmptyBatch) {
+export const addBatchAsync = (user_id: number, newBatch: EmptyBatch) => {
   return async (dispatch: Dispatch<AnyAction>) => {
     dispatch(addBatchRequest());
     try {
@@ -184,11 +175,11 @@ export function addBatchAsync(user_id: number, newBatch: EmptyBatch) {
   };
 }
 
-export function addStashAsync(
+export const addStashAsync = (
   user_id: number,
   batch_id: number,
   newStash: Stash
-) {
+) => {
   return async (dispatch: Dispatch<AnyAction>) => {
     dispatch(addStashRequest());
     try {
@@ -204,11 +195,11 @@ export function addStashAsync(
   };
 }
 
-export function updateStashesAsync(
+export const updateStashesAsync = (
   user_id: number,
   batch_id: number,
   stashes: Stash[]
-) {
+) => {
   return async (dispatch: Dispatch<AnyAction>) => {
     dispatch(updateStashesRequest());
     try {
@@ -224,11 +215,11 @@ export function updateStashesAsync(
   };
 }
 
-export function editBatchDataAsync(
+export const editBatchDataAsync = (
   user_id: number,
   batch_id: number,
   batchData: EmptyBatch
-) {
+) => {
   return async (dispatch: Dispatch<AnyAction>) => {
     dispatch(editBatchDataRequest());
     try {
