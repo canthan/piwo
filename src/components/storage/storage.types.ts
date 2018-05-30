@@ -2,6 +2,10 @@ export interface StorageState {
   batches: Batch[];
 }
 
+export interface StashesState {
+  stashes: Stash[];
+}
+
 export interface ItemState {
   stashes: Stash[];
   selected: any;

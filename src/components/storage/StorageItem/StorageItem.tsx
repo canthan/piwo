@@ -18,6 +18,7 @@ import './StorageItem.scss';
 interface Props {
   item: Batch;
   user_id: number;
+  stashes: Stash[];
   deleteBatch(user_id: number, batch_id: number): AsyncAction;
   addStash(batch_id: number, newStash: Stash): AsyncAction;
   editBatchData(batch_id: number, batchData: EmptyBatch): AsyncAction;
@@ -168,7 +169,7 @@ export class ItemComponent extends React.Component<Props, State> {
                 quantity_crates={this.props.item.quantity_crates}
               />
               <StashesComponent
-                stashes={this.state.stashes}
+                stashes={this.props.stashes}
                 modified={!this.state.modified}
                 onQuantityChange={this.onQuantityChange}
                 onQuantitySelection={this.onQuantitySelection}

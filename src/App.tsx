@@ -54,7 +54,7 @@ const mapStateToProps = (state: OverallAppState) => ({
     ...state.app
   },
   batches: state.storage.batches,
-  emptyBatch: state.emptyBatch
+  stashes: state.stashes.stashes,
 });
 
 export default connect(mapStateToProps, { getUserDataAsync })(App);

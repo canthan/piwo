@@ -7,7 +7,7 @@ import {
 import { AppState, User } from './../types/app.types';
 import { createConditionalSliceReducer } from './utils';
 
-const initialAppState = {
+export const initialAppState = {
   app: {
     loaded: true,
     loggedIn: false,

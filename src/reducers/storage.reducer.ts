@@ -26,7 +26,7 @@ import {
 import { CommonStorageService } from '../components/storage/common.service';
 import { createConditionalSliceReducer } from './utils';
 
-const initialStorageState = {
+export const initialStorageState = {
   storage: {
     batches: [],
   },

@@ -13,6 +13,7 @@
 
     &__options {
       background-color: rgba(231, 236, 230, 1);
+      text-transform: uppercase;
 
       &:hover:enabled {
         background-color: rgba(162, 170, 179, 1) !important;

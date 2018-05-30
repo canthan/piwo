@@ -12,10 +12,14 @@ import {
   getBatchesDataAsync,
   deleteBatchAsync,
   addBatchAsync,
-  addStashAsync,
-  editBatchDataAsync,
-  updateStashesAsync
+  editBatchDataAsync
 } from '../../actions/storage.actions';
+import {
+  getStashesFromUserData,
+  deleteStashAsync,
+  addStashAsync,
+  updateStashesAsync
+} from '../../actions/stashes.actions';
 import { OverallAppState } from '../../reducers/initialState';
 import { AsyncAction } from '../../types/app.types';
 
@@ -26,12 +30,17 @@ import './Storage.scss';
 interface MappedProps {
   user_id: number;
   batches: Batch[];
+  stashes: Stash[];
 }
 
 interface MappedBatchActions {
   addBatchAsync(user_id: number, newBatch: EmptyBatch): AsyncAction;
   deleteBatchAsync(user_id: number, batch_id: number): AsyncAction;
-  editBatchDataAsync(user_id: number, batch_id: number, batchData: EmptyBatch): AsyncAction;
+  editBatchDataAsync(
+    user_id: number,
+    batch_id: number,
+    batchData: EmptyBatch
+  ): AsyncAction;
   getBatchesDataAsync(user_id: number): AsyncAction;
 }
 interface MappedStashActions {
@@ -74,6 +83,7 @@ export class StorageComponent extends React.Component<Props> {
       <ItemComponent
         item={item}
         key={index}
+        stashes={this.props.stashes.filter(stash => stash.batch_id === item.batch_id)}
         addStash={this.addStash}
         updateStashes={this.updateStashes}
         editBatchData={this.editBatchData}
@@ -95,7 +105,7 @@ export class StorageComponent extends React.Component<Props> {
         <div className="storage">
           <div className="container">
             <div className="row">
-              {this.props.batches.map((item, index) => {
+              {this.props.batches.map((item: Batch, index: number) => {
                 return this.renderItem(item, index);
               })}
               {this.renderEmptyItem()}
@@ -114,7 +124,8 @@ export class Label extends React.Component<{}, {}> {}
 export class Text extends React.Component<{}, {}> {}
 
 const mapStateToProps = (state: OverallAppState) => ({
-  batches: state.storage.batches
+  batches: state.storage.batches,
+  stashes: state.stashes.stashes,
 });
 
 export default connect(mapStateToProps, {
