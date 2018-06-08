@@ -11,9 +11,9 @@ import {
   DELETE_STASH_REQUEST,
   DELETE_STASH_SUCCESS,
   DELETE_STASH_FAILURE,
-  GET_STASHES_FROM_USER_DATA,
-  DELETE_STASHES_FROM_BATCH,
+  GET_STASHES_FROM_USER_DATA,  
 } from './../constants/stashes.action.types';
+import { DELETE_BATCH_SUCCESS } from './../constants/storage.actions.types';
 
 import { CommonStorageService } from '../components/storage/common.service';
 import { createConditionalSliceReducer } from './utils';
@@ -23,6 +23,17 @@ export const initialStashesState = {
   stashes: {
     stashes: []
   }
+};
+
+const updateStashes = (stashes: Stash[], updatedStashes: Stash[]): Stash[] => {
+  updatedStashes.forEach(updatedStash => {
+    stashes.forEach(stash => {
+      if (stash.stash_id === updatedStash.stash_id) {
+        stash = updatedStash;
+      }
+    });
+  });
+  return stashes;
 };
 
 const stashesReducerMapping = () => ({
@@ -43,20 +54,14 @@ const stashesReducerMapping = () => ({
   [UPDATE_STASHES_SUCCESS]: (state, { updatedStashes }) => ({
     ...state,
     ...{
-      // stashes: [...state.stashes, ...updatedStashes]// do przerobienia
-      stashes: [
-        ...state.stashes.map(stash =>
-          updatedStashes.forEach(
-            uStash =>
-              (stash = uStash.stash_id === stash.stash_id ? uStash : stash)
-          )
-        )
-      ] // do przerobienia
+      stashes: [...updateStashes([...state.stashes], updatedStashes)]
     }
   }),
-  [DELETE_STASHES_FROM_BATCH]: (state, { batch_id }) => ({
+  [DELETE_BATCH_SUCCESS]: (state, { batch_id }) => ({
     ...state,
-    ...{ stashes: [...state.stashes.filter(stash => stash.batch_id !== batch_id)] }
+    ...{
+      stashes: [...state.stashes.filter(stash => stash.batch_id!== batch_id)]
+    }
   }),
   [GET_STASHES_FROM_USER_DATA]: (state, { stashes }) => ({
     ...state,

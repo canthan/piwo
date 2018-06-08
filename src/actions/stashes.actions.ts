@@ -21,7 +21,6 @@ import {
   DELETE_STASH_SUCCESS,
   DELETE_STASH_FAILURE,
   GET_STASHES_FROM_USER_DATA,
-  DELETE_STASHES_FROM_BATCH,
 } from './../constants/stashes.action.types';
 
 export const addStashRequest = (): AnyAction => ({
@@ -69,11 +68,6 @@ export const deleteStashFailure = (error: AxiosError): AnyAction => ({
 export const getStashesFromUserData = (stashes: Stash[]): AnyAction => ({
     payload: { stashes },
     type: GET_STASHES_FROM_USER_DATA
-});
-
-export const deleteStashesFromBatch = (batch_id: number): AnyAction =>  ({
-  payload: { batch_id },
-  type: DELETE_STASHES_FROM_BATCH
 });
 
 export const deleteStashAsync = (
