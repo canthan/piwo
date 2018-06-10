@@ -3,13 +3,13 @@ import { composeWithDevTools } from 'redux-devtools-extension';
 import thunk from 'redux-thunk';
 import rootReducer from '../reducers/index';
 import { initialStashesState } from '../reducers/stashes.reducer';
-import { initialStorageState } from '../reducers/storage.reducer';
+import { initialBatchesState } from '../reducers/batches.reducer';
 import { initialAppState } from '../reducers/app.reducer';
 
 
 const initialState = {
   ...initialAppState,
-  ...initialStorageState,
+  ...initialBatchesState,
   ...initialStashesState,
 }
 

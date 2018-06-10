@@ -30,7 +30,7 @@ import {
   DELETE_BATCH_REQUEST,
   DELETE_BATCH_SUCCESS,
   DELETE_BATCH_FAILURE,
-} from './../constants/storage.actions.types';
+} from './../constants/batches.actions.types';
 
 export const getBatchesDataRequest = (): AnyAction => ({
   type: GET_USER_STORAGE_REQUEST,

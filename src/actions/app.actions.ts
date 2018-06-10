@@ -13,7 +13,7 @@ import {
   GET_BATCHES_FROM_USER_DATA,
   GET_STASHES_FROM_USER_DATA,
 } from './../constants/app.action.types';
-import { getBatchesDataAsync } from './storage.actions';
+import { getBatchesDataAsync } from './batches.actions';
 
 import { CommonStorageService } from './../components/storage/common.service';
 
@@ -37,7 +37,7 @@ export const getUserDataFailure = (error): AnyAction => ({
 
 export const getBatchesFromUserData = (batches: Batch[]) => {
   batches = CommonStorageService.formatDateForDisplay(batches);
-  CommonStorageService.calculateQuantities(batches);
+  // CommonStorageService.calculateQuantities(batches);
   return {
     payload: { batches },
     type: GET_BATCHES_FROM_USER_DATA

@@ -1,4 +1,4 @@
-export interface StorageState {
+export interface BatchesState {
   batches: Batch[];
 }
 

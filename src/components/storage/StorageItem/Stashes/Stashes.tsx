@@ -3,7 +3,6 @@ import { Stash, Bottles, QuantityStorage } from '../../storage.types';
 
 interface Props {
   stashes: Stash[];
-  modified: boolean;
   onQuantityChange;
   onQuantitySelection;
 }
@@ -11,13 +10,7 @@ interface Props {
 export class StashesComponent extends React.Component<Props> {
   render() {
     return (
-      <div
-        className={
-          this.props.modified
-            ? 'col-md-6  col-xs-12 quantity'
-            : 'col-md-6  col-xs-12 quantity  modified'
-        }
-      >
+      <div className={'col-md-6  col-xs-12 quantity'}>
         {this.props.stashes.length > 0 && (
           <QuantityHeaderComponent {...this.props.stashes[0].items} />
         )}

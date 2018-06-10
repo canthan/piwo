@@ -13,7 +13,7 @@ import {
   DELETE_STASH_FAILURE,
   GET_STASHES_FROM_USER_DATA,  
 } from './../constants/stashes.action.types';
-import { DELETE_BATCH_SUCCESS } from './../constants/storage.actions.types';
+import { DELETE_BATCH_SUCCESS } from './../constants/batches.actions.types';
 
 import { CommonStorageService } from '../components/storage/common.service';
 import { createConditionalSliceReducer } from './utils';

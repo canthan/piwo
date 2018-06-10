@@ -2,26 +2,18 @@ import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import * as ReactSVG from 'react-svg';
 import { connect } from 'react-redux';
-import axios, { AxiosResponse } from 'axios';
 
 import StorageComponent from './components/storage/storage';
 
-import { AppState, User, AsyncAction } from './types/app.types';
-import {
-  StorageState,
-  Batch,
-  ItemState,
-  EmptyBatch
-} from './components/storage/storage.types';
+import { AsyncAction } from './types/app.types';
+
 import { getUserDataAsync } from './actions/app.actions';
 import { OverallAppState } from './reducers/initialState';
 
 import './App.scss';
 
 interface Props {
-  app: AppState;
-  batches: Batch[];
-  emptyBatch: EmptyBatch;
+  user_id: number;
   getUserDataAsync(user_id: number): AsyncAction;
 }
 
@@ -39,22 +31,16 @@ export class App extends React.Component<Props> {
     return (
       <div className="App">
         <header className="App-header">
-          {/* <ReactSVG path="./assets/img/logo.svg" className="logo-svg" /> */}
           <h1 className="App-title">Storage app</h1>
         </header>
-        {/* <StorageComponent user_id={1} batches={this.props.batches}/> */}
-        <StorageComponent user_id={1} />
+        <StorageComponent user_id={this.props.user_id} />
       </div>
     );
   }
 }
 
 const mapStateToProps = (state: OverallAppState) => ({
-  app: {
-    ...state.app
-  },
-  batches: state.storage.batches,
-  stashes: state.stashes.stashes,
+  user_id: state.app.user.user_id,
 });
 
 export default connect(mapStateToProps, { getUserDataAsync })(App);

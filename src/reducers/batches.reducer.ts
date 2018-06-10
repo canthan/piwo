@@ -1,4 +1,4 @@
-import { StorageState, Batch } from './../components/storage/storage.types';
+import { BatchesState, Batch } from './../components/storage/storage.types';
 import { AnyAction } from 'redux';
 import {
   GET_USER_STORAGE_REQUEST,
@@ -19,20 +19,20 @@ import {
   DELETE_BATCH_REQUEST,
   DELETE_BATCH_SUCCESS,
   DELETE_BATCH_FAILURE,
-} from './../constants/storage.actions.types';
+} from './../constants/batches.actions.types';
 import {
   GET_BATCHES_FROM_USER_DATA,
 } from './../constants/app.action.types';
 import { CommonStorageService } from '../components/storage/common.service';
 import { createConditionalSliceReducer } from './utils';
 
-export const initialStorageState = {
-  storage: {
+export const initialBatchesState = {
+  batches: {
     batches: [],
   },
 }
 
-const storageReducerMapping = () => ({
+const batchesReducerMapping = () => ({
   [ADD_BATCH_REQUEST]: state => ({ ...state }),
   [DELETE_BATCH_REQUEST]: state => ({ ...state }),
   [EDIT_BATCH_DATA_REQUEST]: state => ({ ...state }),
@@ -101,8 +101,8 @@ const storageReducerMapping = () => ({
   }),
 });
 
-export const storageReducer = createConditionalSliceReducer(
-  'storage',
-  storageReducerMapping(),
-  initialStorageState,
+export const batchesReducer = createConditionalSliceReducer(
+  'batches',
+  batchesReducerMapping(),
+  initialBatchesState,
 );

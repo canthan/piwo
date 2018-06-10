@@ -1,9 +1,9 @@
-import { StorageState, EmptyBatch, StashesState } from './../components/storage/storage.types';
+import { BatchesState, EmptyBatch, StashesState } from './../components/storage/storage.types';
 import { AppState } from './../types/app.types';
 
 export interface OverallAppState {
   app: AppState;
-  storage: StorageState;
+  batches: BatchesState;
   stashes: StashesState;
 }
 
@@ -19,7 +19,7 @@ const initialAppState: OverallAppState = {
       email: '',
     }
   },
-  storage: {
+  batches: {
     batches: [],
   },
   stashes: {
