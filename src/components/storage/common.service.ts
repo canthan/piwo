@@ -34,6 +34,23 @@ export class CommonStorageService {
     };
   }
 
+  public static getOverallQuantities(stashes: Stash[]) {
+    let litres = 0, bottles = 0, bottles_small = 0, crates = 0;
+    stashes.forEach((stash) => {
+      Object.keys(stash.items).forEach((bottle) => {
+        bottles += bottle === 'b050' ? Number(stash.items[bottle]) : 0;
+        bottles_small += bottle !== 'b050' ? Number(stash.items[bottle]) : 0;
+        litres += this.decodeBottleVolume(bottle) * Number(stash.items[bottle]);
+        crates += bottle === 'b050' ? Number(stash.items[bottle]) / 20 : 0;
+      });
+    });
+    return {
+      litres: `${litres.toFixed(2)}`,
+      crates: `${crates.toFixed(2)}`,
+      bottles: bottles_small ? `${bottles} + ${bottles_small}` : `${bottles}`,
+    };
+  }
+
   private static decodeBottleVolume(bottleVolumeString: string) {
     return this.checkBottleStringType(bottleVolumeString) ?
       Number(bottleVolumeString.slice(1, 3)) / 10 :

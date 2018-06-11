@@ -1,22 +1,43 @@
 import * as React from 'react';
-import { OverallQuantity} from '../../storage.types';
+import { CommonStorageService } from '../../common.service'
+import { OverallQuantity, Stash } from '../../storage.types';
 
 interface Props {
-  quantity_bottles: number;
-  quantity_crates: number;
-  quantity_litres: number;
+  stashes: Stash[]
 }
 
-export function OverallQuantityComponent(props: Props) {
-  return (
-    <div className='col-md-2 col-xs-12 overall'>
-      <ul className='overall__list'>
-        <li><span className="overall__list__number">{props.quantity_litres.toFixed(2)}</span> Litres</li>
-        <li><span className="overall__list__number">{props.quantity_crates.toFixed(2)}</span> Crates</li>
-        <li><span className="overall__list__number">{props.quantity_bottles}</span> Bottles</li>
-      </ul>
-    </div>
-  );
+interface State {
+  litres: string,
+  crates: string,
+  bottles: string,
+}
+
+export class OverallQuantityComponent extends React.Component<Props, State> {
+  state = {
+    litres: '0.00',
+    crates: '0.00',
+    bottles: '0',
+  }
+  componentWillReceiveProps(nextProps: Props) {
+    const { litres, crates, bottles } = CommonStorageService.getOverallQuantities(nextProps.stashes);
+    this.setState({
+      litres,
+      crates,
+      bottles,
+    })
+  }
+  render() {
+    const { litres, crates, bottles } = this.state;
+    return (
+      <div className='col-md-2 col-xs-12 overall'>
+        <ul className='overall__list'>
+          <li><span className="overall__list__number">{litres}</span> Litres</li>
+          <li><span className="overall__list__number">{crates}</span> Crates</li>
+          <li><span className="overall__list__number">{bottles}</span> Bottles</li>
+        </ul>
+      </div>
+    );
+  }
 }
 
 export default OverallQuantity;

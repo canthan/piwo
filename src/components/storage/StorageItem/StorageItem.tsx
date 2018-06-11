@@ -168,9 +168,7 @@ export class ItemComponent extends React.Component<Props, State> {
               )}
             <section className="content row">
               <OverallQuantityComponent
-                quantity_litres={quantity_litres}
-                quantity_bottles={quantity_bottles}
-                quantity_crates={quantity_crates}
+                stashes={this.props.stashes}
               />
               <StashesComponent
                 stashes={this.props.stashes}
