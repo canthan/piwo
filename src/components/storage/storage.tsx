@@ -5,7 +5,7 @@ import { AnyAction } from 'redux';
 
 import ItemComponent from './StorageItem/StorageItem';
 import EmptyItemComponent from './EmptyItem/EmptyItem';
-import { StorageSummaryComponent } from './Summary/Summary';
+import StorageSummaryComponent from './Summary/Summary';
 import { CommonStorageService } from './common.service';
 
 import { OverallAppState } from '../../reducers/initialState';

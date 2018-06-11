@@ -55,6 +55,12 @@ export class Stash {
   key?: number;
 }
 
+export interface grouppedStash {
+  stash_name: string;
+  items: Bottles;
+  crates_total: number;
+}
+
 export interface OverallQuantity {
   quantity_bottles: number;
   quantity_crates: number;

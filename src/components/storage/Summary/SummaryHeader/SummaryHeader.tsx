@@ -1,16 +1,17 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 
+import '../Summary.scss';
+
 function StorageSummaryHeaderComponent() {
   const headers = [
     'Storage name',
     'Overall litres',
-    '0,5 bottle litres',
-    'Small bottles',
-    '0,5 bottles',
-    'Crates overall',
+    'Overall crates',
     'Crates empty',
     'Crates full',
+    '0,5l bottles',
+    'Small bottles',
   ];
   return (
     <div className='container summary'>

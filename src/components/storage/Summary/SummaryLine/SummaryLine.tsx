@@ -1,10 +1,12 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 
-interface Props {
+import '../Summary.scss';
+import { grouppedStash } from '../../storage.types';
+
+interface State {
   stashName: string;
   litres_overall: number;
-  litres_in_05: number;
   bottles_small: number;
   bottles_05: number;
   quantity_crates: {
@@ -14,22 +16,40 @@ interface Props {
   };
 }
 
-function StorageSummaryLineComponent(props: Props) {
-
-  return (
-    <div className='container summary'>
-      <ul className='col-12 summary__list justify-content-around'>
-        <li className='col-1'>{props.stashName}</li>
-        <li className='col-1'>{props.litres_overall}</li>
-        <li className='col-1'>{props.litres_in_05}</li>
-        <li className='col-1'>{props.bottles_small}</li>
-        <li className='col-1'>{props.bottles_05}</li>
-        <li className='col-1'>{props.quantity_crates.overall}</li>
-        <li className='col-1'>{props.quantity_crates.empty}</li>
-        <li className='col-1'>{props.quantity_crates.full}</li>
-      </ul>
-    </div>
-  );
+interface Props {
+  stash: grouppedStash,
 }
 
-export default StorageSummaryLineComponent;
+export class StorageSummaryLineComponent extends React.Component<Props, State> {
+  state = {
+    stashName: this.props.stash.stash_name,
+    litres_overall: 0,
+    bottles_small: 0,
+    bottles_05: this.props.stash.items.b050,
+    quantity_crates: {
+      overall: 0,
+      empty: 0,
+      full: 0,
+    },
+  };
+
+  componentWillUpdate(nextProps: Props) {
+
+  }
+
+  render() {
+    return (
+      <div className='container summary'>
+        <ul className='col-12 summary__list justify-content-around'>
+          <li className='col-1'>{this.state.stashName}</li>
+          <li className='col-1'>{this.state.litres_overall}</li>
+          <li className='col-1'>{this.state.quantity_crates.overall}</li>
+          <li className='col-1'>{this.state.quantity_crates.full}</li>
+          <li className='col-1'>{this.state.quantity_crates.empty}</li>
+          <li className='col-1'>{this.state.bottles_05}</li>
+          <li className='col-1'>{this.state.bottles_small}</li>
+        </ul>
+      </div>
+    );
+  }
+}
