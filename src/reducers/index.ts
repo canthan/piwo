@@ -1,7 +1,8 @@
 import { appReducer } from './app.reducer';
-import { storageReducer } from './storage.reducer';
+import { stashesReducer } from './stashes.reducer';
+import { batchesReducer } from './batches.reducer';
 import { reduceReducers } from './utils';
 
-const rootReducer = reduceReducers(storageReducer, appReducer);
+const rootReducer = reduceReducers(batchesReducer, appReducer, stashesReducer);
 
 export default rootReducer;

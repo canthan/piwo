@@ -10,7 +10,6 @@ interface PropsAction {
 type Props = PropsAction & EmptyBatch;
 
 export class EmptyHeaderComponent extends React.Component<Props> {
-  // state = new EmptyBatch();
 
   handleChange = e => {
     const changedValue = { [e.target.name]: e.target.value };

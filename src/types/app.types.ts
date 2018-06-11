@@ -1,5 +1,5 @@
 import { ThunkAction } from 'redux-thunk';
-import { Batch, Stash, StorageState, ItemState } from './../components/storage/storage.types';
+import { Batch, Stash, BatchesState, ItemState } from './../components/storage/storage.types';
 
 export interface AppState {
   user: {

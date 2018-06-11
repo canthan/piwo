@@ -3,7 +3,7 @@ import { Dispatch } from 'react-redux';
 import { AnyAction } from 'redux';
 import { ThunkAction } from 'redux-thunk';
 
-import { Batch } from './../components/storage/storage.types';
+import { Batch, Stash } from './../components/storage/storage.types';
 import { AppState, User } from './../types/app.types';
 
 import {
@@ -11,8 +11,9 @@ import {
   GET_USER_DATA_SUCCESS,
   GET_USER_DATA_FAILURE,
   GET_BATCHES_FROM_USER_DATA,
+  GET_STASHES_FROM_USER_DATA,
 } from './../constants/app.action.types';
-import { getBatchesDataAsync } from './storage.actions';
+import { getBatchesDataAsync } from './batches.actions';
 
 import { CommonStorageService } from './../components/storage/common.service';
 
@@ -36,10 +37,17 @@ export const getUserDataFailure = (error): AnyAction => ({
 
 export const getBatchesFromUserData = (batches: Batch[]) => {
   batches = CommonStorageService.formatDateForDisplay(batches);
-  CommonStorageService.calculateQuantities(batches);
+  // CommonStorageService.calculateQuantities(batches);
   return {
     payload: { batches },
     type: GET_BATCHES_FROM_USER_DATA
+  };
+};
+
+export const getStashesFromUserData = (stashes: Stash[]) => {
+  return {
+    payload: { stashes },
+    type: GET_STASHES_FROM_USER_DATA
   };
 };
 
@@ -51,6 +59,7 @@ export const getUserDataAsync = (user_id: number) => {
       const userData = response.data.data;
       dispatch(getUserDataSuccess(userData));
       dispatch(getBatchesFromUserData(userData.batches));
+      dispatch(getStashesFromUserData(userData.stashes));
     } catch (error) {
       dispatch(getUserDataFailure(error));
     }
