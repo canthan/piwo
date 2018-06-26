@@ -51,7 +51,7 @@ export class CommonStorageService {
     };
   }
 
-  private static decodeBottleVolume(bottleVolumeString: string) {
+  public static decodeBottleVolume(bottleVolumeString: string) {
     return this.checkBottleStringType(bottleVolumeString) ?
       Number(bottleVolumeString.slice(1, 3)) / 10 :
       null;

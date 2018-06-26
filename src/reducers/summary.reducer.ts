@@ -11,10 +11,15 @@ export const initialSummaryState = {
   }
 };
 
-const summaryReducerMapping = () => ({});
+const summaryReducerMapping = () => ({
+  [GET_SUMMARY_FROM_STASHES]: (state, { summary }) => ({
+    ...state,
+    ...{ summary }
+  }),
+});
 
 export const summaryReducer = createConditionalSliceReducer(
   'summary',
   summaryReducerMapping(),
   initialSummaryState
-);
+); 

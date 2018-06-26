@@ -8,9 +8,13 @@
 
     li {
       display: block;
-      font-size: 0.8em;
+      font-size: 1em;
       font-weight: bold;
       text-transform: capitalize;
-    }
+    }  
   }
+}
+
+.summary:nth-of-type(even) {
+  background-color: $FrenchGrey;
 }

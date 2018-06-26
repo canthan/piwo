@@ -10,9 +10,8 @@ import { Stash, StashSummary } from '../components/storage/storage.types';
 
 export const getSummaryFromStashes = (stashes: Stash[]): AnyAction => {
   const summary: StashSummary[] = SummaryService.createSummary(stashes);
-  console.log(summary);
   return {
     payload: { summary },
     type: GET_SUMMARY_FROM_STASHES
   };
-};
+}; 

@@ -1,36 +1,57 @@
 import { Stash, StashSummary, GrouppedStash } from './../storage.types';
+import { CommonStorageService } from '../common.service';
 
 export class SummaryService {
   public static createSummary(stashes: Stash[]): StashSummary[] {
     const grouppedStashes: GrouppedStash[] = this.groupStashes(stashes);
-    console.log(grouppedStashes)
     const stashSummary: StashSummary[] = this.composeSummary(grouppedStashes);
 
     return stashSummary;
   }
 
-  public static composeSummary(
+  private static composeSummary(
     grouppedStashes: GrouppedStash[],
     stashSummary: StashSummary[] = []
   ) {
     grouppedStashes.forEach(stash => {
-      const summary: StashSummary = new StashSummary(
-        stash.stash_name,
-        stash.items['b050']
-      );
+      const summary: StashSummary = this.createSummaryForStash(stash);
+      summary.bottles.small = this.getSmallBottles(stash);
+      summary.litres = this.getLiters(stash);
+      
       stashSummary.push(summary);
     });
     return stashSummary;
   }
 
-  public static groupStashes(stashes: Stash[]): GrouppedStash[] {
+  private static createSummaryForStash(grouppedStash: GrouppedStash): StashSummary {
+    return new StashSummary(grouppedStash.stash_name, grouppedStash.items['b050']);
+  }
+
+  private static getLiters(grouppedStash: GrouppedStash): number {
+    let litres = 0;
+    for (let [key, value] of Object.entries(grouppedStash.items)) {
+      litres += CommonStorageService.decodeBottleVolume(key) * value;
+    }
+    return litres;
+  }
+
+  private static getSmallBottles(grouppedStash: GrouppedStash): number {
+    let bottles_small = 0;
+    for (let [key, value] of Object.entries(grouppedStash.items)) {
+      if (CommonStorageService.decodeBottleVolume(key) < 0.5) {
+        bottles_small += value;
+      }
+    }
+    return bottles_small;
+  }
+
+  private static groupStashes(stashes: Stash[]): GrouppedStash[] {
     const GrouppedStashes: GrouppedStash[] = [];
     stashes.forEach(stash => {
       GrouppedStashes.find(groupped => stash.stash_name === groupped.stash_name)
         ? this.addBottles(GrouppedStashes, stash)
         : this.createNewGroup(GrouppedStashes, stash);
     });
-
     return GrouppedStashes;
   }
 
