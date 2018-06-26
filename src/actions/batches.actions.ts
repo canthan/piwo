@@ -1,10 +1,10 @@
 import { AnyAction } from 'redux';
-import { Dispatch, ThunkAction } from 'react-redux';
+import { Dispatch } from 'react-redux';
 import Axios, { AxiosResponse, AxiosError } from 'axios';
 
 import { CommonStorageService } from './../components/storage/common.service';
 
-import { User, AsyncAction } from './../types/app.types';
+import { AsyncAction } from './../types/app.types';
 import {
   Batch,
   EmptyBatch,
@@ -30,6 +30,7 @@ import {
   DELETE_BATCH_REQUEST,
   DELETE_BATCH_SUCCESS,
   DELETE_BATCH_FAILURE,
+  GET_BATCHES_FROM_USER_DATA,
 } from './../constants/batches.actions.types';
 
 export const getBatchesDataRequest = (): AnyAction => ({
@@ -124,6 +125,14 @@ export const deleteBatchFailure = (error: AxiosError): AnyAction => ({
   payload: error,
   type: DELETE_BATCH_FAILURE
 });
+
+export const getBatchesFromUserData = (batches: Batch[]) => {
+  batches = CommonStorageService.formatDateForDisplay(batches);
+  return {
+    payload: { batches },
+    type: GET_BATCHES_FROM_USER_DATA
+  };
+};
 
 export const getBatchesDataAsync = (user_id: number) => {
   return async (dispatch: Dispatch<AnyAction>) => {

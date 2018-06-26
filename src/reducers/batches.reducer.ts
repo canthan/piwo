@@ -1,5 +1,3 @@
-import { BatchesState, Batch } from './../components/storage/storage.types';
-import { AnyAction } from 'redux';
 import {
   GET_USER_STORAGE_REQUEST,
   GET_USER_STORAGE_SUCCESS,

@@ -2,7 +2,7 @@ import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 
 import '../Summary.scss';
-import { grouppedStash } from '../../storage.types';
+import { GrouppedStash } from '../../storage.types';
 
 interface State {
   stashName: string;
@@ -17,7 +17,7 @@ interface State {
 }
 
 interface Props {
-  stash: grouppedStash,
+  stash: GrouppedStash,
 }
 
 export class StorageSummaryLineComponent extends React.Component<Props, State> {

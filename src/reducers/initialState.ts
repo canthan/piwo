@@ -1,30 +1,24 @@
-import { BatchesState, EmptyBatch, StashesState } from './../components/storage/storage.types';
+import { BatchesState, StashesState, SummaryState } from './../components/storage/storage.types';
 import { AppState } from './../types/app.types';
+
+import { initialStashesState } from './stashes.reducer';
+import { initialBatchesState } from './batches.reducer';
+import { initialAppState } from './app.reducer';
+import { initialSummaryState } from './summary.reducer';
+
 
 export interface OverallAppState {
   app: AppState;
   batches: BatchesState;
   stashes: StashesState;
+  summary: SummaryState;
 }
 
-const initialAppState: OverallAppState = {
-  app: {
-    loaded: true,
-    loggedIn: false,
-    user: {
-      user_id: 0,
-      username: '',
-      firstname: '',
-      surname: '',
-      email: '',
-    }
-  },
-  batches: {
-    batches: [],
-  },
-  stashes: {
-    stashes: []
-  }
+const overallAppState: OverallAppState = {
+  ...initialAppState,
+  ...initialBatchesState,
+  ...initialStashesState,
+  ...initialSummaryState,
 };
 
-export default initialAppState;
+export default overallAppState;

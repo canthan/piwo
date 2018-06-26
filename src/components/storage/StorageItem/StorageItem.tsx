@@ -1,7 +1,5 @@
 import * as React from 'react';
-import * as ReactDOM from 'react-dom';
-import { AnyAction } from 'redux';
-import { connect, dispatch } from 'react-redux';
+import { connect } from 'react-redux';
 
 import { HeaderComponent } from './Header/Header';
 import { EmptyHeaderComponent } from './../EmptyItem/HeaderEmpty/HeaderEmpty';
@@ -10,8 +8,6 @@ import { StashesComponent } from './Stashes/Stashes';
 import { ButtonsComponent } from './Buttons/Buttons';
 import { OptionsComponent } from './Options/Options';
 import { Batch, Stash, EmptyBatch } from './../storage.types';
-import { CommonStorageService } from './../common.service';
-
 import { AsyncAction } from './../../../types/app.types';
 
 import './StorageItem.scss';

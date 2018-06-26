@@ -1,33 +1,6 @@
-import { Batch, EmptyBatch, Stash, grouppedStash } from './storage.types';
+import { Batch, EmptyBatch, Stash, GrouppedStash } from './storage.types';
 
 export class CommonStorageService {
-
-  public static groupStashes(stashes: Stash[]): grouppedStash[] {
-    const grouppedStashes: grouppedStash[] = [];
-    stashes.forEach((stash) => {
-      grouppedStashes.find(groupped => stash.stash_name === groupped.stash_name) ?
-        this.addBottles(grouppedStashes, stash) :
-        this.createNewGroup(grouppedStashes, stash);
-    })
-
-    return grouppedStashes;
-  }
-
-  private static addBottles(grouppedStashes: grouppedStash[], stash: Stash) {
-
-    const grouppedStash = grouppedStashes.find(groupped => groupped.stash_name === stash.stash_name);
-    Object.keys(stash.items).forEach(item => {
-      const quantity = Object.keys(grouppedStash.items).find(grouppedItem => grouppedItem === item);
-      quantity ?
-        grouppedStash.items[quantity] += stash.items[quantity] :
-        grouppedStash.items = stash.items;
-    })
-  }
-
-  private static createNewGroup(grouppedStashes: grouppedStash[], stash: Stash) {
-    const { stash_name, items } = stash;
-    grouppedStashes.push({ stash_name, items, crates_total: 0 });
-  }
 
   public static formatDateForDisplay(batchesArray: Batch[]): Batch[] {
     batchesArray.forEach((batch, index) => {

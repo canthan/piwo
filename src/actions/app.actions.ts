@@ -1,21 +1,17 @@
-import Axios, { AxiosError, AxiosResponse } from 'axios';
+import { getSummaryFromStashes } from './summary.actions';
+import Axios, { AxiosResponse } from 'axios';
 import { Dispatch } from 'react-redux';
 import { AnyAction } from 'redux';
-import { ThunkAction } from 'redux-thunk';
 
-import { Batch, Stash } from './../components/storage/storage.types';
-import { AppState, User } from './../types/app.types';
+import { User } from './../types/app.types';
 
 import {
   GET_USER_DATA_REQUEST,
   GET_USER_DATA_SUCCESS,
   GET_USER_DATA_FAILURE,
-  GET_BATCHES_FROM_USER_DATA,
-  GET_STASHES_FROM_USER_DATA,
 } from './../constants/app.action.types';
-import { getBatchesDataAsync } from './batches.actions';
-
-import { CommonStorageService } from './../components/storage/common.service';
+import { getStashesFromUserData } from './stashes.actions';
+import { getBatchesFromUserData } from './batches.actions';
 
 export const getUserDataRequest = (): AnyAction => ({
   type: GET_USER_DATA_REQUEST
@@ -35,22 +31,6 @@ export const getUserDataFailure = (error): AnyAction => ({
   type: GET_USER_DATA_FAILURE
 });
 
-export const getBatchesFromUserData = (batches: Batch[]) => {
-  batches = CommonStorageService.formatDateForDisplay(batches);
-  // CommonStorageService.calculateQuantities(batches);
-  return {
-    payload: { batches },
-    type: GET_BATCHES_FROM_USER_DATA
-  };
-};
-
-export const getStashesFromUserData = (stashes: Stash[]) => {
-  return {
-    payload: { stashes },
-    type: GET_STASHES_FROM_USER_DATA
-  };
-};
-
 export const getUserDataAsync = (user_id: number) => {
   return async (dispatch: Dispatch<AnyAction>) => {
     dispatch(getUserDataRequest());
@@ -60,6 +40,7 @@ export const getUserDataAsync = (user_id: number) => {
       dispatch(getUserDataSuccess(userData));
       dispatch(getBatchesFromUserData(userData.batches));
       dispatch(getStashesFromUserData(userData.stashes));
+      dispatch(getSummaryFromStashes(userData.stashes));
     } catch (error) {
       dispatch(getUserDataFailure(error));
     }

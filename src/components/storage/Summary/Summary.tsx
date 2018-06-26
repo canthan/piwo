@@ -2,37 +2,37 @@ import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import { connect } from 'react-redux';
 
-import { IStorageSummary, IStorageSummaryProps } from './summary.types';
 import StorageSummaryHeaderComponent from './SummaryHeader/SummaryHeader';
 import { StorageSummaryLineComponent } from './SummaryLine/SummaryLine';
-import { Stash, grouppedStash } from '../storage.types';
+import { Stash, GrouppedStash } from '../storage.types';
 import { OverallAppState } from '../../../reducers/initialState';
-import CommonStorageService from '../common.service';
+import SummaryService from './summaryService';
 
 interface Props {
   stashes: Stash[],
 }
 
 interface State {
-  grouppedStashes: grouppedStash[],
+  GrouppedStashes: GrouppedStash[],
 }
 
 export class StorageSummaryComponent extends React.Component<Props, State> {
   state = {
-    grouppedStashes: [],
+    GrouppedStashes: [],
   }
 
-  componentWillUpdate(nextProps: Props) {
-    if (nextProps.stashes) {
-      this.setState({ grouppedStashes: CommonStorageService.groupStashes(nextProps.stashes) });
+  shouldComponentUpdate(nextProps: Props) {
+    if (nextProps.stashes && JSON.stringify(nextProps.stashes) !== JSON.stringify(this.props.stashes)) {
+      this.setState({ GrouppedStashes: SummaryService.groupStashes(nextProps.stashes) });
     }
+    return true;
   }
 
   render() {
     return (
       <React.Fragment>
         <StorageSummaryHeaderComponent />
-        {this.state.grouppedStashes.map(stash => {
+        {this.state.GrouppedStashes.map(stash => {
           return <StorageSummaryLineComponent stash={stash} key={stash.stash_name}/>
         })}
         {/* <StorageSummaryLineComponent /> */}

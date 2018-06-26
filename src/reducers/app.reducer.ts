@@ -1,10 +1,8 @@
-import { AnyAction } from 'redux';
 import {
   GET_USER_DATA_REQUEST,
   GET_USER_DATA_SUCCESS,
   GET_USER_DATA_FAILURE,
 } from './../constants/app.action.types';
-import { AppState, User } from './../types/app.types';
 import { createConditionalSliceReducer } from './utils';
 
 export const initialAppState = {

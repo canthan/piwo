@@ -1,12 +1,11 @@
 import { AnyAction } from 'redux';
-import { Dispatch, ThunkAction } from 'react-redux';
+import { Dispatch } from 'react-redux';
 import Axios, { AxiosResponse, AxiosError } from 'axios';
 
 import { CommonStorageService } from './../components/storage/common.service';
 
-import { User, AsyncAction } from './../types/app.types';
+import {  AsyncAction } from './../types/app.types';
 import {
-  Batch,
   Stash,
 } from './../components/storage/storage.types';
 
