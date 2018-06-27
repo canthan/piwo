@@ -21,6 +21,7 @@ interface OwnProps {
   batch: Batch;
   user_id: number;
   stashes: Stash[];
+  getSummaryFromStashes(): AnyAction;
 }
 interface MappedBatchActions {
   deleteBatchAsync(user_id: number, batch_id: number): AsyncAction;
@@ -30,11 +31,12 @@ interface MappedStashActions {
   addStashAsync(user_id: number, batch_id: number, newStash: Stash): AsyncAction;
   updateStashesAsync(user_id: number, batch_id: number, stashes: Stash[]): AsyncAction;
 }
-interface MappedSummaryActions {
-  changeSummaryBottlesAmount(stash_name: string, amount: number, bottle_type: string): AnyAction;
-}
+// interface MappedSummaryActions {
+//   changeSummaryBottlesAmount(stash_name: string, amount: number, bottle_type: string): AnyAction;
+// }
 
-type Props = MappedBatchActions & MappedStashActions & MappedSummaryActions & OwnProps;
+type Props = MappedBatchActions & MappedStashActions &  OwnProps;
+// type Props = MappedBatchActions & MappedStashActions & MappedSummaryActions & OwnProps;
 
 interface State {
   stashes: Stash[];
@@ -66,7 +68,7 @@ export class ItemComponent extends React.Component<Props, State> {
   onQuantityChange = (type, stashKey, target, amount = 0) => {
     const newState: { stashes: Stash[] } = this.state;
     newState.stashes[stashKey].items[type] = Number(target.value) + amount;
-    this.props.changeSummaryBottlesAmount(newState.stashes[stashKey].stash_name, amount, type);
+    // this.props.changeSummaryBottlesAmount(newState.stashes[stashKey].stash_name, amount, type);
     this.setState({
       ...newState,
       modified: true
@@ -113,6 +115,7 @@ export class ItemComponent extends React.Component<Props, State> {
   onSaveClick = () => {
     const { user_id, batch: { batch_id } } = this.props;
     this.props.updateStashesAsync(user_id, batch_id, this.state.stashes);
+    this.props.getSummaryFromStashes();
     this.setState({
       modified: false
     });
@@ -213,7 +216,7 @@ const actions = {
   addStashAsync,
   editBatchDataAsync,
   updateStashesAsync,
-  changeSummaryBottlesAmount,
+  // changeSummaryBottlesAmount,
 }
 
 export default connect(mapStateToProps, actions)(ItemComponent);

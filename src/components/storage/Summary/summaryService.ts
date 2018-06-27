@@ -3,7 +3,9 @@ import { CommonStorageService } from '../common.service';
 
 export class SummaryService {
   public static createSummary(stashes: Stash[]): StashSummary[] {
-    const grouppedStashes: GrouppedStash[] = this.groupStashes(stashes);
+    let grouppedStashes = [];
+    grouppedStashes = [...this.groupStashes(stashes)];
+    console.log(grouppedStashes);
     const stashSummary: StashSummary[] = this.composeSummary(grouppedStashes);
 
     return stashSummary;
@@ -13,11 +15,12 @@ export class SummaryService {
     grouppedStashes: GrouppedStash[],
     stashSummary: StashSummary[] = []
   ) {
+    console.log(grouppedStashes)
     grouppedStashes.forEach(stash => {
       const summary: StashSummary = this.createSummaryForStash(stash);
       summary.bottles.small = this.getSmallBottles(stash);
       summary.litres = this.getLiters(stash);
-      
+
       stashSummary.push(summary);
     });
     return stashSummary;
@@ -46,35 +49,40 @@ export class SummaryService {
   }
 
   private static groupStashes(stashes: Stash[]): GrouppedStash[] {
-    const GrouppedStashes: GrouppedStash[] = [];
+    const grouppedStashes: GrouppedStash[] = [];
+    let counter = 0;
     stashes.forEach(stash => {
-      GrouppedStashes.find(groupped => stash.stash_name === groupped.stash_name)
-        ? this.addBottles(GrouppedStashes, stash)
-        : this.createNewGroup(GrouppedStashes, stash);
+      grouppedStashes.find(groupped => stash.stash_name === groupped.stash_name)
+        ? this.addBottles(grouppedStashes, stash)
+        : this.createNewGroup(grouppedStashes, stash);
+      counter++;
     });
-    return GrouppedStashes;
+    console.log(counter)
+    return grouppedStashes;
   }
 
-  private static addBottles(GrouppedStashes: GrouppedStash[], stash: Stash) {
-    const GrouppedStash = GrouppedStashes.find(
+  private static addBottles(grouppedStashes: GrouppedStash[], stash: Stash) {
+    const grouppedStash = grouppedStashes.find(
       groupped => groupped.stash_name === stash.stash_name
     );
+    console.log(grouppedStash)
     Object.keys(stash.items).forEach(item => {
-      const quantity = Object.keys(GrouppedStash.items).find(
+      const quantity = Object.keys(grouppedStash.items).find(
         grouppedItem => grouppedItem === item
       );
       quantity
-        ? (GrouppedStash.items[quantity] += stash.items[quantity])
-        : (GrouppedStash.items = stash.items);
+        ? (grouppedStash.items[quantity] += stash.items[quantity])
+        : (grouppedStash.items = stash.items);
     });
+    // console.log(grouppedStash.items['b050'])
   }
 
   private static createNewGroup(
-    GrouppedStashes: GrouppedStash[],
+    grouppedStashes: GrouppedStash[],
     stash: Stash
   ) {
     const { stash_name, items } = stash;
-    GrouppedStashes.push({ stash_name, items, crates_total: 0 });
+    grouppedStashes.push({ stash_name, items, crates_total: 0 });
   }
 }
 
