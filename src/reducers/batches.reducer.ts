@@ -5,15 +5,9 @@ import {
   ADD_BATCH_REQUEST,
   ADD_BATCH_SUCCESS,
   ADD_BATCH_FAILURE,
-  ADD_STASH_REQUEST,
-  ADD_STASH_SUCCESS,
-  ADD_STASH_FAILURE,
   EDIT_BATCH_DATA_REQUEST,
   EDIT_BATCH_DATA_SUCCESS,
   EDIT_BATCH_DATA_FAILURE,
-  UPDATE_STASHES_REQUEST,
-  UPDATE_STASHES_SUCCESS,
-  UPDATE_STASHES_FAILURE,
   DELETE_BATCH_REQUEST,
   DELETE_BATCH_SUCCESS,
   DELETE_BATCH_FAILURE,
@@ -34,8 +28,6 @@ const batchesReducerMapping = () => ({
   [ADD_BATCH_REQUEST]: state => ({ ...state }),
   [DELETE_BATCH_REQUEST]: state => ({ ...state }),
   [EDIT_BATCH_DATA_REQUEST]: state => ({ ...state }),
-  [ADD_STASH_REQUEST]: state => ({ ...state }),
-  [UPDATE_STASHES_REQUEST]: state => ({ ...state }),
   [GET_USER_STORAGE_REQUEST]: state => ({ ...state }),
   [ADD_BATCH_SUCCESS]: (state, { newBatch }) => ({
     ...state,
@@ -53,14 +45,6 @@ const batchesReducerMapping = () => ({
       }
     }
   },
-  [ADD_STASH_SUCCESS]: (state, { newStash }) => ({
-    ...state,
-    ...{ batches: CommonStorageService.addStashesToBatch([...state.batches], newStash) }
-  }),
-  [UPDATE_STASHES_SUCCESS]: (state, { updatedStashes }) => ({
-    ...state,
-    ...{ batches: CommonStorageService.updateStashesinBatch([...state.batches], updatedStashes) }
-  }),
   [GET_USER_STORAGE_SUCCESS]: (state, { batches }) => ({
     ...state,
     ...{ batches: [...batches] }
@@ -82,14 +66,6 @@ const batchesReducerMapping = () => ({
     ...{ error: payload }
   }),
   [EDIT_BATCH_DATA_FAILURE]: (state, payload) => ({
-    ...state,
-    ...{ error: payload }
-  }),
-  [ADD_STASH_FAILURE]: (state, payload) => ({
-    ...state,
-    ...{ error: payload }
-  }),
-  [UPDATE_STASHES_FAILURE]: (state, payload) => ({
     ...state,
     ...{ error: payload }
   }),

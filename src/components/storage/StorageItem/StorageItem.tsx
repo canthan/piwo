@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { AnyAction } from 'redux';
 import { connect } from 'react-redux';
 
 import { HeaderComponent } from './Header/Header';
@@ -11,7 +12,9 @@ import { Batch, Stash, EmptyBatch } from './../storage.types';
 import { AsyncAction } from './../../../types/app.types';
 
 import './StorageItem.scss';
-import { deleteBatchAsync, addStashAsync, editBatchDataAsync, updateStashesAsync } from '../../../actions/batches.actions';
+import { deleteBatchAsync, editBatchDataAsync } from '../../../actions/batches.actions';
+import { addStashAsync, updateStashesAsync } from '../../../actions/stashes.actions';
+import { changeSummaryBottlesAmount } from '../../../actions/summary.actions';
 import { OverallAppState } from '../../../reducers/initialState';
 
 interface OwnProps {
@@ -27,8 +30,11 @@ interface MappedStashActions {
   addStashAsync(user_id: number, batch_id: number, newStash: Stash): AsyncAction;
   updateStashesAsync(user_id: number, batch_id: number, stashes: Stash[]): AsyncAction;
 }
+interface MappedSummaryActions {
+  changeSummaryBottlesAmount(stash_name: string, amount: number, bottle_type: string): AnyAction;
+}
 
-type Props = MappedBatchActions & MappedStashActions & OwnProps;
+type Props = MappedBatchActions & MappedStashActions & MappedSummaryActions & OwnProps;
 
 interface State {
   stashes: Stash[];
@@ -60,6 +66,7 @@ export class ItemComponent extends React.Component<Props, State> {
   onQuantityChange = (type, stashKey, target, amount = 0) => {
     const newState: { stashes: Stash[] } = this.state;
     newState.stashes[stashKey].items[type] = Number(target.value) + amount;
+    this.props.changeSummaryBottlesAmount(newState.stashes[stashKey].stash_name, amount, type);
     this.setState({
       ...newState,
       modified: true
@@ -139,7 +146,7 @@ export class ItemComponent extends React.Component<Props, State> {
   };
 
   render() {
-    const { batch_name, batch_number, bottled_on, quantity_bottles, quantity_crates, quantity_litres } = this.props.batch;
+    const { batch_name, batch_number, bottled_on } = this.props.batch;
     return (
       <div className="col-xl-6 col-xs-12">
         <div className="itemOverlay">
@@ -206,6 +213,7 @@ const actions = {
   addStashAsync,
   editBatchDataAsync,
   updateStashesAsync,
+  changeSummaryBottlesAmount,
 }
 
 export default connect(mapStateToProps, actions)(ItemComponent);

@@ -1,12 +1,10 @@
 import * as React from 'react';
-import * as ReactDOM from 'react-dom';
 import { connect } from 'react-redux';
 
 import StorageSummaryHeaderComponent from './SummaryHeader/SummaryHeader';
 import { StorageSummaryLineComponent } from './SummaryLine/SummaryLine';
-import { Stash, GrouppedStash, StashSummary } from '../storage.types';
+import { StashSummary } from '../storage.types';
 import { OverallAppState } from '../../../reducers/initialState';
-import SummaryService from './summaryService';
 
 interface Props {
   summary: StashSummary[],

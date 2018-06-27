@@ -102,8 +102,6 @@ export const addStashAsync = (
         CommonStorageService.flattenItemsForRequest([newStash])
       );
       const newStashResponse: Stash = { ...response.data.data };
-      console.log(response)
-      console.log(newStashResponse)
       dispatch(addStashSuccess(newStashResponse));
     } catch (error) {
       dispatch(addStashFailure(error));
