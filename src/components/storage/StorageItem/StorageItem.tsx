@@ -1,7 +1,6 @@
 import * as React from 'react';
-import * as ReactDOM from 'react-dom';
 import { AnyAction } from 'redux';
-import { connect, dispatch } from 'react-redux';
+import { connect } from 'react-redux';
 
 import { HeaderComponent } from './Header/Header';
 import { EmptyHeaderComponent } from './../EmptyItem/HeaderEmpty/HeaderEmpty';
@@ -10,18 +9,18 @@ import { StashesComponent } from './Stashes/Stashes';
 import { ButtonsComponent } from './Buttons/Buttons';
 import { OptionsComponent } from './Options/Options';
 import { Batch, Stash, EmptyBatch } from './../storage.types';
-import { CommonStorageService } from './../common.service';
-
 import { AsyncAction } from './../../../types/app.types';
 
 import './StorageItem.scss';
-import { deleteBatchAsync, addStashAsync, editBatchDataAsync, updateStashesAsync } from '../../../actions/batches.actions';
+import { deleteBatchAsync, editBatchDataAsync } from '../../../actions/batches.actions';
+import { addStashAsync, updateStashesAsync } from '../../../actions/stashes.actions';
 import { OverallAppState } from '../../../reducers/initialState';
 
 interface OwnProps {
   batch: Batch;
   user_id: number;
   stashes: Stash[];
+  getSummaryFromStashes(): AnyAction;
 }
 interface MappedBatchActions {
   deleteBatchAsync(user_id: number, batch_id: number): AsyncAction;
@@ -32,7 +31,7 @@ interface MappedStashActions {
   updateStashesAsync(user_id: number, batch_id: number, stashes: Stash[]): AsyncAction;
 }
 
-type Props = MappedBatchActions & MappedStashActions & OwnProps;
+type Props = MappedBatchActions & MappedStashActions &  OwnProps;
 
 interface State {
   stashes: Stash[];
@@ -87,29 +86,31 @@ export class ItemComponent extends React.Component<Props, State> {
       : alert('Please select input');
   };
 
-  onAddStorageClick = () => {
+  onAddStorageClick = async () => {
     let newStorageName = prompt('Enter new storage name');
     if (newStorageName) {
       const { batch: { batch_id }, user_id } = this.props;
       const newStash = new Stash(newStorageName, batch_id);
       newStash['stash_user_id'] = user_id;
-      this.props.addStashAsync(user_id, batch_id, newStash);
+      await this.props.addStashAsync(user_id, batch_id, newStash);
     }
   };
 
-  onDeleteClick = () => {
+  onDeleteClick = async () => {
     const { batch_number, batch_name } = this.props.batch;
     if (confirm(`Are you sure that Batch no.${batch_number} - ${batch_name} should be deleted?`))
-      this.props.deleteBatchAsync(this.props.user_id, this.props.batch.batch_id);
+      await this.props.deleteBatchAsync(this.props.user_id, this.props.batch.batch_id);
+      this.props.getSummaryFromStashes();
   };
 
   onModeClick = () => {
     console.log(this, 'Mode');
   };
 
-  onSaveClick = () => {
+  onSaveClick = async () => {
     const { user_id, batch: { batch_id } } = this.props;
-    this.props.updateStashesAsync(user_id, batch_id, this.state.stashes);
+    await this.props.updateStashesAsync(user_id, batch_id, this.state.stashes);
+    this.props.getSummaryFromStashes();
     this.setState({
       modified: false
     });
@@ -143,7 +144,7 @@ export class ItemComponent extends React.Component<Props, State> {
   };
 
   render() {
-    const { batch_name, batch_number, bottled_on, quantity_bottles, quantity_crates, quantity_litres } = this.props.batch;
+    const { batch_name, batch_number, bottled_on } = this.props.batch;
     return (
       <div className="col-xl-6 col-xs-12">
         <div className="itemOverlay">

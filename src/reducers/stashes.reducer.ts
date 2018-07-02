@@ -1,6 +1,4 @@
-import { Batch, Stash } from './../components/storage/storage.types';
-import { AnyAction } from 'redux';
-import { ItemState, EmptyBatch } from './../components/storage/storage.types';
+import { Stash } from './../components/storage/storage.types';
 import {
   ADD_STASH_REQUEST,
   ADD_STASH_SUCCESS,
@@ -15,9 +13,7 @@ import {
 } from './../constants/stashes.action.types';
 import { DELETE_BATCH_SUCCESS } from './../constants/batches.actions.types';
 
-import { CommonStorageService } from '../components/storage/common.service';
 import { createConditionalSliceReducer } from './utils';
-import InitialState from '././initialState';
 
 export const initialStashesState = {
   stashes: {
@@ -85,5 +81,5 @@ const stashesReducerMapping = () => ({
 export const stashesReducer = createConditionalSliceReducer(
   'stashes',
   stashesReducerMapping(),
-  { stashes: InitialState.stashes }
+  initialStashesState,
 );

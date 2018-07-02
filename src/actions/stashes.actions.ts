@@ -1,12 +1,11 @@
 import { AnyAction } from 'redux';
-import { Dispatch, ThunkAction } from 'react-redux';
+import { Dispatch } from 'react-redux';
 import Axios, { AxiosResponse, AxiosError } from 'axios';
 
 import { CommonStorageService } from './../components/storage/common.service';
 
-import { User, AsyncAction } from './../types/app.types';
+import {  AsyncAction } from './../types/app.types';
 import {
-  Batch,
   Stash,
 } from './../components/storage/storage.types';
 
@@ -83,9 +82,9 @@ export const deleteStashAsync = (
       const deletedStash = response.data.data.batches.find(
         stash => (stash.stash_id = stash_id)
       );
-      dispatch(deleteStashSuccess(deletedStash.stash_id));
+      return dispatch(deleteStashSuccess(deletedStash.stash_id));
     } catch (error) {
-      dispatch(deleteStashFailure(error));
+      return dispatch(deleteStashFailure(error));
     }
   };
 }
@@ -103,11 +102,9 @@ export const addStashAsync = (
         CommonStorageService.flattenItemsForRequest([newStash])
       );
       const newStashResponse: Stash = { ...response.data.data };
-      console.log(response)
-      console.log(newStashResponse)
-      dispatch(addStashSuccess(newStashResponse));
+      return dispatch(addStashSuccess(newStashResponse));
     } catch (error) {
-      dispatch(addStashFailure(error));
+      return dispatch(addStashFailure(error));
     }
   };
 }
@@ -125,9 +122,9 @@ export const updateStashesAsync = (
         CommonStorageService.flattenItemsForRequest(stashes)
       );
       const updatedStashes: Stash[] = [...response.data.data];
-      dispatch(updateStashesSuccess(updatedStashes));
+      return dispatch(updateStashesSuccess(updatedStashes));
     } catch (error) {
-      dispatch(updateStashesFailure(error));
+      return dispatch(updateStashesFailure(error));
     }
   };
 }

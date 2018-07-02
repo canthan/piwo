@@ -11,8 +11,46 @@ export interface ItemState {
   selected: any;
 }
 
+export interface SummaryState {
+  summary: StashSummary[];
+}
+
+export class StashSummary {
+  constructor(stash_name = '', bottles_half_liter = 0, bottles_small = 0) {
+    this.stash_name = stash_name;
+    this.crates = {
+      overall: 0,
+      full: bottles_half_liter / 20,
+      empty: 0
+    };
+    this.litres = 0;
+    this.bottles = {
+      small: bottles_small,
+      half_liter: bottles_half_liter
+    };
+  }
+  stash_name: string;
+  crates: {
+    overall: number;
+    full: number;
+    empty: number;
+  };
+  litres: number;
+  bottles: {
+    small: number;
+    half_liter: number;
+  };
+}
+
 export class Batch {
-  constructor(bottled_on = '', batch_id = 0, batch_name = '', litres = 0, bottles = 0, crates = 0) {
+  constructor(
+    bottled_on = '',
+    batch_id = 0,
+    batch_name = '',
+    litres = 0,
+    bottles = 0,
+    crates = 0
+  ) {
     this.batch_id = batch_id;
     this.batch_name = batch_name;
     this.bottled_on = bottled_on;
@@ -32,7 +70,11 @@ export class Batch {
 }
 
 export class EmptyBatch {
-  constructor(bottled_on = '2018-04-03', batch_number = '1', batch_name = 'aaa') {
+  constructor(
+    bottled_on = '2018-04-03',
+    batch_number = '1',
+    batch_name = 'aaa'
+  ) {
     this.batch_number = batch_number;
     this.batch_name = batch_name;
     this.bottled_on = bottled_on;
@@ -55,7 +97,7 @@ export class Stash {
   key?: number;
 }
 
-export interface grouppedStash {
+export interface GrouppedStash {
   stash_name: string;
   items: Bottles;
   crates_total: number;

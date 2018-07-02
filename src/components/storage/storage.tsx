@@ -14,6 +14,7 @@ import { AsyncAction } from '../../types/app.types';
 import { Batch, Stash } from './storage.types';
 
 import './Storage.scss';
+import { getSummaryFromStashes } from '../../actions/summary.actions';
 
 interface MappedProps {
   user_id: number;
@@ -21,18 +22,27 @@ interface MappedProps {
   stashes: Stash[];
 }
 
-type Props = MappedProps;
+interface MappedActions {
+  getSummaryFromStashes(stashes: Stash[]): AnyAction;
+}
+
+type Props = MappedActions & MappedProps;
 
 export class StorageComponent extends React.Component<Props> {
+  getSummaryFromStashes = () =>
+    this.props.getSummaryFromStashes(this.props.stashes);
 
   renderItem(batch, index) {
-    const stashes = this.props.stashes.filter(stash => stash.batch_id === batch.batch_id);
+    const stashes = this.props.stashes.filter(
+      stash => stash.batch_id === batch.batch_id
+    );
     return (
       <ItemComponent
         batch={batch}
         key={index}
         stashes={stashes}
         user_id={this.props.user_id}
+        getSummaryFromStashes={this.getSummaryFromStashes}
       />
     );
   }
@@ -59,7 +69,14 @@ export class StorageComponent extends React.Component<Props> {
 
 const mapStateToProps = (state: OverallAppState) => ({
   batches: state.batches.batches,
-  stashes: state.stashes.stashes,
+  stashes: state.stashes.stashes
 });
 
-export default connect(mapStateToProps)(StorageComponent);
+const actions = {
+  getSummaryFromStashes
+};
+
+export default connect(
+  mapStateToProps,
+  actions
+)(StorageComponent);
