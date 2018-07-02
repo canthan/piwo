@@ -29,14 +29,13 @@ interface MappedActions {
 type Props = MappedActions & MappedProps;
 
 export class StorageComponent extends React.Component<Props> {
-
-  getSummaryFromStashes = () => {
-    console.log('getSummaryFromStashes')
-    return this.props.getSummaryFromStashes(this.props.stashes);
-  }
+  getSummaryFromStashes = () =>
+    this.props.getSummaryFromStashes(this.props.stashes);
 
   renderItem(batch, index) {
-    const stashes = this.props.stashes.filter(stash => stash.batch_id === batch.batch_id);
+    const stashes = this.props.stashes.filter(
+      stash => stash.batch_id === batch.batch_id
+    );
     return (
       <ItemComponent
         batch={batch}
@@ -70,11 +69,14 @@ export class StorageComponent extends React.Component<Props> {
 
 const mapStateToProps = (state: OverallAppState) => ({
   batches: state.batches.batches,
-  stashes: state.stashes.stashes,
+  stashes: state.stashes.stashes
 });
 
 const actions = {
-  getSummaryFromStashes,
-}
+  getSummaryFromStashes
+};
 
-export default connect(mapStateToProps, actions)(StorageComponent);
+export default connect(
+  mapStateToProps,
+  actions
+)(StorageComponent);

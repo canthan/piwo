@@ -108,9 +108,9 @@ export const getBatchesDataAsync = (user_id: number) => {
       const response = await Axios.get(
         `http://localhost:1337/api/v1.0/batches/${user_id}`
       );
-      dispatch(getBatchesDataSuccess(response.data));
+      return dispatch(getBatchesDataSuccess(response.data));
     } catch (error) {
-      dispatch(getBatchesDataFailure(error));
+      return dispatch(getBatchesDataFailure(error));
     }
   };
 }
@@ -128,9 +128,9 @@ export const deleteBatchAsync = (
       const deletedBatch = response.data.data.batches.find(
         batch => (batch.batch_id = batch_id)
       );
-      dispatch(deleteBatchSuccess(deletedBatch.batch_id));
+      return dispatch(deleteBatchSuccess(deletedBatch.batch_id));
     } catch (error) {
-      dispatch(deleteBatchFailure(error));
+      return dispatch(deleteBatchFailure(error));
     }
   };
 }
@@ -144,9 +144,9 @@ export const addBatchAsync = (user_id: number, newBatch: EmptyBatch) => {
         newBatch
       );
       const newBatchResponse: Batch = response.data.data;
-      dispatch(addBatchSuccess(newBatchResponse));
+      return dispatch(addBatchSuccess(newBatchResponse));
     } catch (error) {
-      dispatch(addBatchFailure(error));
+      return dispatch(addBatchFailure(error));
     }
   };
 }
@@ -164,9 +164,9 @@ export const editBatchDataAsync = (
         { batch: batchData }
       );
       const updatedBatch: Batch = response.data.data[0];
-      dispatch(editBatchDataSuccess(updatedBatch));
+      return dispatch(editBatchDataSuccess(updatedBatch));
     } catch (error) {
-      dispatch(editBatchDataFailure(error));
+      return dispatch(editBatchDataFailure(error));
     }
   };
 }
