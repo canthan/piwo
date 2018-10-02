@@ -5,10 +5,10 @@ import { summaryReducer } from './summary.reducer';
 import { reduceReducers } from './utils';
 
 const rootReducer = reduceReducers(
-  batchesReducer, 
-  appReducer, 
-  stashesReducer,
-  summaryReducer,
+	batchesReducer,
+	appReducer,
+	stashesReducer,
+	summaryReducer
 );
 
 export default rootReducer;

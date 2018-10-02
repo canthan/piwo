@@ -1,26 +1,40 @@
 import { ThunkAction } from 'redux-thunk';
-import { Batch, Stash, BatchesState, ItemState } from './../components/storage/storage.types';
+import { Batch, Stash } from './storage.types';
+
+// tslint:disable no-any
+export type AnyFunction = (...args: any[]) => any;
+export type AsyncFunction = (...args: any[]) => Promise<any>;
 
 export interface AppState {
-  user: {
-    user_id: number,
-    username: string,
-    firstname: string,
-    surname: string,
-    email: string,
-  };
-  loaded: boolean;
-  loggedIn: boolean;
+	user: {
+		userId: number;
+		username: string;
+		firstname: string;
+		surname: string;
+		email: string;
+	};
+	loaded: boolean;
+	loggedIn: boolean;
 }
 
 export interface User {
-  email: string;
-  firstname: string;
-  password: string;
-  registration_date: string;
-  surname: string;
-  user_id: number;
-  username: string;
+	email: string;
+	firstname: string;
+	password: string;
+	registrationDate: string;
+	surname: string;
+	userId: number;
+	username: string;
+}
+
+export interface UserData extends User {
+	batches: Batch[];
+	stashes: Stash[];
+}
+
+export interface Response<T> {
+	status: number;
+	data: T;
 }
 
 export type AsyncAction = ThunkAction<Promise<void>, AppState, null>;

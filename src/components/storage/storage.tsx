@@ -11,72 +11,73 @@ import { CommonStorageService } from './common.service';
 import { OverallAppState } from '../../reducers/initialState';
 import { AsyncAction } from '../../types/app.types';
 
-import { Batch, Stash } from './storage.types';
+import { Batch, Stash, BatchInDto } from '../../types/storage.types';
 
 import './Storage.scss';
 import { getSummaryFromStashes } from '../../actions/summary.actions';
 
 interface MappedProps {
-  user_id: number;
-  batches: Batch[];
-  stashes: Stash[];
+	userId: number;
+	batches: BatchInDto[];
+	stashes: Stash[];
 }
 
 interface MappedActions {
-  getSummaryFromStashes(stashes: Stash[]): AnyAction;
+	getSummaryFromStashes(stashes: Stash[]): AnyAction;
 }
 
 type Props = MappedActions & MappedProps;
 
 export class StorageComponent extends React.Component<Props> {
-  getSummaryFromStashes = () =>
-    this.props.getSummaryFromStashes(this.props.stashes);
+	public getSummaryFromStashes = () =>
+		this.props.getSummaryFromStashes(this.props.stashes);
 
-  renderItem(batch, index) {
-    const stashes = this.props.stashes.filter(
-      stash => stash.batch_id === batch.batch_id
-    );
-    return (
-      <ItemComponent
-        batch={batch}
-        key={index}
-        stashes={stashes}
-        user_id={this.props.user_id}
-        getSummaryFromStashes={this.getSummaryFromStashes}
-      />
-    );
-  }
+	public renderItem(batch, index) {
+		const stashes = this.props.stashes.filter(
+			stash => stash.batchId === batch.batchId
+		);
 
-  render() {
-    return (
-      <div>
-        <StorageSummaryComponent />
+		return (
+			<ItemComponent
+				batch={batch}
+				key={index}
+				stashes={stashes}
+				userId={this.props.userId}
+				getSummaryFromStashes={this.getSummaryFromStashes}
+			/>
+		);
+	}
 
-        <div className="storage">
-          <div className="container">
-            <div className="row">
-              {this.props.batches.map((batch: Batch, index: number) => {
-                return this.renderItem(batch, index);
-              })}
-              <EmptyItemComponent />
-            </div>
-          </div>
-        </div>
-      </div>
-    );
-  }
+	public render() {
+		return (
+			<div>
+				<StorageSummaryComponent />
+
+				<div className="storage">
+					<div className="container">
+						<div className="row">
+							{this.props.batches.map((batch: BatchInDto, index: number) =>
+								this.renderItem(batch, index)
+							)}
+							<EmptyItemComponent />
+						</div>
+					</div>
+				</div>
+			</div>
+		);
+	}
 }
 
 const mapStateToProps = (state: OverallAppState) => ({
-  batches: state.batches.batches,
-  stashes: state.stashes.stashes
+	batches: state.batches.batches,
+	stashes: state.stashes.stashes,
 });
 
 const actions = {
-  getSummaryFromStashes
+	getSummaryFromStashes,
 };
 
 export default connect(
-  mapStateToProps,
-  actions
+	mapStateToProps,
+	actions
 )(StorageComponent);

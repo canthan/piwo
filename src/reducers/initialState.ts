@@ -1,4 +1,4 @@
-import { BatchesState, StashesState, SummaryState } from './../components/storage/storage.types';
+import { BatchesState, StashesState, SummaryState } from '../types/storage.types';
 import { AppState } from './../types/app.types';
 
 import { initialStashesState } from './stashes.reducer';

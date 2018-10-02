@@ -1,105 +1,138 @@
-import { Batch, EmptyBatch, Stash, GrouppedStash } from './storage.types';
+import { Batch, Stash, BatchInDto } from '../../types/storage.types';
+
+const BOTTLES_IN_CRATE = 20;
+const DECIMAL = 2;
+const DECODER_START = 1;
+const DECODER_END = 3;
+const DECODER_DIV = 10;
 
 export class CommonStorageService {
+	public static flattenItemsForRequest(stashes: Stash[]) {
+		const flattened: Stash[] = [];
+		const inputStashes: Stash[] = JSON.parse(JSON.stringify(stashes));
+		inputStashes.forEach(stash => {
+			Object.keys(stash.items).forEach(key => {
+				stash[key] = stash.items[key];
+			});
+			delete stash.items;
+			flattened.push(stash);
+		});
 
-  public static formatDateForDisplay(batchesArray: Batch[]): Batch[] {
-    batchesArray.forEach((batch, index) => {
-      batchesArray[index].bottled_on = batch.bottled_on.slice(0, batch.bottled_on.indexOf('T'));
-    });
-    return batchesArray;
-  }
+		return { stashes: flattened };
+	}
 
-  public static calculateQuantities(batches: Batch[]) {
-    batches.forEach((batch) => {
-      const { quantity_litres: litres, quantity_bottles: bottles, quantity_crates: crates } = this.iterateThroughBatch(batch);
-      batch.quantity_litres = litres;
-      batch.quantity_bottles = bottles;
-      batch.quantity_crates = crates;
-    });
-  }
+	public static addStashesToBatch(batches: BatchInDto[], stash: Stash) {
+		batches.map(
+			batch =>
+				batch.batchId === stash.batchId
+					? (batch.stashes = [...batch.stashes, stash])
+					: batch
+		);
 
-  private static iterateThroughBatch(batch: Batch) {
-    let q_litres = 0, q_bottles = 0, q_crates = 0;
-    batch.stashes.forEach((stash) => {
-      Object.keys(stash.items).forEach((bottle) => {
-        q_bottles += Number(stash.items[bottle]);
-        q_litres += this.decodeBottleVolume(bottle) * Number(stash.items[bottle]);
-        q_crates += bottle === 'b050' ? Number(stash.items[bottle]) / 20 : 0;
-      });
-    });
-    return {
-      quantity_litres: q_litres,
-      quantity_bottles: q_bottles,
-      quantity_crates: q_crates,
-    };
-  }
+		return batches;
+	}
 
-  public static getOverallQuantities(stashes: Stash[]) {
-    let litres = 0, bottles = 0, bottles_small = 0, crates = 0;
-    stashes.forEach((stash) => {
-      Object.keys(stash.items).forEach((bottle) => {
-        bottles += bottle === 'b050' ? Number(stash.items[bottle]) : 0;
-        bottles_small += bottle !== 'b050' ? Number(stash.items[bottle]) : 0;
-        litres += this.decodeBottleVolume(bottle) * Number(stash.items[bottle]);
-        crates += bottle === 'b050' ? Number(stash.items[bottle]) / 20 : 0;
-      });
-    });
-    return {
-      litres: `${litres.toFixed(2)}`,
-      crates: `${crates.toFixed(2)}`,
-      bottles: bottles_small ? `${bottles} + ${bottles_small}` : `${bottles}`,
-    };
-  }
+	public static updateStashesinBatch(batches: BatchInDto[], stashes: Stash[]) {
+		batches.forEach(batch => {
+			if (batch.batchId === stashes[0].batchId) {
+				batch.stashes = stashes;
+			}
+		});
 
-  public static decodeBottleVolume(bottleVolumeString: string) {
-    return this.checkBottleStringType(bottleVolumeString) ?
-      Number(bottleVolumeString.slice(1, 3)) / 10 :
-      null;
-  }
+		return batches;
+	}
 
-  private static checkBottleStringType(bottleVolumeString: string) {
-    const stringType = /b\d{3}/;
-    return stringType.exec(bottleVolumeString) ?
-      true :
-      false;
-  }
+	public static getStashesFromBatch(
+		batches: BatchInDto[],
+		batchId: number
+	): Stash[] {
+		const stashes = batches.find(batch => batch.batchId === batchId);
 
-  public static flattenItemsForRequest(stashes) {
-    const flattened = [];
-    const inputStashes = JSON.parse(JSON.stringify(stashes));
-    inputStashes.forEach((stash) => {
-      Object.keys(stash.items).forEach((key) => {
-        stash[key] = stash.items[key];
-      });
-      delete stash.items;
-      flattened.push(stash);
-    });
-    return { stashes: flattened };
-  }
+		return stashes ? stashes.stashes : [];
+	}
 
-  public static addStashesToBatch(batches: Batch[], stash: Stash) {
-    batches.forEach((batch) => {
-      if (batch.batch_id === stash.batch_id) {
-        batch.stashes.push(stash);
-        return;
-      }
-    });
-    return batches;
-  }
+	public static getOverallQuantities(stashes: Stash[]) {
+		let litres = 0;
+		let bottles = 0;
+		let bottlesSmall = 0;
+		let crates = 0;
+		stashes.forEach(stash => {
+			Object.keys(stash.items).forEach(bottle => {
+				bottles += bottle === 'b050' ? Number(stash.items[bottle]) : 0;
+				bottlesSmall += bottle !== 'b050' ? Number(stash.items[bottle]) : 0;
+				litres += this.decodeBottleVolume(bottle) * Number(stash.items[bottle]);
+				crates +=
+					bottle === 'b050'
+						? Number(stash.items[bottle]) / BOTTLES_IN_CRATE
+						: 0;
+			});
+		});
 
-  public static updateStashesinBatch(batches: Batch[], stashes: Stash[]) {
-    batches.forEach((batch) => {
-      if (batch.batch_id === stashes[0].batch_id) {
-        batch.stashes = stashes
-        return;
-      }
-    });
-    return batches;
-  }
+		return {
+			litres: `${litres.toFixed(DECIMAL)}`,
+			crates: `${crates.toFixed(DECIMAL)}`,
+			bottles: bottlesSmall ? `${bottles} + ${bottlesSmall}` : `${bottles}`,
+		};
+	}
 
-  public static getStashesFromBatch(batches: Batch[], batch_id: number): Stash[] {
-    return batches.find(batch => batch.batch_id === batch_id).stashes;
-  }
+	public static decodeBottleVolume(bottleVolumeString: string) {
+		return this.checkBottleStringType(bottleVolumeString)
+			? Number(bottleVolumeString.slice(DECODER_START, DECODER_END)) /
+					DECODER_DIV
+			: 0;
+	}
+
+	public static formatDateForDisplay(batchesArray: Batch[]): Batch[] {
+		batchesArray.forEach((batch, index) => {
+			batchesArray[index].bottledOn = batch.bottledOn.slice(
+				0,
+				batch.bottledOn.indexOf('T')
+			);
+		});
+
+		return batchesArray;
+	}
+
+	public static calculateQuantities(batches: Batch[]) {
+		batches.forEach(batch => {
+			const {
+				quantityLitres: litres,
+				quantityBottles: bottles,
+				quantityCrates: crates,
+			} = this.iterateThroughBatch(batch);
+			batch.quantityLitres = litres;
+			batch.quantityBottles = bottles;
+			batch.quantityCrates = crates;
+		});
+	}
+
+	private static iterateThroughBatch(batch: Batch) {
+		let litres = 0;
+		let bottles = 0;
+		let crates = 0;
+		batch.stashes.forEach(stash => {
+			Object.keys(stash.items).forEach(bottle => {
+				bottles += Number(stash.items[bottle]);
+				litres += this.decodeBottleVolume(bottle) * Number(stash.items[bottle]);
+				crates +=
+					bottle === 'b050'
+						? Number(stash.items[bottle]) / BOTTLES_IN_CRATE
+						: 0;
+			});
+		});
+
+		return {
+			quantityLitres: litres,
+			quantityBottles: bottles,
+			quantityCrates: crates,
+		};
+	}
+
+	private static checkBottleStringType(bottleVolumeString: string) {
+		const stringType = /b\d{3}/;
+
+		return stringType.exec(bottleVolumeString) ? true : false;
+	}
 }
 
 export default CommonStorageService;
